@@ -108,3 +108,15 @@ describe('CVS district', () => {
     expect(d.drugs.filter(x => x.high_yield).length).toBeGreaterThanOrEqual(18);
   });
 });
+
+describe('CNS quarter district', () => {
+  const d = loadDistrict('cns');
+  it('passes the schema', () => {
+    const { ok, errors } = validateDistrict(d);
+    if (!ok) console.error(errors);
+    expect(ok).toBe(true);
+  });
+  it('has at least 25 high-yield drugs', () => {
+    expect(d.drugs.filter(x => x.high_yield).length).toBeGreaterThanOrEqual(25);
+  });
+});
