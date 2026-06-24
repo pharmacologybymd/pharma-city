@@ -1,20 +1,26 @@
+// City scene (level 1). Mounts ONCE per page from app.js boot(); no dispose
+// path is provided because we never tear it down. If you ever change the
+// app to remount, also wire P.loop.remove(tick) + window.removeEventListener
+// before remount or the listeners will accumulate.
 (function(){
   const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
   function mount(rootEl) {
     const canvas = document.createElement('canvas');
+    canvas.style.display = 'block';
     rootEl.appendChild(canvas);
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    const resize = () => {
-      const w = window.innerWidth, h = window.innerHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h; camera.updateProjectionMatrix();
-    };
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0b1020);
     scene.fog = new THREE.Fog(0x0b1020, 80, 260);
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
     camera.position.set(80, 50, 80); camera.lookAt(0, 6, 0);
+    // resize closes over renderer + camera — defined AFTER both exist.
+    const resize = () => {
+      const w = window.innerWidth, h = window.innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+    };
     scene.add(new THREE.AmbientLight(0xffffff, 0.55));
     const dir = new THREE.DirectionalLight(0xffffff, 0.9);
     dir.position.set(40, 60, 30); dir.castShadow = true;
