@@ -22,7 +22,7 @@
     input.addEventListener('input', () => {
       const hits = filter(input.value).slice(0, 10);
       if (!hits.length) { results.style.display = 'none'; results.innerHTML = ''; return; }
-      results.innerHTML = hits.map(h => `<div class="search-result" data-drug="${h.drugId}" data-district="${h.districtId}">${escape(h.drugId)} <span style="color:var(--muted);font-size:12px">(${escape(h.districtName)})</span></div>`).join('');
+      results.innerHTML = hits.map(h => `<div class="search-result" data-drug="${escape(h.drugId)}" data-district="${escape(h.districtId)}">${escape(h.drugId)} <span style="color:var(--muted);font-size:12px">(${escape(h.districtName)})</span></div>`).join('');
       results.style.display = 'block';
       results.querySelectorAll('.search-result').forEach(el => el.onclick = () => {
         P.app.goTo('flashcard', { districtId: el.dataset.district, drugId: el.dataset.drug });
