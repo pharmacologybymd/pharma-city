@@ -63,15 +63,18 @@
       }
     });
 
+    const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let visible = true;
     function tick(_dt, t) {
       if (!visible) return;
-      // Slow auto-orbit
-      const r = 78;
-      camera.position.x = Math.sin(t * 0.18) * r;
-      camera.position.z = Math.cos(t * 0.18) * r;
-      camera.position.y = 38 + Math.sin(t * 0.4) * 3;
-      camera.lookAt(0, 6, 0);
+      if (!reduced) {
+        // Slow auto-orbit
+        const r = 78;
+        camera.position.x = Math.sin(t * 0.18) * r;
+        camera.position.z = Math.cos(t * 0.18) * r;
+        camera.position.y = 38 + Math.sin(t * 0.4) * 3;
+        camera.lookAt(0, 6, 0);
+      }
       renderer.render(scene, camera);
     }
     P.loop.add(tick);

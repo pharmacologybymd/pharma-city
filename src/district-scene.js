@@ -68,14 +68,17 @@
       }
     });
 
+    const reduced = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let visible = false;
     function tick(_dt, t) {
       if (!visible) return;
-      const r = 35;
-      camera.position.x = Math.sin(t * 0.12) * r;
-      camera.position.z = Math.cos(t * 0.12) * r;
-      camera.position.y = 18 + Math.sin(t * 0.3) * 2;
-      camera.lookAt(0, 4, 0);
+      if (!reduced) {
+        const r = 35;
+        camera.position.x = Math.sin(t * 0.12) * r;
+        camera.position.z = Math.cos(t * 0.12) * r;
+        camera.position.y = 18 + Math.sin(t * 0.3) * 2;
+        camera.lookAt(0, 4, 0);
+      }
       renderer.render(scene, camera);
     }
     P.loop.add(tick);

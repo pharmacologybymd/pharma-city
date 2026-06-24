@@ -19,6 +19,9 @@
   function mount(rootEl) {
     container = document.createElement('div');
     container.className = 'flashcard';
+    container.setAttribute('role', 'dialog');
+    container.setAttribute('aria-modal', 'true');
+    container.setAttribute('aria-labelledby', 'fc-title');
     container.style.display = 'none';
     rootEl.appendChild(container);
     P.app.on('navigate', s => {
@@ -38,6 +41,7 @@
     const prevScroll = container.scrollTop;
     container.innerHTML = '';
     const head = document.createElement('div');
+    head.id = 'fc-title';
     head.innerHTML = `<div style="font-size:18px;font-weight:500">${esc(d.id)}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${esc(d.building)}</div>`;
     container.appendChild(head);
 
@@ -71,8 +75,13 @@
     if (hidden) {
       const bar = document.createElement('div');
       bar.className = 'facet-hidden';
+      bar.setAttribute('role', 'button');
+      bar.setAttribute('tabindex', '0');
       bar.textContent = 'Recall it — tap to reveal';
       bar.onclick = () => { state.reveal(key); render(); };
+      bar.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); state.reveal(key); render(); }
+      });
       wrap.appendChild(bar);
     } else {
       const v = document.createElement('div');

@@ -15,7 +15,7 @@
     function close() { panel.classList.remove('open'); reopenBtn.style.display = ''; }
     function open(text, name) {
       panel.innerHTML = `
-        <button class="btn" style="position:absolute;top:12px;right:12px" id="wt-close">×</button>
+        <button class="btn" style="position:absolute;top:12px;right:12px" id="wt-close" aria-label="Close walkthrough">×</button>
         <div style="font-size:18px;font-weight:500;margin-bottom:8px">${esc(name ?? '')}</div>
         <div style="font-size:14px;line-height:1.6">${esc(text ?? '')}</div>
       `;

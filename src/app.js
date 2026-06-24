@@ -35,6 +35,12 @@
       if (state.level === 'flashcard') goTo('district', { districtId: state.districtId });
       else if (state.level === 'district') goTo('city');
     });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const s = state;
+      if (s.level === 'flashcard') goTo('district', { districtId: s.districtId });
+      else if (s.level === 'district') goTo('city');
+    });
     P.city?.mount?.(app);
     P.district?.mount?.(app);
     P.flashcard?.mount?.(app);
