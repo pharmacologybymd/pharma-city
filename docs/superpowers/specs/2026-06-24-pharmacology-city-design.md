@@ -55,7 +55,7 @@ Two reasons this matters:
 
 ## The city — districts and layout
 
-The city covers the whole G&G 14e syllabus. There are 13 districts. Position on the map is chosen to mirror conceptual proximity, not the alphabet.
+The city covers the whole G&G 14e syllabus. There are **14 districts**. Position on the map is chosen to mirror conceptual proximity, not the alphabet.
 
 | Zone | District | Theme (1-line) |
 |---|---|---|
