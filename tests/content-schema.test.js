@@ -62,6 +62,13 @@ describe('validateCity', () => {
   });
   it('accepts exactly the 14 canonical ids in any order', () => {
     const ids = ['general_pharmacology','ans_hub','cholinergic','adrenergic','cvs','respiratory','git','renal','autacoids','cns','endocrine','chemotherapy','toxicology','recent_advances'];
-    expect(ids.length).toBe(14);
+    const shuffled = [...ids].reverse();
+    expect(validateCity({ districts: shuffled }).ok).toBe(true);
+  });
+  it('rejects unknown district ids in the city list', () => {
+    const ids = ['general_pharmacology','ans_hub','cholinergic','adrenergic','cvs','respiratory','git','renal','autacoids','cns','endocrine','chemotherapy','toxicology','banana'];
+    const { ok, errors } = validateCity({ districts: ids });
+    expect(ok).toBe(false);
+    expect(errors.join(' ')).toMatch(/banana/);
   });
 });
