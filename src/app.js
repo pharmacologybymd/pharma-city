@@ -40,7 +40,7 @@
     P.flashcard?.mount?.(app);
     P.walkthrough?.mount?.(app);
     P.selfTest?.mount?.(app);
-    P.selfTest?.onChange?.(() => { if (P.flashcard?._rerender) P.flashcard._rerender(); });
+    P.selfTest?.onChange?.(() => { P.flashcard?._onSelfTestChange?.(); });
     P.search?.mount?.(document.getElementById('search-mount'));
     goTo('city');
   }

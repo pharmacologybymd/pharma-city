@@ -1,7 +1,12 @@
 (function(){
   const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
   function _state(drug) {
-    const hidden = { class: false, mechanism: true, adverse_effects: true, clinical_use: true };
+    // class hides only when self-test is on at card-load; tapping reveals
+    // it for the rest of this card's view via state.hidden.class below.
+    const hidden = {
+      class: (typeof window !== 'undefined' && window.PHARMA?.selfTest?.isOn?.() === true),
+      mechanism: true, adverse_effects: true, clinical_use: true,
+    };
     return {
       drug, hidden,
       reveal(k) { hidden[k] = false; },
@@ -36,7 +41,7 @@
     head.innerHTML = `<div style="font-size:18px;font-weight:500">${esc(d.id)}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${esc(d.building)}</div>`;
     container.appendChild(head);
 
-    container.appendChild(facet('Class', d.class, P.selfTest?.isOn?.() === true, P.selfTest?.isOn?.() === true ? 'class' : null));
+    container.appendChild(facet('Class', d.class, state.hidden.class, 'class'));
     container.appendChild(facet('Mechanism', d.mechanism, state.hidden.mechanism, 'mechanism'));
     container.appendChild(facet('Adverse effects', d.adverse_effects, state.hidden.adverse_effects, 'adverse_effects'));
     container.appendChild(facet('Clinical use', d.clinical_use, state.hidden.clinical_use, 'clinical_use'));
@@ -78,5 +83,11 @@
     return wrap;
   }
   function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]); }
-  P.flashcard = { mount, _state, _rerender: () => render() };
+  // _onSelfTestChange re-seeds class hidden state from the live toggle.
+  // _rerender just repaints the current state (used elsewhere).
+  function _onSelfTestChange() {
+    if (state) state.hidden.class = P.selfTest?.isOn?.() === true;
+    render();
+  }
+  P.flashcard = { mount, _state, _rerender: () => render(), _onSelfTestChange };
 })();
