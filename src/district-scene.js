@@ -34,6 +34,9 @@
       pickables = [];
       const d = window['DISTRICT_' + id.toUpperCase()];
       if (!d) return;
+      // Dispose the previous ground material before swapping — otherwise
+      // every district navigation orphans a MeshLambertMaterial in GPU mem.
+      ground.material.dispose();
       ground.material = new THREE.MeshLambertMaterial({ color: d.palette?.ground ?? 0x639922 });
       // arrange drugs in a 5-per-row grid centred at origin
       const drugs = d.drugs || [];
