@@ -56,7 +56,7 @@ Walking the plaza you notice six landmark buildings. The Nicotine Exchange occup
       clinical_use: 'No current therapeutic use. Historical significance: first ganglionic blocker used clinically for severe hypertension (early 1950s) — its limitations (see ADRs) drove development of better antihypertensives. Essential pharmacological prototype for understanding ganglionic transmission.',
       memory_hook: 'The Archive preserves the blueprints that all modern antihypertensives were designed to replace — hexamethonium opened the ganglionic blocker era and then was filed away when safer buildings were constructed.',
       source: 'G&G 14e, ch. 12',
-      high_yield: true,
+      high_yield: false,
     },
 
     // ─── LONG-TAIL ────────────────────────────────────────────────────────────
@@ -95,7 +95,7 @@ Walking the plaza you notice six landmark buildings. The Nicotine Exchange occup
       clinical_use: 'Rapid sequence induction (RSI) of anaesthesia: produces fast onset of complete NMJ block (60–90 seconds) allowing rapid intubation. Preferred when fastest possible intubation is required (full stomach, airway emergency) because of rapid onset and short duration. Electroconvulsive therapy (ECT) — to attenuate the motor manifestation of seizure. Contraindicated in: hyperkalaemia risk situations, malignant hyperthermia susceptibility, pseudocholinesterase deficiency (relative).',
       memory_hook: 'The Depolarising Lock slams the gate wide open with a jolt of fasciculations, then freezes it half-open so no further signal can turn the key — and the faster pseudocholinesterase works, the sooner the lock springs free again.',
       source: 'G&G 14e, ch. 12',
-      high_yield: false,
+      high_yield: true,
     },
   ],
 };
