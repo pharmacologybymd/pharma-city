@@ -180,3 +180,9 @@ describe('Toxicology district', () => {
   it('passes the schema', () => { const r = validateDistrict(d); if (!r.ok) console.error(r.errors); expect(r.ok).toBe(true); });
   it('has at least 8 high-yield drugs', () => { expect(d.drugs.filter(x => x.high_yield).length).toBeGreaterThanOrEqual(8); });
 });
+
+describe('Recent advances district', () => {
+  const d = loadDistrict('recent_advances');
+  it('passes the schema', () => { const r = validateDistrict(d); if (!r.ok) console.error(r.errors); expect(r.ok).toBe(true); });
+  it('has at least 6 high-yield drugs', () => { expect(d.drugs.filter(x => x.high_yield).length).toBeGreaterThanOrEqual(6); });
+});
