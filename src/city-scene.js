@@ -24,7 +24,9 @@
     scene.add(new THREE.AmbientLight(0xffffff, 0.55));
     const dir = new THREE.DirectionalLight(0xffffff, 0.9);
     dir.position.set(40, 60, 30); dir.castShadow = true;
-    dir.shadow.mapSize.width = 1024; dir.shadow.mapSize.height = 1024;
+    const isHiDPI = window.devicePixelRatio >= 2;
+    dir.shadow.mapSize.width = isHiDPI ? 1024 : 512;
+    dir.shadow.mapSize.height = isHiDPI ? 1024 : 512;
     dir.shadow.camera.left=-70; dir.shadow.camera.right=70; dir.shadow.camera.top=70; dir.shadow.camera.bottom=-70;
     scene.add(dir);
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
