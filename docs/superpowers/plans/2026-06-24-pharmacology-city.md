@@ -157,9 +157,17 @@ import { join } from 'node:path';
 const root = import.meta.dirname;
 const read = (p) => readFileSync(join(root, p), 'utf8');
 
+// Strip ESM `export` syntax so the same source files work both for vitest
+// (loaded as ES modules) and inlined into a plain <script> tag in the browser.
+function stripExports(code) {
+  return code
+    .replace(/^export\s+\{[^}]*\}\s*;?\s*$/gm, '')
+    .replace(/^export\s+(default\s+)?(async\s+function|function|const|let|var|class|async)\s+/gm, '$2 ');
+}
+
 function concatDir(dir) {
   const files = readdirSync(join(root, dir)).filter(f => f.endsWith('.js')).sort();
-  return files.map(f => `// === ${dir}/${f} ===\n${read(join(dir, f))}`).join('\n\n');
+  return files.map(f => `// === ${dir}/${f} ===\n${stripExports(read(join(dir, f)))}`).join('\n\n');
 }
 
 const three = read('vendor/three.min.js');
@@ -178,7 +186,7 @@ const appFiles = [
   'city-scene.js',
   'app.js',
 ];
-const app = appFiles.map(f => `// === src/${f} ===\n${read('src/' + f)}`).join('\n\n');
+const app = appFiles.map(f => `// === src/${f} ===\n${stripExports(read('src/' + f))}`).join('\n\n');
 
 let html = read('src/template.html');
 html = html.replace('<!--INJECT_CSS-->', css);
@@ -1750,7 +1758,7 @@ git commit -m "Cholinergic district: gold-standard content + rain/water animatio
 
 ---
 
-## Tasks 14–25: Remaining 13 districts
+## Tasks 14–26: Remaining 13 districts
 
 Each of the following 13 tasks creates one district file at `content/districts/<id>.js` exporting `window.DISTRICT_<ID>`. Each follows the **Cholinergic template** from Task 13 exactly — same schema fields, same structure, same gold-standard quality bar. Animations are added only when the spec calls for them (Adrenergic, CVS, ANS hub).
 
