@@ -1,11 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { execSync } from 'node:child_process';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const projectRoot = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 describe('build', () => {
   it('produces a single self-contained HTML file', () => {
-    execSync('node build.js', { stdio: 'pipe' });
-    const path = 'dist/pharma-city.html';
+    execSync('node build.js', { stdio: 'pipe', cwd: projectRoot });
+    const path = join(projectRoot, 'dist/pharma-city.html');
     expect(existsSync(path)).toBe(true);
     const html = readFileSync(path, 'utf8');
     // file:// requirement — no runtime network references

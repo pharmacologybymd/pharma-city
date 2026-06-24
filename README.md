@@ -11,9 +11,9 @@ Send `dist/pharma-city.html` via WhatsApp / Google Drive / AirDrop. Recipients o
 
 ```
 npm install
-npm test            # run unit tests
-npm test:watch      # tests in watch mode
-npm run build       # rebuild dist/pharma-city.html
+npm test                # run unit tests
+npm run test:watch      # tests in watch mode
+npm run build           # rebuild dist/pharma-city.html
 ```
 
 Source lives in `src/` (engine) and `content/` (drug facts).

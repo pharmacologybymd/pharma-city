@@ -4,14 +4,19 @@ import { join } from 'node:path';
 const root = import.meta.dirname;
 const read = (p) => readFileSync(join(root, p), 'utf8');
 
-// Strip ESM `export` syntax so the same source files work both for vitest
+// Strips ESM `export` syntax so the same source files work both for vitest
 // (loaded as ES modules) and inlined into a plain <script> tag in the browser.
+// Handles named-list exports, named-keyword exports, and bare default exports.
 function stripExports(code) {
   return code
     .replace(/^export\s+\{[^}]*\}\s*;?\s*$/gm, '')
-    .replace(/^export\s+(default\s+)?(async\s+function|function|const|let|var|class|async)\s+/gm, '$2 ');
+    .replace(/^export\s+(default\s+)?(async\s+function|function|const|let|var|class|async)\s+/gm, '$2 ')
+    .replace(/^export\s+default\s+/gm, '');
 }
 
+// Concatenates every .js in `dir` (alphabetical, non-recursive). Any .js file
+// added to content/ or content/districts/ gets inlined automatically — don't
+// drop unrelated JS into these dirs.
 function concatDir(dir) {
   const files = readdirSync(join(root, dir)).filter(f => f.endsWith('.js')).sort();
   return files.map(f => `// === ${dir}/${f} ===\n${stripExports(read(join(dir, f)))}`).join('\n\n');
@@ -43,4 +48,5 @@ html = html.replace('<!--INJECT_APP-->', app);
 
 mkdirSync(join(root, 'dist'), { recursive: true });
 writeFileSync(join(root, 'dist/pharma-city.html'), html);
-console.log(`built dist/pharma-city.html (${(html.length / 1024).toFixed(0)} KB)`);
+const bytes = Buffer.byteLength(html, 'utf8');
+console.log(`built dist/pharma-city.html (${(bytes / 1024).toFixed(0)} KB)`);
