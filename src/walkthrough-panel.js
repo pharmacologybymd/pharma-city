@@ -16,14 +16,23 @@
     function open(text, name) {
       panel.innerHTML = `
         <button class="btn" style="position:absolute;top:12px;right:12px" id="wt-close">×</button>
-        <div style="font-size:18px;font-weight:500;margin-bottom:8px">${esc(name)}</div>
-        <div style="font-size:14px;line-height:1.6">${esc(text)}</div>
+        <div style="font-size:18px;font-weight:500;margin-bottom:8px">${esc(name ?? '')}</div>
+        <div style="font-size:14px;line-height:1.6">${esc(text ?? '')}</div>
       `;
       panel.querySelector('#wt-close').onclick = close;
       panel.classList.add('open');
       reopenBtn.style.display = 'none';
     }
     function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]); }
+
+    // Tap outside the panel (anywhere else in the document) closes it
+    // while open. The reopen button itself is OUTSIDE the panel, so we
+    // also skip it from the dismiss test.
+    document.addEventListener('pointerdown', (e) => {
+      if (!panel.classList.contains('open')) return;
+      if (panel.contains(e.target) || e.target === reopenBtn) return;
+      close();
+    });
 
     P.app.on('navigate', s => {
       if (s.level !== 'district' || !s.districtId) {
