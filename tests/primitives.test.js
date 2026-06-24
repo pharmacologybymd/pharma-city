@@ -10,7 +10,9 @@ const mockTHREE = () => {
     BoxGeometry: class { constructor(w,h,d) { created.geoms++; this.key = `box:${w}:${h}:${d}`; } },
     CylinderGeometry: class { constructor(r1,r2,h,seg) { created.geoms++; this.key = `cyl:${r1}:${r2}:${h}:${seg}`; } },
     SphereGeometry: class { constructor(r) { created.geoms++; this.key = `sph:${r}`; } },
+    CircleGeometry: class { constructor(r, seg) { created.geoms++; this.key = `circ:${r}:${seg}`; } },
     MeshLambertMaterial: class { constructor(opts) { created.mats++; this.opts = opts; } },
+    MeshBasicMaterial: class { constructor(opts) { created.mats++; this.opts = opts; } },
   };
 };
 
@@ -26,6 +28,19 @@ describe('primitives caching', () => {
     expect(globalThis.THREE.created.geoms).toBe(1);
     // materials differ by color → two
     expect(globalThis.THREE.created.mats).toBe(2);
+  });
+
+  it('reuses arch and water geometry across identical calls', async () => {
+    globalThis.THREE = mockTHREE();
+    globalThis.window = {};
+    await import('../src/primitives.js?bust=' + Math.random());
+    const P = globalThis.window.PHARMA.primitives;
+    P.arch({ r: 3, depth: 1.5, color: 0xff0000 });
+    P.arch({ r: 3, depth: 1.5, color: 0x00ff00 });
+    P.water({ radius: 12, color: 0x0000ff });
+    P.water({ radius: 12, color: 0xffff00 });
+    // 1 arch geom + 1 water geom = 2; perf-mandate: no per-call allocation.
+    expect(globalThis.THREE.created.geoms).toBe(2);
   });
 
   it('exposes cache objects for testing', async () => {

@@ -1,3 +1,9 @@
+// Reusable Three.js building primitives. Every primitive returns a
+// THREE.Object3D (either a Mesh or a Group) and shares geometries and
+// Lambert materials via the caches below — the performance constraint
+// requires that compositional callers never allocate fresh geometry per
+// building. `particleSmoke` deliberately bypasses the material cache
+// because each particle needs its own opacity.
 (function(){
   const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
   const T = (typeof THREE !== 'undefined') ? THREE : globalThis.THREE;
@@ -5,6 +11,8 @@
   const matCache = new Map();
   const getBoxGeom = (w,h,d) => { const k=`b:${w}:${h}:${d}`; if(!geomCache.has(k)) geomCache.set(k,new T.BoxGeometry(w,h,d)); return geomCache.get(k); };
   const getCylGeom = (r1,r2,h,seg=16) => { const k=`c:${r1}:${r2}:${h}:${seg}`; if(!geomCache.has(k)) geomCache.set(k,new T.CylinderGeometry(r1,r2,h,seg)); return geomCache.get(k); };
+  const getArchGeom = (r,depth) => { const k=`arch:${r}:${depth}`; if(!geomCache.has(k)) geomCache.set(k,new T.CylinderGeometry(r,r,depth,16,1,false,0,Math.PI)); return geomCache.get(k); };
+  const getCircleGeom = (r,seg=32) => { const k=`circ:${r}:${seg}`; if(!geomCache.has(k)) geomCache.set(k,new T.CircleGeometry(r,seg)); return geomCache.get(k); };
   const getSphereGeom = (r,sw=20,sh=14) => { const k=`s:${r}:${sw}:${sh}`; if(!geomCache.has(k)) geomCache.set(k,new T.SphereGeometry(r,sw,sh)); return geomCache.get(k); };
   const getMat = (color, opts={}) => { const k = `m:${color}:${JSON.stringify(opts)}`; if(!matCache.has(k)) matCache.set(k,new T.MeshLambertMaterial({color, ...opts})); return matCache.get(k); };
 
@@ -31,12 +39,12 @@
     return m;
   }
   function arch({ r=3, depth=1.5, color }) {
-    const m = new T.Mesh(new T.CylinderGeometry(r,r,depth,16,1,false,0,Math.PI), getMat(color));
+    const m = new T.Mesh(getArchGeom(r, depth), getMat(color));
     m.rotation.x = Math.PI/2; m.rotation.z = Math.PI/2;
     return m;
   }
   function water({ radius=12, color=0x378ADD }) {
-    const m = new T.Mesh(new T.CircleGeometry(radius, 32), getMat(color, { transparent: true, opacity: 0.75 }));
+    const m = new T.Mesh(getCircleGeom(radius, 32), getMat(color, { transparent: true, opacity: 0.75 }));
     m.rotation.x = -Math.PI/2;
     return m;
   }
