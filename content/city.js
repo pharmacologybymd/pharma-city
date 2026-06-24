@@ -1,0 +1,1 @@
+const CITY = { districts: [], layout: {} };

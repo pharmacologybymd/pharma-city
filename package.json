@@ -1,0 +1,16 @@
+{
+  "name": "pharma-city",
+  "version": "0.1.0",
+  "description": "A 3D memory-palace city for MD Pharmacology revision.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^1.6.0"
+  },
+  "engines": { "node": ">=20" }
+}
