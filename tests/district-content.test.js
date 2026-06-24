@@ -72,3 +72,15 @@ describe('Cholinergic district', () => {
     expect(d.position).toMatchObject({ x: -30, z: 0 });
   });
 });
+
+describe('ANS hub district', () => {
+  const d = loadDistrict('ans_hub');
+  it('passes the schema', () => {
+    const { ok, errors } = validateDistrict(d);
+    if (!ok) console.error(errors);
+    expect(ok).toBe(true);
+  });
+  it('has at least 4 high-yield drugs', () => {
+    expect(d.drugs.filter(x => x.high_yield).length).toBeGreaterThanOrEqual(4);
+  });
+});
