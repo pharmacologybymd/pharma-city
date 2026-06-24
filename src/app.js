@@ -38,6 +38,7 @@
     P.city?.mount?.(app);
     P.district?.mount?.(app);
     P.flashcard?.mount?.(app);
+    P.walkthrough?.mount?.(app);
     P.search?.mount?.(document.getElementById('search-mount'));
     goTo('city');
   }
