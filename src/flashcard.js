@@ -10,9 +10,8 @@
       hideAll() { for (const k in hidden) hidden[k] = true; },
     };
   }
-  let mountEl = null, state = null, container = null;
+  let state = null, container = null;
   function mount(rootEl) {
-    mountEl = rootEl;
     container = document.createElement('div');
     container.className = 'flashcard';
     container.style.display = 'none';
@@ -30,6 +29,8 @@
   function render() {
     if (!state) return;
     const d = state.drug;
+    // Preserve scroll across re-renders (reveal taps rebuild the whole card).
+    const prevScroll = container.scrollTop;
     container.innerHTML = '';
     const head = document.createElement('div');
     head.innerHTML = `<div style="font-size:18px;font-weight:500">${esc(d.id)}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${esc(d.building)}</div>`;
@@ -56,6 +57,7 @@
     container.appendChild(ctrl);
     container.querySelector('#revealAll').onclick = () => { state.revealAll(); render(); };
     container.querySelector('#hideAll').onclick = () => { state.hideAll(); render(); };
+    container.scrollTop = prevScroll;
   }
   function facet(label, value, hidden, key) {
     const wrap = document.createElement('div');
