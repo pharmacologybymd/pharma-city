@@ -4886,6 +4886,8 @@ if (typeof window !== 'undefined') {
       return group;
     }
 
+    const districtRoadMat = new THREE.MeshLambertMaterial({ color: 0xeadcb6 });
+
     function loadDistrict(id) {
       while (groupRoot.children.length) groupRoot.remove(groupRoot.children[0]);
       pickables = [];
@@ -4896,11 +4898,40 @@ if (typeof window !== 'undefined') {
       ground.material = new THREE.MeshLambertMaterial({ color: d.palette?.ground ?? 0x639922 });
       const drugs = d.drugs || [];
       const accentHex = d.palette?.accent ?? 0x888780;
+
+      // Grid layout: 5 columns, variable rows. Spacing widened so there is
+      // room for a visible road between every pair of buildings.
+      const COLS = 5;
+      const COL_SPACING = 10;
+      const ROW_SPACING = 11;
+      const rows = Math.max(1, Math.ceil(drugs.length / COLS));
+      const xMin = -(COLS - 1) * COL_SPACING / 2;
+      const zMin = -(rows - 1) * ROW_SPACING / 2;
+
+      // Vertical roads (running along z) between every pair of columns.
+      const verticalRoadLen = (rows - 1) * ROW_SPACING + 9;
+      for (let c = 0; c < COLS - 1; c++) {
+        const x = xMin + (c + 0.5) * COL_SPACING;
+        const road = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.05, verticalRoadLen), districtRoadMat);
+        road.position.set(x, 0.06, 0);
+        road.receiveShadow = true;
+        groupRoot.add(road);
+      }
+      // Horizontal roads (running along x) between every pair of rows.
+      const horizontalRoadLen = (COLS - 1) * COL_SPACING + 8;
+      for (let r = 0; r < rows - 1; r++) {
+        const z = zMin + (r + 0.5) * ROW_SPACING;
+        const road = new THREE.Mesh(new THREE.BoxGeometry(horizontalRoadLen, 0.05, 2.2), districtRoadMat);
+        road.position.set(0, 0.06, z);
+        road.receiveShadow = true;
+        groupRoot.add(road);
+      }
+
       drugs.forEach((drug, i) => {
-        const row = Math.floor(i / 5), col = i % 5;
+        const row = Math.floor(i / COLS), col = i % COLS;
         const h = 7 + (drug.high_yield ? 3.5 : 0);
         const tower = buildDrugTower(h, accentHex);
-        tower.position.set(-15 + col * 7, 0, -10 + row * 8);
+        tower.position.set(xMin + col * COL_SPACING, 0, zMin + row * ROW_SPACING);
         tower.userData = { drugId: drug.id, baseY: 0 };
         groupRoot.add(tower);
         pickables.push(tower);
