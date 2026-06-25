@@ -15,7 +15,7 @@ The repo is set up to be a one-click GitHub Pages site at `city.pharmabymd.com`.
 
 1. Open GitHub Desktop → **File → Add local repository** → choose `/Users/rahulsanghvi/Pharma City`.
 2. Top toolbar → **Publish repository**. Name `pharma-city`, leave "Keep this code private" UNCHECKED, click Publish.
-3. On github.com → your new repo → **Settings → Pages**. Source: `Deploy from a branch`. Branch `main`, folder `/dist`. Save.
+3. On github.com → your new repo → **Settings → Pages**. Source: `Deploy from a branch`. Branch `main`, folder **`/docs`** (GitHub Pages only allows `/ (root)` or `/docs` as the folder — that's why `build.js` writes the artifacts to both `dist/` and `docs/`). Save.
 4. Wait ~30 s for the first deploy. The temporary URL `https://<your-username>.github.io/pharma-city/` should serve the city.
 5. In the same Pages settings, **Custom domain** → `city.pharmabymd.com`. (The `dist/CNAME` file in the repo also declares this.)
 6. In your **JustNode cPanel → Zone Editor** for `pharmabymd.com`, add a **CNAME** record: name `city`, target `<your-username>.github.io.` (with trailing dot). Save.

@@ -57,13 +57,16 @@ html = html.replace('<!--INJECT_THREE-->', () => escapeForInlineScript(three));
 html = html.replace('<!--INJECT_CONTENT-->', () => escapeForInlineScript(content));
 html = html.replace('<!--INJECT_APP-->', () => escapeForInlineScript(app));
 
+// Pages only allows serving from / (root) or /docs — not /dist — so we
+// write the artifacts to BOTH: dist/ keeps the historical name for local
+// double-clicking, and docs/ is what GitHub Pages reads.
 mkdirSync(join(root, 'dist'), { recursive: true });
-writeFileSync(join(root, 'dist/pharma-city.html'), html);
-// Pages serves whatever is at the source root as index.html.
-writeFileSync(join(root, 'dist/index.html'), html);
-// Custom-domain marker — GitHub Pages reads this and routes city.pharmabymd.com here.
-writeFileSync(join(root, 'dist/CNAME'), 'city.pharmabymd.com\n');
-// Tell GitHub Pages's Jekyll layer to leave the dist as-is (no _ processing).
-writeFileSync(join(root, 'dist/.nojekyll'), '');
+mkdirSync(join(root, 'docs'), { recursive: true });
+for (const outDir of ['dist', 'docs']) {
+  writeFileSync(join(root, outDir, 'pharma-city.html'), html);
+  writeFileSync(join(root, outDir, 'index.html'), html);
+  writeFileSync(join(root, outDir, 'CNAME'), 'city.pharmabymd.com\n');
+  writeFileSync(join(root, outDir, '.nojekyll'), '');
+}
 const bytes = Buffer.byteLength(html, 'utf8');
-console.log(`built dist/pharma-city.html + dist/index.html (${(bytes / 1024).toFixed(0)} KB)`);
+console.log(`built dist/ and docs/ index.html (${(bytes / 1024).toFixed(0)} KB)`);
