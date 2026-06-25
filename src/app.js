@@ -28,8 +28,10 @@
     const title = document.getElementById('title');
     on('navigate', s => {
       back.style.display = s.level === 'city' ? 'none' : '';
-      title.textContent = s.level === 'city' ? 'Pharmacology City' :
-        (P.content?.districts?.[s.districtId]?.name ?? s.districtId);
+      const districtName = s.districtId
+        ? (window['DISTRICT_' + s.districtId.toUpperCase()]?.name ?? s.districtId)
+        : null;
+      title.textContent = s.level === 'city' ? 'Pharmacology City' : (districtName ?? s.districtId);
     });
     back.addEventListener('click', () => {
       if (state.level === 'flashcard') goTo('district', { districtId: state.districtId });

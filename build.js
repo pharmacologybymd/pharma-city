@@ -40,11 +40,21 @@ const appFiles = [
 ];
 const app = appFiles.map(f => `// === src/${f} ===\n${stripExports(read('src/' + f))}`).join('\n\n');
 
+// Anything we inline inside a <script>…</script> tag must not contain the
+// literal `</script>` (or HTML comment delimiters) — the HTML parser closes
+// the script tag at the first match, leaving the rest as orphaned text.
+// Three.js r160's minified bundle has these substrings; escape them.
+function escapeForInlineScript(code) {
+  return code
+    .replace(/<\/script>/gi, '<\\/script>')
+    .replace(/<!--/g, '<\\!--');
+}
+
 let html = read('src/template.html');
-html = html.replace('<!--INJECT_CSS-->', css);
-html = html.replace('<!--INJECT_THREE-->', three);
-html = html.replace('<!--INJECT_CONTENT-->', content);
-html = html.replace('<!--INJECT_APP-->', app);
+html = html.replace('<!--INJECT_CSS-->', () => css);
+html = html.replace('<!--INJECT_THREE-->', () => escapeForInlineScript(three));
+html = html.replace('<!--INJECT_CONTENT-->', () => escapeForInlineScript(content));
+html = html.replace('<!--INJECT_APP-->', () => escapeForInlineScript(app));
 
 mkdirSync(join(root, 'dist'), { recursive: true });
 writeFileSync(join(root, 'dist/pharma-city.html'), html);
