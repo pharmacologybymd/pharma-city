@@ -74,6 +74,27 @@ canvas { display: block; touch-action: none; }
 .mcq-result--good { background: rgba(22, 163, 74, 0.18); color: #0f6b32; }
 .mcq-result--bad { background: rgba(220, 38, 38, 0.14); color: #991b1b; }
 .mcq-controls { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.compare-panel { position: fixed; top: 0; left: 0; bottom: 0; width: min(640px, 96vw); background: var(--card); color: var(--text-on-card); border-right: 1px solid var(--border); padding: 24px 26px 26px; z-index: 25; overflow-y: auto; box-shadow: var(--card-shadow); flex-direction: column; gap: 12px; }
+.compare-head { display: flex; align-items: center; justify-content: space-between; }
+.compare-title { font-size: 18px; font-weight: 600; }
+.compare-close { padding: 4px 10px; font-size: 18px; line-height: 1; background: transparent; border: none; color: var(--muted-on-card); cursor: pointer; }
+.compare-select-row { display: flex; align-items: center; gap: 10px; }
+.compare-label { font-size: 11px; color: var(--muted-on-card); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+.compare-dropdown { flex: 1; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 14px; color: var(--text-on-card); }
+.compare-pickline { font-size: 12px; color: var(--muted-on-card); font-weight: 600; }
+.compare-druglist { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; max-height: 220px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 8px; background: rgba(255,255,255,0.6); }
+.compare-drug { font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 2px 0; }
+.compare-drug input { margin: 0; }
+.compare-drug input:disabled + * { opacity: 0.4; }
+.compare-hy { font-size: 9px; background: var(--accent); color: #fff; padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+.compare-hint { font-size: 13px; color: var(--muted-on-card); padding: 12px; background: var(--accent-soft); border-radius: 8px; text-align: center; font-style: italic; }
+.compare-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: #ffffff; }
+.compare-table { border-collapse: collapse; width: 100%; min-width: 100%; font-size: 13px; }
+.compare-table th, .compare-table td { padding: 8px 10px; vertical-align: top; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); line-height: 1.45; }
+.compare-table tr:last-child th, .compare-table tr:last-child td { border-bottom: 0; }
+.compare-table th:last-child, .compare-table td:last-child { border-right: 0; }
+.compare-table thead th { background: var(--accent-soft); font-weight: 600; color: var(--text-on-card); text-align: left; }
+.compare-table tbody th { background: rgba(15, 22, 42, 0.04); text-align: left; font-weight: 600; color: var(--muted-on-card); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
 .btn-good { background: rgba(22, 163, 74, 0.14); border-color: rgba(22, 163, 74, 0.55); color: #0f6b32; }
 .btn-good:hover { background: rgba(22, 163, 74, 0.22); }
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }

@@ -26,6 +26,7 @@
         <button class="btn" id="weakBtn" aria-label="practise missed drugs">Practise missed</button>
         <button class="btn btn-due" id="dueBtn" aria-label="review drugs due today">Due today</button>
         <button class="btn" id="mcqBtn" aria-label="multiple choice question">MCQ</button>
+        <button class="btn" id="compareBtn" aria-label="compare drugs">Compare</button>
       </div>
       <div class="search" id="search-mount"></div>
     `;
@@ -35,6 +36,7 @@
     document.getElementById('weakBtn').addEventListener('click', () => P.quiz?.startWeakest?.());
     document.getElementById('dueBtn').addEventListener('click', () => P.quiz?.startDue?.());
     document.getElementById('mcqBtn').addEventListener('click', () => P.mcq?.open?.());
+    document.getElementById('compareBtn').addEventListener('click', () => P.compare?.open?.());
     function updateDueBadge() {
       const btn = document.getElementById('dueBtn');
       if (!btn || !P.quiz) return;
@@ -65,6 +67,7 @@
     P.flashcard?.mount?.(app);
     P.walkthrough?.mount?.(app);
     P.mcq?.mount?.(app);
+    P.compare?.mount?.(app);
     P.selfTest?.mount?.(app);
     P.selfTest?.onChange?.(() => { P.flashcard?._onSelfTestChange?.(); });
     P.search?.mount?.(document.getElementById('search-mount'));

@@ -80,6 +80,27 @@ canvas { display: block; touch-action: none; }
 .mcq-result--good { background: rgba(22, 163, 74, 0.18); color: #0f6b32; }
 .mcq-result--bad { background: rgba(220, 38, 38, 0.14); color: #991b1b; }
 .mcq-controls { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.compare-panel { position: fixed; top: 0; left: 0; bottom: 0; width: min(640px, 96vw); background: var(--card); color: var(--text-on-card); border-right: 1px solid var(--border); padding: 24px 26px 26px; z-index: 25; overflow-y: auto; box-shadow: var(--card-shadow); flex-direction: column; gap: 12px; }
+.compare-head { display: flex; align-items: center; justify-content: space-between; }
+.compare-title { font-size: 18px; font-weight: 600; }
+.compare-close { padding: 4px 10px; font-size: 18px; line-height: 1; background: transparent; border: none; color: var(--muted-on-card); cursor: pointer; }
+.compare-select-row { display: flex; align-items: center; gap: 10px; }
+.compare-label { font-size: 11px; color: var(--muted-on-card); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+.compare-dropdown { flex: 1; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 14px; color: var(--text-on-card); }
+.compare-pickline { font-size: 12px; color: var(--muted-on-card); font-weight: 600; }
+.compare-druglist { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; max-height: 220px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 8px; background: rgba(255,255,255,0.6); }
+.compare-drug { font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 2px 0; }
+.compare-drug input { margin: 0; }
+.compare-drug input:disabled + * { opacity: 0.4; }
+.compare-hy { font-size: 9px; background: var(--accent); color: #fff; padding: 1px 5px; border-radius: 4px; font-weight: 700; }
+.compare-hint { font-size: 13px; color: var(--muted-on-card); padding: 12px; background: var(--accent-soft); border-radius: 8px; text-align: center; font-style: italic; }
+.compare-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; background: #ffffff; }
+.compare-table { border-collapse: collapse; width: 100%; min-width: 100%; font-size: 13px; }
+.compare-table th, .compare-table td { padding: 8px 10px; vertical-align: top; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); line-height: 1.45; }
+.compare-table tr:last-child th, .compare-table tr:last-child td { border-bottom: 0; }
+.compare-table th:last-child, .compare-table td:last-child { border-right: 0; }
+.compare-table thead th { background: var(--accent-soft); font-weight: 600; color: var(--text-on-card); text-align: left; }
+.compare-table tbody th { background: rgba(15, 22, 42, 0.04); text-align: left; font-weight: 600; color: var(--muted-on-card); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
 .btn-good { background: rgba(22, 163, 74, 0.14); border-color: rgba(22, 163, 74, 0.55); color: #0f6b32; }
 .btn-good:hover { background: rgba(22, 163, 74, 0.22); }
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }
@@ -5019,6 +5040,142 @@ if (typeof window !== 'undefined') {
 })();
 
 
+// === src/compare.js ===
+// Comparison tool — pick 2-4 drugs (from any district) and see them
+// side-by-side in a table. Examiners love "compare and contrast" Qs;
+// this is the practice version.
+//
+// PHARMA.compare.open()  — open the panel, default to current district
+// PHARMA.compare.close()
+(function(){
+  const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
+  const MAX_PICKED = 4;
+  const MIN_PICKED = 2;
+  const FACET_ORDER = [
+    { key: 'class', label: 'Class' },
+    { key: 'mechanism', label: 'Mechanism' },
+    { key: 'adverse_effects', label: 'Adverse effects' },
+    { key: 'clinical_use', label: 'Clinical use' },
+    { key: 'memory_hook', label: 'Memory hook' },
+    { key: 'source', label: 'Source' },
+  ];
+  let panel = null;
+  let activeDistrictId = null;
+  let picked = new Set();
+
+  function esc(s) { return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]); }
+
+  function districtList() {
+    const out = [];
+    if (typeof window === 'undefined') return out;
+    for (const k in window) {
+      if (!k.startsWith('DISTRICT_')) continue;
+      const d = window[k];
+      if (d?.id && d?.name) out.push({ id: d.id, name: d.name, drugs: d.drugs || [] });
+    }
+    return out;
+  }
+
+  function getDistrict(id) {
+    return window['DISTRICT_' + id.toUpperCase()];
+  }
+
+  function ensurePanel(rootEl) {
+    if (panel) return;
+    panel = document.createElement('aside');
+    panel.className = 'compare-panel';
+    panel.style.display = 'none';
+    rootEl.appendChild(panel);
+  }
+
+  function render() {
+    if (!panel) return;
+    const d = activeDistrictId ? getDistrict(activeDistrictId) : null;
+    const districts = districtList();
+    const drugs = d?.drugs || [];
+
+    const parts = [];
+    parts.push(`<div class="compare-head">`);
+    parts.push(`<div class="compare-title">Compare drugs</div>`);
+    parts.push(`<button class="btn compare-close" id="cmpClose" aria-label="close">×</button>`);
+    parts.push(`</div>`);
+
+    parts.push(`<div class="compare-select-row">`);
+    parts.push(`<label class="compare-label">District</label>`);
+    parts.push(`<select class="compare-dropdown" id="cmpDistrict">`);
+    districts.forEach(dd => {
+      const sel = dd.id === activeDistrictId ? ' selected' : '';
+      parts.push(`<option value="${esc(dd.id)}"${sel}>${esc(dd.name)} (${dd.drugs.length})</option>`);
+    });
+    parts.push(`</select>`);
+    parts.push(`</div>`);
+
+    parts.push(`<div class="compare-pickline">Pick ${MIN_PICKED}–${MAX_PICKED} drugs (chosen: ${picked.size})</div>`);
+    parts.push(`<div class="compare-druglist">`);
+    drugs.forEach(drug => {
+      const checked = picked.has(drug.id) ? ' checked' : '';
+      const disabled = (!picked.has(drug.id) && picked.size >= MAX_PICKED) ? ' disabled' : '';
+      parts.push(`<label class="compare-drug"><input type="checkbox" data-drug="${esc(drug.id)}"${checked}${disabled} /> ${esc(drug.id)}${drug.high_yield ? ' <span class="compare-hy">HY</span>' : ''}</label>`);
+    });
+    parts.push(`</div>`);
+
+    if (picked.size >= MIN_PICKED) {
+      const pickedDrugs = drugs.filter(x => picked.has(x.id));
+      parts.push(`<div class="compare-table-wrap"><table class="compare-table">`);
+      parts.push(`<thead><tr><th></th>${pickedDrugs.map(p => `<th>${esc(p.id)}</th>`).join('')}</tr></thead>`);
+      parts.push(`<tbody>`);
+      FACET_ORDER.forEach(f => {
+        parts.push(`<tr><th>${esc(f.label)}</th>${pickedDrugs.map(p => `<td>${esc(p[f.key])}</td>`).join('')}</tr>`);
+      });
+      parts.push(`</tbody></table></div>`);
+    } else {
+      parts.push(`<div class="compare-hint">Tick ${MIN_PICKED - picked.size} more drug${MIN_PICKED - picked.size === 1 ? '' : 's'} to see the comparison table.</div>`);
+    }
+
+    panel.innerHTML = parts.join('');
+
+    panel.querySelector('#cmpClose')?.addEventListener('click', close);
+    panel.querySelector('#cmpDistrict')?.addEventListener('change', (e) => {
+      activeDistrictId = e.target.value;
+      picked = new Set();
+      render();
+    });
+    panel.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const id = cb.dataset.drug;
+        if (cb.checked) picked.add(id); else picked.delete(id);
+        render();
+      });
+    });
+  }
+
+  function open(districtId) {
+    if (!panel) return;
+    activeDistrictId = districtId || P.app?.state?.districtId || districtList()[0]?.id;
+    if (!activeDistrictId) return;
+    picked = new Set();
+    render();
+    panel.style.display = 'flex';
+    panel.classList.add('open');
+  }
+
+  function close() {
+    if (panel) { panel.style.display = 'none'; panel.classList.remove('open'); }
+  }
+
+  function mount(rootEl) {
+    ensurePanel(rootEl);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && panel && panel.style.display !== 'none') close();
+      });
+    }
+  }
+
+  P.compare = { mount, open, close };
+})();
+
+
 // === src/district-scene.js ===
 // District scene (level 2). Mounted ONCE per page from app.js boot(); no dispose path.
 (function(){
@@ -5723,6 +5880,7 @@ if (typeof window !== 'undefined') {
         <button class="btn" id="weakBtn" aria-label="practise missed drugs">Practise missed</button>
         <button class="btn btn-due" id="dueBtn" aria-label="review drugs due today">Due today</button>
         <button class="btn" id="mcqBtn" aria-label="multiple choice question">MCQ</button>
+        <button class="btn" id="compareBtn" aria-label="compare drugs">Compare</button>
       </div>
       <div class="search" id="search-mount"></div>
     `;
@@ -5732,6 +5890,7 @@ if (typeof window !== 'undefined') {
     document.getElementById('weakBtn').addEventListener('click', () => P.quiz?.startWeakest?.());
     document.getElementById('dueBtn').addEventListener('click', () => P.quiz?.startDue?.());
     document.getElementById('mcqBtn').addEventListener('click', () => P.mcq?.open?.());
+    document.getElementById('compareBtn').addEventListener('click', () => P.compare?.open?.());
     function updateDueBadge() {
       const btn = document.getElementById('dueBtn');
       if (!btn || !P.quiz) return;
@@ -5762,6 +5921,7 @@ if (typeof window !== 'undefined') {
     P.flashcard?.mount?.(app);
     P.walkthrough?.mount?.(app);
     P.mcq?.mount?.(app);
+    P.compare?.mount?.(app);
     P.selfTest?.mount?.(app);
     P.selfTest?.onChange?.(() => { P.flashcard?._onSelfTestChange?.(); });
     P.search?.mount?.(document.getElementById('search-mount'));
