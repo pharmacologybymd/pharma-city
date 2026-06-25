@@ -105,7 +105,17 @@
       return group;
     }
 
-    const districtRoadMat = new THREE.MeshLambertMaterial({ color: 0xeadcb6 });
+    // Each district reuses one road material derived from palette.ground.
+    // We dispose the previous one when navigating to a different district so
+    // GPU memory doesn't accumulate.
+    let currentRoadMat = null;
+    // 35% district ground + 65% neutral beige — gives each district a hint
+    // of its own colour family while keeping the path clearly readable
+    // against any ground colour (dark coral, teal, ochre, etc.).
+    const NEUTRAL_PATH = new THREE.Color(0xeadcb6);
+    function makeRoadColor(groundHex) {
+      return new THREE.Color(groundHex).lerp(NEUTRAL_PATH, 0.65);
+    }
 
     function loadDistrict(id) {
       while (groupRoot.children.length) groupRoot.remove(groupRoot.children[0]);
@@ -117,6 +127,10 @@
       ground.material = new THREE.MeshLambertMaterial({ color: d.palette?.ground ?? 0x639922 });
       const drugs = d.drugs || [];
       const accentHex = d.palette?.accent ?? 0x888780;
+
+      if (currentRoadMat) currentRoadMat.dispose();
+      currentRoadMat = new THREE.MeshLambertMaterial({ color: makeRoadColor(d.palette?.ground ?? 0x639922) });
+      const districtRoadMat = currentRoadMat;
 
       // Grid layout: 5 columns, variable rows. Spacing widened so there is
       // room for a visible road between every pair of buildings.
