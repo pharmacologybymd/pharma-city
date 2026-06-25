@@ -34,6 +34,7 @@ canvas { display: block; touch-action: none; }
 .label-layer { position: fixed; inset: 0; pointer-events: none; z-index: 5; }
 .wlabel { position: absolute; transform: translate(-50%, -120%); padding: 3px 8px; background: rgba(15,22,42,0.72); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 12px; font-weight: 500; white-space: nowrap; pointer-events: none; line-height: 1.2; }
 .wlabel--drug { font-size: 11px; padding: 2px 6px; opacity: 0.9; }
+.wlabel--hover { background: rgba(24,95,165,0.92); border-color: #FFF2A8; transform: translate(-50%, -130%) scale(1.08); transition: transform 0.18s ease, background 0.18s ease; box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
 .btn-good { background: rgba(48, 161, 78, 0.22); border-color: rgba(48, 161, 78, 0.55); }
 .btn-bad { background: rgba(207, 64, 64, 0.22); border-color: rgba(207, 64, 64, 0.55); }
 .quiz-stats { margin-top: 10px; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
