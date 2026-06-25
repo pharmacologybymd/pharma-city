@@ -18,7 +18,10 @@
     // resize closes over renderer + camera — defined AFTER both exist.
     const resize = () => {
       const w = window.innerWidth, h = window.innerHeight;
-      renderer.setSize(w, h, false);
+      // Third arg `true` (default): also update canvas CSS width/height to w×h.
+      // Without it the canvas grows to its DPR-scaled internal resolution and
+      // overflows the viewport — and the raycaster gets wrong NDC coords.
+      renderer.setSize(w, h);
       camera.aspect = w / h; camera.updateProjectionMatrix();
     };
     scene.add(new THREE.AmbientLight(0xffffff, 0.55));
@@ -55,6 +58,10 @@
       const rect = canvas.getBoundingClientRect();
       pt.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       pt.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      // Force matrixWorld to be current — under throttled rAF (hidden tab,
+      // reduced-motion paused frame) the camera may not have re-rendered
+      // since its last position/lookAt change, leaving the ray stale.
+      camera.updateMatrixWorld();
       ray.setFromCamera(pt, camera);
       const hit = ray.intersectObjects(pickables, true)[0];
       if (hit) {
@@ -73,8 +80,11 @@
         camera.position.x = Math.sin(t * 0.18) * r;
         camera.position.z = Math.cos(t * 0.18) * r;
         camera.position.y = 38 + Math.sin(t * 0.4) * 3;
-        camera.lookAt(0, 6, 0);
       }
+      // Always point at the city centre — without this, a reduced-motion
+      // user (or any frame that lands before tick has fired) sees a camera
+      // looking the wrong way.
+      camera.lookAt(0, 6, 0);
       renderer.render(scene, camera);
     }
     P.loop.add(tick);

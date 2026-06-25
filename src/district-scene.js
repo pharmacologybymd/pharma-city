@@ -24,7 +24,10 @@
 
     function resize() {
       const w = window.innerWidth, h = window.innerHeight;
-      renderer.setSize(w, h, false);
+      // Third arg defaults to true — update CSS size too, so the canvas
+      // matches the viewport rather than its DPR-scaled internal resolution.
+      // Without this the raycaster gets the wrong NDC coords on click.
+      renderer.setSize(w, h);
       camera.aspect = w / h; camera.updateProjectionMatrix();
     }
 
@@ -60,6 +63,8 @@
       const rect = canvas.getBoundingClientRect();
       pt.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       pt.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      // Force matrixWorld current — see the same fix in city-scene.js.
+      camera.updateMatrixWorld();
       ray.setFromCamera(pt, camera);
       const hit = ray.intersectObjects(pickables, true)[0];
       if (hit) {
@@ -77,8 +82,9 @@
         camera.position.x = Math.sin(t * 0.12) * r;
         camera.position.z = Math.cos(t * 0.12) * r;
         camera.position.y = 18 + Math.sin(t * 0.3) * 2;
-        camera.lookAt(0, 4, 0);
       }
+      // Always look at the district centre.
+      camera.lookAt(0, 4, 0);
       renderer.render(scene, camera);
     }
     P.loop.add(tick);
