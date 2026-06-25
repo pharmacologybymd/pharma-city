@@ -60,14 +60,21 @@
     }
 
     // Multi-tier drug building — plinth + accent body + lighter dome + window strip.
+    // Dome color is overridden by mastery state when available:
+    //   -1 (missed last) → red, 0 (unseen) → default lighter accent,
+    //   1 (seen once) → yellow, 2 (learning) → lime, 3 (mastered) → bright green.
+    const MASTERY_DOME = { '-1': 0xdc2626, 1: 0xfacc15, 2: 0x84cc16, 3: 0x22c55e };
     const windowMat = new THREE.MeshBasicMaterial({ color: 0xfff2b3 });
     const winGeom = new THREE.BoxGeometry(0.45, 0.9, 0.18);
-    function buildDrugTower(h, accentHex) {
+    function buildDrugTower(h, accentHex, masteryLevel) {
       const group = new THREE.Group();
       const accentCol = new THREE.Color(accentHex);
       const hsl = { h:0, s:0, l:0 }; accentCol.getHSL(hsl);
       const lighter = new THREE.Color().setHSL(hsl.h, Math.min(1, hsl.s * 0.9), Math.min(0.92, hsl.l + 0.18));
       const darker = new THREE.Color().setHSL(hsl.h, hsl.s, Math.max(0.05, hsl.l - 0.18));
+      const domeColor = (masteryLevel != null && MASTERY_DOME[masteryLevel] !== undefined)
+        ? new THREE.Color(MASTERY_DOME[masteryLevel])
+        : lighter;
 
       const plinth = new THREE.Mesh(new THREE.BoxGeometry(7, 1.4, 7), new THREE.MeshLambertMaterial({ color: darker }));
       plinth.position.y = 0.7; plinth.castShadow = true; plinth.receiveShadow = true;
@@ -79,7 +86,7 @@
 
       const dome = new THREE.Mesh(
         new THREE.SphereGeometry(3.2, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2),
-        new THREE.MeshLambertMaterial({ color: lighter })
+        new THREE.MeshLambertMaterial({ color: domeColor })
       );
       dome.position.y = 1.4 + h; dome.castShadow = true;
       group.add(dome);
@@ -162,8 +169,12 @@
 
       drugs.forEach((drug, i) => {
         const row = Math.floor(i / COLS), col = i % COLS;
-        const h = 7 + (drug.high_yield ? 3.5 : 0);
-        const tower = buildDrugTower(h, accentHex);
+        const mastery = (P.quiz?.getMasteryLevel?.(drug.id)) ?? 0;
+        // Mastered drugs grow taller; high-yield still adds height too.
+        const baseH = 7 + (drug.high_yield ? 3.5 : 0);
+        const masteryBonus = mastery > 0 ? mastery * 1.2 : 0;
+        const h = baseH + masteryBonus;
+        const tower = buildDrugTower(h, accentHex, mastery);
         tower.position.set(xMin + col * COL_SPACING, 0, zMin + row * ROW_SPACING);
         tower.userData = { drugId: drug.id, baseY: 0 };
         groupRoot.add(tower);

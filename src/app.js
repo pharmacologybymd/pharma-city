@@ -24,6 +24,7 @@
         <div class="title" id="title">Pharmacology City</div>
         <button class="btn" id="quizBtn" aria-label="quiz a random drug">Quiz me</button>
         <button class="btn" id="weakBtn" aria-label="practise missed drugs">Practise missed</button>
+        <button class="btn btn-due" id="dueBtn" aria-label="review drugs due today">Due today</button>
       </div>
       <div class="search" id="search-mount"></div>
     `;
@@ -31,6 +32,15 @@
     const title = document.getElementById('title');
     document.getElementById('quizBtn').addEventListener('click', () => P.quiz?.startRandom?.());
     document.getElementById('weakBtn').addEventListener('click', () => P.quiz?.startWeakest?.());
+    document.getElementById('dueBtn').addEventListener('click', () => P.quiz?.startDue?.());
+    function updateDueBadge() {
+      const btn = document.getElementById('dueBtn');
+      if (!btn || !P.quiz) return;
+      const s = P.quiz.getStats();
+      btn.textContent = s.due > 0 ? `Due today · ${s.due}` : 'Due today';
+    }
+    updateDueBadge();
+    setInterval(updateDueBadge, 5000);
     on('navigate', s => {
       back.style.display = s.level === 'city' ? 'none' : '';
       const districtName = s.districtId

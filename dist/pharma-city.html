@@ -64,6 +64,8 @@ canvas { display: block; touch-action: none; }
 
 .btn-brand { background: var(--accent); color: #ffffff; border-color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; }
 .btn-brand:hover { background: #1f63bf; color: #ffffff; }
+.btn-due { background: #fff4d1; border-color: #f5c97a; color: #5a4500; font-weight: 600; }
+.btn-due:hover { background: #fee8a8; }
 .btn-good { background: rgba(22, 163, 74, 0.14); border-color: rgba(22, 163, 74, 0.55); color: #0f6b32; }
 .btn-good:hover { background: rgba(22, 163, 74, 0.22); }
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }
@@ -4675,27 +4677,54 @@ if (typeof window !== 'undefined') {
 
 
 // === src/quiz.js ===
-// Quiz mode — random-drug recall with self-graded mastery tracking.
-// Storage shape (localStorage 'pharma_quiz_v1'):
-//   { counters: { [drugId]: { seen, knew, missed } },
+// Quiz mode — random-drug recall with self-graded mastery tracking + Leitner
+// spaced repetition.
+//
+// Storage shape (localStorage 'pharma_quiz_v2'):
+//   { counters: { [drugId]: { seen, knew, missed, box, dueAt } },
 //     streak, bestStreak, totalAnswered }
-// A drug is "mastered" after >=2 knew with no recorded misses.
+//
+// box       — Leitner box index (0..4). 0 = new/missed; 4 = mastered.
+// dueAt     — unix-ms when this drug next becomes due. Box -> interval:
+//             0 = now, 1 = 1d, 2 = 3d, 3 = 7d, 4 = 14d.
+// Mastery level for visual display: 0 unseen, 1 seen-once, 2 box>=2, 3 box>=4.
+// "Missed" status (red roof): the last result was 'missed'.
 (function(){
   const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
-  const STORAGE_KEY = 'pharma_quiz_v1';
+  const STORAGE_KEY = 'pharma_quiz_v2';
+  const LEGACY_KEY = 'pharma_quiz_v1';
+  const DAY_MS = 86400000;
+  const BOX_INTERVALS = [0, DAY_MS, 3 * DAY_MS, 7 * DAY_MS, 14 * DAY_MS];
   const emptyState = () => ({ counters: {}, streak: 0, bestStreak: 0, totalAnswered: 0 });
 
   function load() {
     try {
-      const raw = (typeof localStorage !== 'undefined') ? localStorage.getItem(STORAGE_KEY) : null;
-      if (!raw) return emptyState();
-      const parsed = JSON.parse(raw);
-      return { ...emptyState(), ...parsed, counters: parsed.counters || {} };
+      if (typeof localStorage === 'undefined') return emptyState();
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return { ...emptyState(), ...parsed, counters: parsed.counters || {} };
+      }
+      // Migrate from v1: add box=0 and dueAt=now to every counter.
+      const legacy = localStorage.getItem(LEGACY_KEY);
+      if (legacy) {
+        const old = JSON.parse(legacy);
+        const counters = {};
+        for (const id in (old.counters || {})) {
+          const c = old.counters[id];
+          counters[id] = { ...c, box: c.missed > c.knew ? 0 : Math.min(4, c.knew), dueAt: 0, lastResult: c.missed > c.knew ? 'missed' : 'knew' };
+        }
+        const migrated = { ...emptyState(), ...old, counters };
+        save(migrated);
+        return migrated;
+      }
+      return emptyState();
     } catch (_) { return emptyState(); }
   }
   function save(s) {
     try { if (typeof localStorage !== 'undefined') localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (_) {}
   }
+  function now() { return (typeof Date !== 'undefined') ? Date.now() : 0; }
   let state = load();
 
   function allDrugs() {
@@ -4709,59 +4738,81 @@ if (typeof window !== 'undefined') {
     return out;
   }
 
+  function ensureCounter(drugId) {
+    if (!state.counters[drugId]) {
+      state.counters[drugId] = { seen: 0, knew: 0, missed: 0, box: 0, dueAt: 0, lastResult: null };
+    }
+    return state.counters[drugId];
+  }
+
   function pickRandom(opts) {
     const all = allDrugs();
     if (all.length === 0) return null;
     const weakestFirst = !!(opts && opts.weakestFirst);
+    const dueOnly = !!(opts && opts.dueOnly);
+    const t = now();
+    if (dueOnly) {
+      const due = all.filter(drug => {
+        const c = state.counters[drug.id];
+        if (!c) return true; // unseen counts as due
+        return c.dueAt <= t;
+      });
+      if (due.length === 0) return null;
+      return due[Math.floor(Math.random() * due.length)];
+    }
     if (weakestFirst) {
-      // Score: missed first (descending), then least-seen, then unseen prioritised.
       const scored = all.map(drug => {
         const c = state.counters[drug.id] || { seen: 0, knew: 0, missed: 0 };
         return { drug, missed: c.missed, seen: c.seen };
       });
       scored.sort((a, b) => (b.missed - a.missed) || (a.seen - b.seen));
-      // Sample from the top 12 to keep it varied, not deterministic.
       const pool = scored.slice(0, Math.min(12, scored.length)).map(s => s.drug);
       return pool[Math.floor(Math.random() * pool.length)];
     }
     return all[Math.floor(Math.random() * all.length)];
   }
 
-  function startRandom() {
-    const d = pickRandom();
-    if (d && P.app) P.app.goTo('flashcard', { districtId: d.districtId, drugId: d.id });
-  }
-  function startWeakest() {
-    const d = pickRandom({ weakestFirst: true });
-    if (d && P.app) P.app.goTo('flashcard', { districtId: d.districtId, drugId: d.id });
-  }
+  function startRandom() { const d = pickRandom(); if (d && P.app) P.app.goTo('flashcard', { districtId: d.districtId, drugId: d.id }); }
+  function startWeakest() { const d = pickRandom({ weakestFirst: true }); if (d && P.app) P.app.goTo('flashcard', { districtId: d.districtId, drugId: d.id }); }
+  function startDue() { const d = pickRandom({ dueOnly: true }); if (d && P.app) P.app.goTo('flashcard', { districtId: d.districtId, drugId: d.id }); }
 
   function recordResult(drugId, result) {
-    if (!state.counters[drugId]) state.counters[drugId] = { seen: 0, knew: 0, missed: 0 };
-    state.counters[drugId].seen += 1;
+    const c = ensureCounter(drugId);
+    c.seen += 1;
+    c.lastResult = result;
     if (result === 'knew') {
-      state.counters[drugId].knew += 1;
+      c.knew += 1;
+      c.box = Math.min(4, c.box + 1);
       state.streak += 1;
       if (state.streak > state.bestStreak) state.bestStreak = state.streak;
     } else {
-      state.counters[drugId].missed += 1;
+      c.missed += 1;
+      c.box = 0;
       state.streak = 0;
     }
+    c.dueAt = now() + BOX_INTERVALS[c.box];
     state.totalAnswered += 1;
     save(state);
   }
 
   function getStats() {
     const all = allDrugs();
+    const t = now();
     const ids = Object.keys(state.counters);
-    const mastered = ids.filter(id => {
+    let mastered = 0, due = 0;
+    for (const id of ids) {
       const c = state.counters[id];
-      return c && c.knew >= 2 && c.missed === 0;
-    }).length;
+      if (c.box >= 4 && c.missed === 0) mastered += 1;
+      if (c.dueAt <= t) due += 1;
+    }
+    // Unseen drugs are also "due" (never been studied).
+    const unseen = all.length - ids.length;
+    due += unseen;
     return {
       totalDrugs: all.length,
       seen: ids.length,
       mastered,
+      due,
       streak: state.streak,
       bestStreak: state.bestStreak,
       totalAnswered: state.totalAnswered,
@@ -4769,12 +4820,24 @@ if (typeof window !== 'undefined') {
   }
 
   function getDrugStat(drugId) {
-    return state.counters[drugId] || { seen: 0, knew: 0, missed: 0 };
+    return state.counters[drugId] || { seen: 0, knew: 0, missed: 0, box: 0, dueAt: 0, lastResult: null };
+  }
+
+  // Mastery level for visual display in the city/district scenes.
+  // 0 = unseen, 1 = seen-once (box 0-1), 2 = learning (box 2-3), 3 = mastered (box 4 no misses).
+  // Returns -1 if the LAST result was 'missed' so the scene can flag it red.
+  function getMasteryLevel(drugId) {
+    const c = state.counters[drugId];
+    if (!c) return 0;
+    if (c.lastResult === 'missed') return -1;
+    if (c.box >= 4 && c.missed === 0) return 3;
+    if (c.box >= 2) return 2;
+    return 1;
   }
 
   function reset() { state = emptyState(); save(state); }
 
-  P.quiz = { startRandom, startWeakest, recordResult, getStats, getDrugStat, reset, pickRandom };
+  P.quiz = { startRandom, startWeakest, startDue, recordResult, getStats, getDrugStat, getMasteryLevel, reset, pickRandom };
 })();
 
 
@@ -4841,14 +4904,21 @@ if (typeof window !== 'undefined') {
     }
 
     // Multi-tier drug building — plinth + accent body + lighter dome + window strip.
+    // Dome color is overridden by mastery state when available:
+    //   -1 (missed last) → red, 0 (unseen) → default lighter accent,
+    //   1 (seen once) → yellow, 2 (learning) → lime, 3 (mastered) → bright green.
+    const MASTERY_DOME = { '-1': 0xdc2626, 1: 0xfacc15, 2: 0x84cc16, 3: 0x22c55e };
     const windowMat = new THREE.MeshBasicMaterial({ color: 0xfff2b3 });
     const winGeom = new THREE.BoxGeometry(0.45, 0.9, 0.18);
-    function buildDrugTower(h, accentHex) {
+    function buildDrugTower(h, accentHex, masteryLevel) {
       const group = new THREE.Group();
       const accentCol = new THREE.Color(accentHex);
       const hsl = { h:0, s:0, l:0 }; accentCol.getHSL(hsl);
       const lighter = new THREE.Color().setHSL(hsl.h, Math.min(1, hsl.s * 0.9), Math.min(0.92, hsl.l + 0.18));
       const darker = new THREE.Color().setHSL(hsl.h, hsl.s, Math.max(0.05, hsl.l - 0.18));
+      const domeColor = (masteryLevel != null && MASTERY_DOME[masteryLevel] !== undefined)
+        ? new THREE.Color(MASTERY_DOME[masteryLevel])
+        : lighter;
 
       const plinth = new THREE.Mesh(new THREE.BoxGeometry(7, 1.4, 7), new THREE.MeshLambertMaterial({ color: darker }));
       plinth.position.y = 0.7; plinth.castShadow = true; plinth.receiveShadow = true;
@@ -4860,7 +4930,7 @@ if (typeof window !== 'undefined') {
 
       const dome = new THREE.Mesh(
         new THREE.SphereGeometry(3.2, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2),
-        new THREE.MeshLambertMaterial({ color: lighter })
+        new THREE.MeshLambertMaterial({ color: domeColor })
       );
       dome.position.y = 1.4 + h; dome.castShadow = true;
       group.add(dome);
@@ -4943,8 +5013,12 @@ if (typeof window !== 'undefined') {
 
       drugs.forEach((drug, i) => {
         const row = Math.floor(i / COLS), col = i % COLS;
-        const h = 7 + (drug.high_yield ? 3.5 : 0);
-        const tower = buildDrugTower(h, accentHex);
+        const mastery = (P.quiz?.getMasteryLevel?.(drug.id)) ?? 0;
+        // Mastered drugs grow taller; high-yield still adds height too.
+        const baseH = 7 + (drug.high_yield ? 3.5 : 0);
+        const masteryBonus = mastery > 0 ? mastery * 1.2 : 0;
+        const h = baseH + masteryBonus;
+        const tower = buildDrugTower(h, accentHex, mastery);
         tower.position.set(xMin + col * COL_SPACING, 0, zMin + row * ROW_SPACING);
         tower.userData = { drugId: drug.id, baseY: 0 };
         groupRoot.add(tower);
@@ -5469,6 +5543,7 @@ if (typeof window !== 'undefined') {
         <div class="title" id="title">Pharmacology City</div>
         <button class="btn" id="quizBtn" aria-label="quiz a random drug">Quiz me</button>
         <button class="btn" id="weakBtn" aria-label="practise missed drugs">Practise missed</button>
+        <button class="btn btn-due" id="dueBtn" aria-label="review drugs due today">Due today</button>
       </div>
       <div class="search" id="search-mount"></div>
     `;
@@ -5476,6 +5551,15 @@ if (typeof window !== 'undefined') {
     const title = document.getElementById('title');
     document.getElementById('quizBtn').addEventListener('click', () => P.quiz?.startRandom?.());
     document.getElementById('weakBtn').addEventListener('click', () => P.quiz?.startWeakest?.());
+    document.getElementById('dueBtn').addEventListener('click', () => P.quiz?.startDue?.());
+    function updateDueBadge() {
+      const btn = document.getElementById('dueBtn');
+      if (!btn || !P.quiz) return;
+      const s = P.quiz.getStats();
+      btn.textContent = s.due > 0 ? `Due today · ${s.due}` : 'Due today';
+    }
+    updateDueBadge();
+    setInterval(updateDueBadge, 5000);
     on('navigate', s => {
       back.style.display = s.level === 'city' ? 'none' : '';
       const districtName = s.districtId

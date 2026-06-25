@@ -58,6 +58,8 @@ canvas { display: block; touch-action: none; }
 
 .btn-brand { background: var(--accent); color: #ffffff; border-color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; }
 .btn-brand:hover { background: #1f63bf; color: #ffffff; }
+.btn-due { background: #fff4d1; border-color: #f5c97a; color: #5a4500; font-weight: 600; }
+.btn-due:hover { background: #fee8a8; }
 .btn-good { background: rgba(22, 163, 74, 0.14); border-color: rgba(22, 163, 74, 0.55); color: #0f6b32; }
 .btn-good:hover { background: rgba(22, 163, 74, 0.22); }
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }
