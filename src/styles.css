@@ -56,6 +56,8 @@ canvas { display: block; touch-action: none; }
 .wlabel--drug { font-size: 11px; padding: 2px 7px; opacity: 0.92; }
 .wlabel--hover { background: var(--accent); border-color: #ffe66a; transform: translate(-50%, -130%) scale(1.10); transition: transform 0.18s ease, background 0.18s ease; box-shadow: 0 6px 20px rgba(46, 123, 224, 0.45); }
 
+.btn-brand { background: var(--accent); color: #ffffff; border-color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; }
+.btn-brand:hover { background: #1f63bf; color: #ffffff; }
 .btn-good { background: rgba(22, 163, 74, 0.14); border-color: rgba(22, 163, 74, 0.55); color: #0f6b32; }
 .btn-good:hover { background: rgba(22, 163, 74, 0.22); }
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }

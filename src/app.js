@@ -20,6 +20,7 @@
     app.innerHTML = `
       <div class="topbar">
         <button class="btn" id="backBtn" aria-label="back" style="display:none">‹ Back</button>
+        <a class="btn btn-brand" id="brandBtn" href="https://pharmabymd.com" target="_blank" rel="noopener" aria-label="visit pharmabymd.com">pharmabymd.com ↗</a>
         <div class="title" id="title">Pharmacology City</div>
         <button class="btn" id="quizBtn" aria-label="quiz a random drug">Quiz me</button>
         <button class="btn" id="weakBtn" aria-label="practise missed drugs">Practise missed</button>
