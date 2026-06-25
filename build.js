@@ -34,6 +34,7 @@ const appFiles = [
   'flashcard.js',
   'search.js',
   'self-test.js',
+  'quiz.js',
   'district-scene.js',
   'city-scene.js',
   'app.js',
@@ -58,5 +59,11 @@ html = html.replace('<!--INJECT_APP-->', () => escapeForInlineScript(app));
 
 mkdirSync(join(root, 'dist'), { recursive: true });
 writeFileSync(join(root, 'dist/pharma-city.html'), html);
+// Pages serves whatever is at the source root as index.html.
+writeFileSync(join(root, 'dist/index.html'), html);
+// Custom-domain marker — GitHub Pages reads this and routes city.pharmabymd.com here.
+writeFileSync(join(root, 'dist/CNAME'), 'city.pharmabymd.com\n');
+// Tell GitHub Pages's Jekyll layer to leave the dist as-is (no _ processing).
+writeFileSync(join(root, 'dist/.nojekyll'), '');
 const bytes = Buffer.byteLength(html, 'utf8');
-console.log(`built dist/pharma-city.html (${(bytes / 1024).toFixed(0)} KB)`);
+console.log(`built dist/pharma-city.html + dist/index.html (${(bytes / 1024).toFixed(0)} KB)`);

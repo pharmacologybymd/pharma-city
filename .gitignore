@@ -5,4 +5,4 @@
 .DS_Store
 
 node_modules/
-dist/
+# dist/ is committed so GitHub Pages can serve it without a build step.

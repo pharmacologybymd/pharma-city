@@ -21,11 +21,15 @@
       <div class="topbar">
         <button class="btn" id="backBtn" aria-label="back" style="display:none">‹ Back</button>
         <div class="title" id="title">Pharmacology City</div>
+        <button class="btn" id="quizBtn" aria-label="quiz a random drug">Quiz me</button>
+        <button class="btn" id="weakBtn" aria-label="practise missed drugs">Practise missed</button>
       </div>
       <div class="search" id="search-mount"></div>
     `;
     const back = document.getElementById('backBtn');
     const title = document.getElementById('title');
+    document.getElementById('quizBtn').addEventListener('click', () => P.quiz?.startRandom?.());
+    document.getElementById('weakBtn').addEventListener('click', () => P.quiz?.startWeakest?.());
     on('navigate', s => {
       back.style.display = s.level === 'city' ? 'none' : '';
       const districtName = s.districtId

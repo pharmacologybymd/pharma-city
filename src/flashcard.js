@@ -66,6 +66,32 @@
     container.appendChild(ctrl);
     container.querySelector('#revealAll').onclick = () => { state.revealAll(); render(); };
     container.querySelector('#hideAll').onclick = () => { state.hideAll(); render(); };
+
+    // Self-grade — feeds the quiz module's mastery tracking. Auto-advances
+    // to the next card so quiz mode flows.
+    if (P.quiz) {
+      const grade = document.createElement('div');
+      grade.style.marginTop = '14px';
+      grade.style.display = 'flex';
+      grade.style.gap = '8px';
+      grade.innerHTML = `<button class="btn btn-good" id="knewIt">✓ Knew it</button> <button class="btn btn-bad" id="missedIt">✗ Missed it</button>`;
+      container.appendChild(grade);
+      container.querySelector('#knewIt').onclick = () => {
+        P.quiz.recordResult(d.id, 'knew');
+        setTimeout(() => P.quiz.startRandom(), 80);
+      };
+      container.querySelector('#missedIt').onclick = () => {
+        P.quiz.recordResult(d.id, 'missed');
+        setTimeout(() => P.quiz.startWeakest(), 80);
+      };
+      const s = P.quiz.getStats();
+      const dstat = P.quiz.getDrugStat(d.id);
+      const statEl = document.createElement('div');
+      statEl.className = 'quiz-stats';
+      statEl.textContent = `Seen ${s.seen}/${s.totalDrugs} · Mastered ${s.mastered} · Streak ${s.streak} (best ${s.bestStreak}) · This drug: ${dstat.knew}✓ ${dstat.missed}✗`;
+      container.appendChild(statEl);
+    }
+
     container.scrollTop = prevScroll;
   }
   function facet(label, value, hidden, key) {
