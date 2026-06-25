@@ -19,7 +19,7 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text-on-
 #app { position: fixed; inset: 0; }
 canvas { display: block; touch-action: none; }
 
-.topbar { position: absolute; top: env(safe-area-inset-top, 0); left: 0; right: 210px; padding: 12px 16px; display: flex; gap: 8px; align-items: center; z-index: 10; }
+.topbar { position: absolute; top: env(safe-area-inset-top, 0); left: 0; right: 210px; padding: 12px 16px; display: flex; gap: 6px; align-items: center; z-index: 10; flex-wrap: wrap; }
 .btn { background: var(--card); border: 1px solid var(--border); color: var(--text-on-card); padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: var(--card-shadow); transition: transform 0.1s ease, background 0.15s ease, color 0.15s ease; }
 .btn:hover { background: #ffffff; }
 .btn:active { transform: scale(0.97); }
@@ -60,6 +60,20 @@ canvas { display: block; touch-action: none; }
 .btn-brand:hover { background: #1f63bf; color: #ffffff; }
 .btn-due { background: #fff4d1; border-color: #f5c97a; color: #5a4500; font-weight: 600; }
 .btn-due:hover { background: #fee8a8; }
+.mcq-overlay { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(620px, 96vw); max-height: 88vh; overflow-y: auto; background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px 26px 26px; z-index: 30; box-shadow: 0 18px 60px rgba(15, 22, 42, 0.30); color: var(--text-on-card); flex-direction: column; gap: 14px; }
+.mcq-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.mcq-score { font-size: 12px; color: var(--muted-on-card); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.mcq-close { padding: 4px 10px; font-size: 18px; line-height: 1; background: transparent; border: none; color: var(--muted-on-card); cursor: pointer; }
+.mcq-prompt { font-size: 18px; font-weight: 600; line-height: 1.45; color: var(--text-on-card); margin-bottom: 6px; }
+.mcq-options { display: flex; flex-direction: column; gap: 8px; }
+.mcq-option { text-align: left; background: #ffffff; border: 1px solid var(--border); color: var(--text-on-card); padding: 11px 14px; border-radius: 10px; font-size: 14px; line-height: 1.45; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease; }
+.mcq-option:hover { background: var(--accent-soft); border-color: var(--accent); }
+.mcq-option--correct { background: rgba(22, 163, 74, 0.18); border-color: #16a34a; color: #0f6b32; font-weight: 600; }
+.mcq-option--wrong { background: rgba(220, 38, 38, 0.14); border-color: #dc2626; color: #991b1b; }
+.mcq-result { padding: 8px 12px; border-radius: 8px; font-weight: 600; text-align: center; margin-top: 4px; }
+.mcq-result--good { background: rgba(22, 163, 74, 0.18); color: #0f6b32; }
+.mcq-result--bad { background: rgba(220, 38, 38, 0.14); color: #991b1b; }
+.mcq-controls { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
 .btn-good { background: rgba(22, 163, 74, 0.14); border-color: rgba(22, 163, 74, 0.55); color: #0f6b32; }
 .btn-good:hover { background: rgba(22, 163, 74, 0.22); }
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }

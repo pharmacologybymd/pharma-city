@@ -35,6 +35,7 @@ const appFiles = [
   'search.js',
   'self-test.js',
   'quiz.js',
+  'mcq.js',
   'district-scene.js',
   'city-scene.js',
   'app.js',

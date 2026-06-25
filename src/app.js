@@ -25,6 +25,7 @@
         <button class="btn" id="quizBtn" aria-label="quiz a random drug">Quiz me</button>
         <button class="btn" id="weakBtn" aria-label="practise missed drugs">Practise missed</button>
         <button class="btn btn-due" id="dueBtn" aria-label="review drugs due today">Due today</button>
+        <button class="btn" id="mcqBtn" aria-label="multiple choice question">MCQ</button>
       </div>
       <div class="search" id="search-mount"></div>
     `;
@@ -33,6 +34,7 @@
     document.getElementById('quizBtn').addEventListener('click', () => P.quiz?.startRandom?.());
     document.getElementById('weakBtn').addEventListener('click', () => P.quiz?.startWeakest?.());
     document.getElementById('dueBtn').addEventListener('click', () => P.quiz?.startDue?.());
+    document.getElementById('mcqBtn').addEventListener('click', () => P.mcq?.open?.());
     function updateDueBadge() {
       const btn = document.getElementById('dueBtn');
       if (!btn || !P.quiz) return;
@@ -62,9 +64,37 @@
     P.district?.mount?.(app);
     P.flashcard?.mount?.(app);
     P.walkthrough?.mount?.(app);
+    P.mcq?.mount?.(app);
     P.selfTest?.mount?.(app);
     P.selfTest?.onChange?.(() => { P.flashcard?._onSelfTestChange?.(); });
     P.search?.mount?.(document.getElementById('search-mount'));
-    goTo('city');
+
+    // Deep links — keep URL ?d=…&drug=… in sync with state.
+    function syncURL(s) {
+      try {
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
+        if (s.level === 'city') { params.delete('d'); params.delete('drug'); }
+        else if (s.level === 'district') { params.set('d', s.districtId); params.delete('drug'); }
+        else if (s.level === 'flashcard') { params.set('d', s.districtId); params.set('drug', s.drugId); }
+        history.replaceState(null, '', url.toString());
+      } catch (_) {}
+    }
+    on('navigate', syncURL);
+
+    // Boot to the URL-provided state if present.
+    const initial = (() => {
+      try {
+        const url = new URL(window.location.href);
+        const d = url.searchParams.get('d');
+        const drug = url.searchParams.get('drug');
+        if (d && drug) return { level: 'flashcard', districtId: d, drugId: drug };
+        if (d) return { level: 'district', districtId: d };
+      } catch (_) {}
+      return { level: 'city' };
+    })();
+    if (initial.level === 'flashcard') goTo('flashcard', { districtId: initial.districtId, drugId: initial.drugId });
+    else if (initial.level === 'district') goTo('district', { districtId: initial.districtId });
+    else goTo('city');
   }
 })();

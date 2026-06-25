@@ -25,7 +25,7 @@ html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text-on-
 #app { position: fixed; inset: 0; }
 canvas { display: block; touch-action: none; }
 
-.topbar { position: absolute; top: env(safe-area-inset-top, 0); left: 0; right: 210px; padding: 12px 16px; display: flex; gap: 8px; align-items: center; z-index: 10; }
+.topbar { position: absolute; top: env(safe-area-inset-top, 0); left: 0; right: 210px; padding: 12px 16px; display: flex; gap: 6px; align-items: center; z-index: 10; flex-wrap: wrap; }
 .btn { background: var(--card); border: 1px solid var(--border); color: var(--text-on-card); padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: var(--card-shadow); transition: transform 0.1s ease, background 0.15s ease, color 0.15s ease; }
 .btn:hover { background: #ffffff; }
 .btn:active { transform: scale(0.97); }
@@ -66,6 +66,20 @@ canvas { display: block; touch-action: none; }
 .btn-brand:hover { background: #1f63bf; color: #ffffff; }
 .btn-due { background: #fff4d1; border-color: #f5c97a; color: #5a4500; font-weight: 600; }
 .btn-due:hover { background: #fee8a8; }
+.mcq-overlay { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(620px, 96vw); max-height: 88vh; overflow-y: auto; background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px 26px 26px; z-index: 30; box-shadow: 0 18px 60px rgba(15, 22, 42, 0.30); color: var(--text-on-card); flex-direction: column; gap: 14px; }
+.mcq-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.mcq-score { font-size: 12px; color: var(--muted-on-card); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.mcq-close { padding: 4px 10px; font-size: 18px; line-height: 1; background: transparent; border: none; color: var(--muted-on-card); cursor: pointer; }
+.mcq-prompt { font-size: 18px; font-weight: 600; line-height: 1.45; color: var(--text-on-card); margin-bottom: 6px; }
+.mcq-options { display: flex; flex-direction: column; gap: 8px; }
+.mcq-option { text-align: left; background: #ffffff; border: 1px solid var(--border); color: var(--text-on-card); padding: 11px 14px; border-radius: 10px; font-size: 14px; line-height: 1.45; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease; }
+.mcq-option:hover { background: var(--accent-soft); border-color: var(--accent); }
+.mcq-option--correct { background: rgba(22, 163, 74, 0.18); border-color: #16a34a; color: #0f6b32; font-weight: 600; }
+.mcq-option--wrong { background: rgba(220, 38, 38, 0.14); border-color: #dc2626; color: #991b1b; }
+.mcq-result { padding: 8px 12px; border-radius: 8px; font-weight: 600; text-align: center; margin-top: 4px; }
+.mcq-result--good { background: rgba(22, 163, 74, 0.18); color: #0f6b32; }
+.mcq-result--bad { background: rgba(220, 38, 38, 0.14); color: #991b1b; }
+.mcq-controls { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
 .btn-good { background: rgba(22, 163, 74, 0.14); border-color: rgba(22, 163, 74, 0.55); color: #0f6b32; }
 .btn-good:hover { background: rgba(22, 163, 74, 0.22); }
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }
@@ -4841,6 +4855,170 @@ if (typeof window !== 'undefined') {
 })();
 
 
+// === src/mcq.js ===
+// MCQ mode — 4-option multiple-choice quiz generated from existing drug data.
+// One correct answer + 3 distractors from the same district (so they're
+// plausible and don't trivially give the answer away).
+//
+// Public API:
+//   PHARMA.mcq.open()       — open the overlay with a new question
+//   PHARMA.mcq.next()       — advance to the next question
+//   PHARMA.mcq.close()      — dismiss the overlay
+//   PHARMA.mcq.getSessionScore() — { correct, total }
+(function(){
+  const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
+  const FACETS = ['class', 'mechanism', 'adverse_effects', 'clinical_use'];
+  const FACET_LABEL = {
+    class: 'class',
+    mechanism: 'mechanism of action',
+    adverse_effects: 'adverse-effect profile',
+    clinical_use: 'main clinical use',
+  };
+  let session = { correct: 0, total: 0 };
+  let container = null;
+  let currentQ = null;
+
+  function allDrugsByDistrict() {
+    const map = {};
+    if (typeof window === 'undefined') return map;
+    for (const k in window) {
+      if (!k.startsWith('DISTRICT_')) continue;
+      const d = window[k];
+      map[d.id] = (d.drugs || []);
+    }
+    return map;
+  }
+
+  function shuffle(a) {
+    const arr = a.slice();
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function generateQuestion() {
+    const map = allDrugsByDistrict();
+    const districtIds = Object.keys(map);
+    if (districtIds.length === 0) return null;
+    // Pick a district that has at least 4 drugs.
+    const eligible = districtIds.filter(id => map[id].length >= 4);
+    if (eligible.length === 0) return null;
+    const districtId = eligible[Math.floor(Math.random() * eligible.length)];
+    const drugs = map[districtId];
+    const drug = drugs[Math.floor(Math.random() * drugs.length)];
+    const facet = FACETS[Math.floor(Math.random() * FACETS.length)];
+    // Need 3 distractors from same district whose facet value differs.
+    const distractors = shuffle(drugs.filter(x => x.id !== drug.id && x[facet] !== drug[facet]));
+    if (distractors.length < 3) return generateQuestion(); // retry
+    const correct = drug[facet];
+    const wrong = distractors.slice(0, 3).map(d => d[facet]);
+    const options = shuffle([correct, ...wrong]);
+    return {
+      drug,
+      facet,
+      facetLabel: FACET_LABEL[facet],
+      prompt: `Which is the ${FACET_LABEL[facet]} of ${drug.id}?`,
+      correct,
+      options,
+    };
+  }
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]); }
+
+  function ensureContainer(rootEl) {
+    if (container) return;
+    container = document.createElement('div');
+    container.className = 'mcq-overlay';
+    container.style.display = 'none';
+    rootEl.appendChild(container);
+  }
+
+  function render(answered) {
+    if (!currentQ || !container) return;
+    const q = currentQ;
+    const parts = [];
+    parts.push(`<div class="mcq-head">`);
+    parts.push(`<div class="mcq-score">MCQ · ${session.correct} / ${session.total}</div>`);
+    parts.push(`<button class="btn mcq-close" id="mcqClose" aria-label="close">×</button>`);
+    parts.push(`</div>`);
+    parts.push(`<div class="mcq-prompt">${esc(q.prompt)}</div>`);
+    parts.push(`<div class="mcq-options">`);
+    q.options.forEach((opt, i) => {
+      let cls = 'mcq-option';
+      if (answered) {
+        if (opt === q.correct) cls += ' mcq-option--correct';
+        else if (opt === answered) cls += ' mcq-option--wrong';
+      }
+      parts.push(`<button class="${cls}" data-idx="${i}">${String.fromCharCode(65 + i)}. ${esc(opt)}</button>`);
+    });
+    parts.push(`</div>`);
+    if (answered) {
+      const wasRight = answered === q.correct;
+      parts.push(`<div class="mcq-result ${wasRight ? 'mcq-result--good' : 'mcq-result--bad'}">${wasRight ? '✓ Correct' : '✗ Not quite'}</div>`);
+      parts.push(`<div class="memory-hook"><span style="font-weight:600">Memory hook</span> — ${esc(q.drug.memory_hook)}</div>`);
+      parts.push(`<div class="source-line">Verify · ${esc(q.drug.source)}</div>`);
+      parts.push(`<div class="mcq-controls"><button class="btn btn-brand" id="mcqNext">Next question →</button> <button class="btn" id="mcqOpenDrug">Open ${esc(q.drug.id)} flashcard</button></div>`);
+    }
+    container.innerHTML = parts.join('');
+    if (!answered) {
+      container.querySelectorAll('.mcq-option').forEach((el, i) => {
+        el.addEventListener('click', () => answer(q.options[i]));
+      });
+    } else {
+      container.querySelector('#mcqNext')?.addEventListener('click', next);
+      container.querySelector('#mcqOpenDrug')?.addEventListener('click', () => {
+        close();
+        P.app?.goTo?.('flashcard', { districtId: q.drug.district, drugId: q.drug.id });
+      });
+    }
+    container.querySelector('#mcqClose')?.addEventListener('click', close);
+  }
+
+  function answer(picked) {
+    if (!currentQ) return;
+    session.total += 1;
+    if (picked === currentQ.correct) session.correct += 1;
+    // Also feed into the quiz mastery system as knew/missed.
+    if (P.quiz?.recordResult) {
+      P.quiz.recordResult(currentQ.drug.id, picked === currentQ.correct ? 'knew' : 'missed');
+    }
+    render(picked);
+  }
+
+  function next() {
+    currentQ = generateQuestion();
+    render(null);
+  }
+
+  function open() {
+    if (!container) return;
+    currentQ = generateQuestion();
+    render(null);
+    container.style.display = 'flex';
+  }
+
+  function close() {
+    if (container) container.style.display = 'none';
+  }
+
+  function getSessionScore() { return { ...session }; }
+  function resetSession() { session = { correct: 0, total: 0 }; }
+
+  function mount(rootEl) {
+    ensureContainer(rootEl);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && container && container.style.display !== 'none') close();
+      });
+    }
+  }
+
+  P.mcq = { mount, open, next, close, getSessionScore, resetSession, _generate: generateQuestion };
+})();
+
+
 // === src/district-scene.js ===
 // District scene (level 2). Mounted ONCE per page from app.js boot(); no dispose path.
 (function(){
@@ -5544,6 +5722,7 @@ if (typeof window !== 'undefined') {
         <button class="btn" id="quizBtn" aria-label="quiz a random drug">Quiz me</button>
         <button class="btn" id="weakBtn" aria-label="practise missed drugs">Practise missed</button>
         <button class="btn btn-due" id="dueBtn" aria-label="review drugs due today">Due today</button>
+        <button class="btn" id="mcqBtn" aria-label="multiple choice question">MCQ</button>
       </div>
       <div class="search" id="search-mount"></div>
     `;
@@ -5552,6 +5731,7 @@ if (typeof window !== 'undefined') {
     document.getElementById('quizBtn').addEventListener('click', () => P.quiz?.startRandom?.());
     document.getElementById('weakBtn').addEventListener('click', () => P.quiz?.startWeakest?.());
     document.getElementById('dueBtn').addEventListener('click', () => P.quiz?.startDue?.());
+    document.getElementById('mcqBtn').addEventListener('click', () => P.mcq?.open?.());
     function updateDueBadge() {
       const btn = document.getElementById('dueBtn');
       if (!btn || !P.quiz) return;
@@ -5581,10 +5761,38 @@ if (typeof window !== 'undefined') {
     P.district?.mount?.(app);
     P.flashcard?.mount?.(app);
     P.walkthrough?.mount?.(app);
+    P.mcq?.mount?.(app);
     P.selfTest?.mount?.(app);
     P.selfTest?.onChange?.(() => { P.flashcard?._onSelfTestChange?.(); });
     P.search?.mount?.(document.getElementById('search-mount'));
-    goTo('city');
+
+    // Deep links — keep URL ?d=…&drug=… in sync with state.
+    function syncURL(s) {
+      try {
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
+        if (s.level === 'city') { params.delete('d'); params.delete('drug'); }
+        else if (s.level === 'district') { params.set('d', s.districtId); params.delete('drug'); }
+        else if (s.level === 'flashcard') { params.set('d', s.districtId); params.set('drug', s.drugId); }
+        history.replaceState(null, '', url.toString());
+      } catch (_) {}
+    }
+    on('navigate', syncURL);
+
+    // Boot to the URL-provided state if present.
+    const initial = (() => {
+      try {
+        const url = new URL(window.location.href);
+        const d = url.searchParams.get('d');
+        const drug = url.searchParams.get('drug');
+        if (d && drug) return { level: 'flashcard', districtId: d, drugId: drug };
+        if (d) return { level: 'district', districtId: d };
+      } catch (_) {}
+      return { level: 'city' };
+    })();
+    if (initial.level === 'flashcard') goTo('flashcard', { districtId: initial.districtId, drugId: initial.drugId });
+    else if (initial.level === 'district') goTo('district', { districtId: initial.districtId });
+    else goTo('city');
   }
 })();
 </script>
