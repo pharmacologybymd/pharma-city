@@ -5,18 +5,38 @@
     const canvas = document.createElement('canvas');
     canvas.style.display = 'none';
     canvas.style.touchAction = 'none';
+    canvas.style.cursor = 'grab';
     rootEl.appendChild(canvas);
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0b1020);
+    // Bright daytime sky, matching the city overview.
+    scene.background = new THREE.Color(0xa6dcef);
+    scene.fog = new THREE.Fog(0xc9e8f5, 70, 220);
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
+    scene.add(new THREE.HemisphereLight(0xfff7e6, 0x6cb56b, 0.45));
     scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-    const dir = new THREE.DirectionalLight(0xffffff, 0.9);
-    dir.position.set(20, 40, 20); scene.add(dir);
+    const dir = new THREE.DirectionalLight(0xfff5d6, 1.0);
+    dir.position.set(20, 50, 20); scene.add(dir);
 
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshLambertMaterial({color: 0x639922}));
-    ground.rotation.x = -Math.PI/2; scene.add(ground);
+    // Sun + lightweight clouds — fewer/smaller than city since camera is closer.
+    const sun = new THREE.Mesh(new THREE.SphereGeometry(4, 18, 12), new THREE.MeshBasicMaterial({ color: 0xfff2a8 }));
+    sun.position.set(30, 55, -40); scene.add(sun);
+    const cloudMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 });
+    const clouds = [];
+    for (let i = 0; i < 3; i++) {
+      const cloud = new THREE.Group();
+      [[0,0,0,3.5],[3,0.5,1,2.6],[-2.5,0,0.5,2.8]].forEach(([x,y,z,r]) => {
+        const puff = new THREE.Mesh(new THREE.SphereGeometry(r, 10, 8), cloudMat);
+        puff.position.set(x, y, z); cloud.add(puff);
+      });
+      cloud.position.set(-40 + Math.random() * 80, 30 + Math.random() * 8, -30 + Math.random() * 20);
+      cloud.userData.driftSpeed = 0.2 + Math.random() * 0.3;
+      scene.add(cloud); clouds.push(cloud);
+    }
+
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(140, 140), new THREE.MeshLambertMaterial({color: 0x639922}));
+    ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
 
     const groupRoot = new THREE.Group();
     scene.add(groupRoot);
@@ -39,6 +59,52 @@
       labelEntries = [];
     }
 
+    // Multi-tier drug building — plinth + accent body + lighter dome + window strip.
+    const windowMat = new THREE.MeshBasicMaterial({ color: 0xfff2b3 });
+    const winGeom = new THREE.BoxGeometry(0.45, 0.9, 0.18);
+    function buildDrugTower(h, accentHex) {
+      const group = new THREE.Group();
+      const accentCol = new THREE.Color(accentHex);
+      const hsl = { h:0, s:0, l:0 }; accentCol.getHSL(hsl);
+      const lighter = new THREE.Color().setHSL(hsl.h, Math.min(1, hsl.s * 0.9), Math.min(0.92, hsl.l + 0.18));
+      const darker = new THREE.Color().setHSL(hsl.h, hsl.s, Math.max(0.05, hsl.l - 0.18));
+
+      const plinth = new THREE.Mesh(new THREE.BoxGeometry(7, 1.4, 7), new THREE.MeshLambertMaterial({ color: darker }));
+      plinth.position.y = 0.7; plinth.castShadow = true; plinth.receiveShadow = true;
+      group.add(plinth);
+
+      const body = new THREE.Mesh(new THREE.BoxGeometry(6, h, 6), new THREE.MeshLambertMaterial({ color: accentCol }));
+      body.position.y = 1.4 + h / 2; body.castShadow = true; body.receiveShadow = true;
+      group.add(body);
+
+      const dome = new THREE.Mesh(
+        new THREE.SphereGeometry(3.2, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2),
+        new THREE.MeshLambertMaterial({ color: lighter })
+      );
+      dome.position.y = 1.4 + h; dome.castShadow = true;
+      group.add(dome);
+
+      // 1 row of lit windows × 4 faces × 3 columns — keeps total mesh count manageable.
+      const FACE_OFFS = [
+        [0, 3.05, 0], [0, -3.05, Math.PI], [3.05, 0, Math.PI/2], [-3.05, 0, -Math.PI/2],
+      ];
+      const winY = 1.4 + h * 0.55;
+      FACE_OFFS.forEach(([fx, fz, ry]) => {
+        for (let col = -1; col <= 1; col++) {
+          const w = new THREE.Mesh(winGeom, windowMat);
+          if (ry === 0 || ry === Math.PI) {
+            w.position.set(col * 1.3, winY, fz === 0 ? fx : fz);
+          } else {
+            w.position.set(fx, winY, col * 1.3);
+          }
+          w.rotation.y = ry;
+          group.add(w);
+        }
+      });
+
+      return group;
+    }
+
     function loadDistrict(id) {
       while (groupRoot.children.length) groupRoot.remove(groupRoot.children[0]);
       pickables = [];
@@ -48,22 +114,21 @@
       ground.material.dispose();
       ground.material = new THREE.MeshLambertMaterial({ color: d.palette?.ground ?? 0x639922 });
       const drugs = d.drugs || [];
+      const accentHex = d.palette?.accent ?? 0x888780;
       drugs.forEach((drug, i) => {
         const row = Math.floor(i / 5), col = i % 5;
-        const h = 10 + (drug.high_yield ? 4 : 0);
-        const g = new THREE.Group();
-        const lm = P.primitives.tower({ w: 6, h, d: 6, color: d.palette?.accent ?? 0x888780 });
-        g.add(lm);
-        g.position.set(-15 + col * 7, 0, -10 + row * 8);
-        g.userData = { drugId: drug.id };
-        groupRoot.add(g);
-        pickables.push(g);
+        const h = 7 + (drug.high_yield ? 3.5 : 0);
+        const tower = buildDrugTower(h, accentHex);
+        tower.position.set(-15 + col * 7, 0, -10 + row * 8);
+        tower.userData = { drugId: drug.id, baseY: 0 };
+        groupRoot.add(tower);
+        pickables.push(tower);
 
         const el = document.createElement('div');
         el.className = 'wlabel wlabel--drug';
         el.textContent = drug.id;
         labelLayer.appendChild(el);
-        labelEntries.push({ el, worldPos: new THREE.Vector3(g.position.x, h + 2, g.position.z) });
+        labelEntries.push({ el, worldPos: new THREE.Vector3(tower.position.x, 1.4 + h + 4, tower.position.z), drugId: drug.id });
       });
       P.animations?.attach?.(id, scene, groupRoot);
       applyLabelMode();
@@ -80,7 +145,7 @@
     let yaw = Math.PI * 0.25;
     let pitch = Math.PI * 0.32;
     let distance = 45;
-    const MIN_DIST = 18, MAX_DIST = 90;
+    const MIN_DIST = 14, MAX_DIST = 110;
     const MIN_PITCH = 0.15, MAX_PITCH = Math.PI / 2 - 0.05;
 
     function updateCamera() {
@@ -98,6 +163,21 @@
     let activePointer = null;
     let startX = 0, startY = 0, lastX = 0, lastY = 0;
     let dragMoved = false;
+    let hoveredDrug = null;
+
+    function raycastHover(e) {
+      const rect = canvas.getBoundingClientRect();
+      pt.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      pt.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      camera.updateMatrixWorld();
+      ray.setFromCamera(pt, camera);
+      const hit = ray.intersectObjects(pickables, true)[0];
+      if (hit) {
+        let g = hit.object; while (g && !g.userData?.drugId) g = g.parent;
+        return g?.userData?.drugId ?? null;
+      }
+      return null;
+    }
 
     canvas.addEventListener('pointerdown', (e) => {
       if (activePointer !== null) return;
@@ -105,9 +185,15 @@
       startX = lastX = e.clientX;
       startY = lastY = e.clientY;
       dragMoved = false;
+      canvas.style.cursor = 'grabbing';
       try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
     });
     canvas.addEventListener('pointermove', (e) => {
+      if (activePointer === null) {
+        hoveredDrug = raycastHover(e);
+        canvas.style.cursor = hoveredDrug ? 'pointer' : 'grab';
+        return;
+      }
       if (e.pointerId !== activePointer) return;
       const dx = e.clientX - lastX;
       const dy = e.clientY - lastY;
@@ -122,9 +208,11 @@
         if (pitch > MAX_PITCH) pitch = MAX_PITCH;
       }
     });
+    canvas.addEventListener('pointerleave', () => { hoveredDrug = null; canvas.style.cursor = 'grab'; });
     function endPointer(e) {
       if (e.pointerId !== activePointer) return;
       activePointer = null;
+      canvas.style.cursor = hoveredDrug ? 'pointer' : 'grab';
       try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
       if (!dragMoved) {
         const rect = canvas.getBoundingClientRect();
@@ -154,19 +242,39 @@
       const rect = canvas.getBoundingClientRect();
       const w = rect.width, h = rect.height;
       for (let i = 0; i < labelEntries.length; i++) {
-        const { el, worldPos } = labelEntries[i];
+        const { el, worldPos, drugId } = labelEntries[i];
         labelVec.copy(worldPos).project(camera);
         if (labelVec.z > 1 || labelVec.z < -1) { el.style.display = 'none'; continue; }
         el.style.display = '';
         el.style.left = ((labelVec.x * 0.5 + 0.5) * w + rect.left) + 'px';
         el.style.top = ((-labelVec.y * 0.5 + 0.5) * h + rect.top) + 'px';
+        el.classList.toggle('wlabel--hover', drugId === hoveredDrug);
+      }
+    }
+
+    function updateHoverAnimations(dt) {
+      const k = 1 - Math.exp(-dt * 14);
+      for (const g of pickables) {
+        const isHover = g.userData.drugId === hoveredDrug;
+        const tgtScale = isHover ? 1.18 : 1.0;
+        const tgtY = isHover ? 1.4 : 0;
+        g.scale.x += (tgtScale - g.scale.x) * k;
+        g.scale.y += (tgtScale - g.scale.y) * k;
+        g.scale.z += (tgtScale - g.scale.z) * k;
+        g.position.y += (tgtY - g.position.y) * k;
       }
     }
 
     let visible = false;
-    function tick(_dt, _t) {
+    function tick(dt, t) {
       if (!visible) return;
       updateCamera();
+      updateHoverAnimations(dt);
+      for (const c of clouds) {
+        c.position.x += c.userData.driftSpeed * dt;
+        if (c.position.x > 80) c.position.x = -80;
+      }
+      sun.position.y = 55 + Math.sin(t * 0.2) * 1.0;
       renderer.render(scene, camera);
       updateLabels();
     }
