@@ -32,6 +32,39 @@
     const ground = new THREE.Mesh(new THREE.PlaneGeometry(220, 220), new THREE.MeshLambertMaterial({color: 0x97C459}));
     ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
 
+    // Road network — conceptual edges between districts so distance reads
+    // as relatedness. Drawn at y=0.05 to avoid z-fighting with the ground.
+    const ROADS = [
+      // Autonomic spine
+      ['cholinergic', 'ans_hub'], ['ans_hub', 'adrenergic'],
+      // Centre out to effector ring
+      ['ans_hub', 'autacoids'], ['autacoids', 'cvs'],
+      ['cvs', 'respiratory'], ['cvs', 'git'],
+      ['ans_hub', 'renal'], ['ans_hub', 'respiratory'],
+      // Northern hill cluster
+      ['ans_hub', 'cns'], ['cns', 'endocrine'], ['cns', 'chemotherapy'],
+      ['chemotherapy', 'toxicology'],
+      // South entry + far south
+      ['general_pharmacology', 'ans_hub'],
+      ['git', 'recent_advances'],
+    ];
+    const roadMat = new THREE.MeshLambertMaterial({ color: 0xC9C0A8 });
+    function districtVec(id) {
+      const d = window['DISTRICT_' + id.toUpperCase()];
+      return d ? new THREE.Vector3(d.position.x, 0.05, d.position.z) : null;
+    }
+    ROADS.forEach(([a, b]) => {
+      const A = districtVec(a), B = districtVec(b);
+      if (!A || !B) return;
+      const len = A.distanceTo(B);
+      const road = new THREE.Mesh(new THREE.BoxGeometry(len, 0.05, 2.4), roadMat);
+      const mid = A.clone().add(B).multiplyScalar(0.5);
+      road.position.copy(mid);
+      road.rotation.y = -Math.atan2(B.z - A.z, B.x - A.x);
+      road.receiveShadow = true;
+      scene.add(road);
+    });
+
     const districts = (typeof CITY !== 'undefined') ? CITY.districts : [];
     const pickables = [];
     const labels = [];
