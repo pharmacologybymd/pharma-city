@@ -114,7 +114,7 @@ canvas { display: block; touch-action: none; }
 .compare-table tbody th { background: rgba(15, 22, 42, 0.04); text-align: left; font-weight: 600; color: var(--muted-on-card); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
 
 .btn-theme { padding: 6px 10px; font-size: 16px; line-height: 1; }
-.minimap { position: fixed; top: 60px; right: 16px; z-index: 18; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 10px; box-shadow: var(--card-shadow); }
+.minimap { position: fixed; top: 60px; right: 16px; z-index: 18; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 6px; box-shadow: var(--card-shadow); }
 .minimap-svg svg { display: block; cursor: pointer; border-radius: 8px; }
 .mm-dot { cursor: pointer; transition: r 0.15s ease; }
 .mm-dot:hover { stroke-width: 2; }

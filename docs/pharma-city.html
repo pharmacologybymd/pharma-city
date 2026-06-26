@@ -120,7 +120,7 @@ canvas { display: block; touch-action: none; }
 .compare-table tbody th { background: rgba(15, 22, 42, 0.04); text-align: left; font-weight: 600; color: var(--muted-on-card); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
 
 .btn-theme { padding: 6px 10px; font-size: 16px; line-height: 1; }
-.minimap { position: fixed; top: 60px; right: 16px; z-index: 18; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 10px; box-shadow: var(--card-shadow); }
+.minimap { position: fixed; top: 60px; right: 16px; z-index: 18; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 6px; box-shadow: var(--card-shadow); }
 .minimap-svg svg { display: block; cursor: pointer; border-radius: 8px; }
 .mm-dot { cursor: pointer; transition: r 0.15s ease; }
 .mm-dot:hover { stroke-width: 2; }
@@ -6543,10 +6543,10 @@ if (typeof window !== 'undefined') {
       minX = Math.min(minX, d.position.x); maxX = Math.max(maxX, d.position.x);
       minZ = Math.min(minZ, d.position.z); maxZ = Math.max(maxZ, d.position.z);
     });
-    const padding = 15;
+    const padding = 12;
     const w = (maxX - minX) + padding * 2;
     const h = (maxZ - minZ) + padding * 2;
-    const viewW = 240, viewH = 240;
+    const viewW = 150, viewH = 150;
     const scale = Math.min(viewW / w, viewH / h);
     const offX = (viewW - w * scale) / 2 - (minX - padding) * scale;
     const offZ = (viewH - h * scale) / 2 - (minZ - padding) * scale;
@@ -6569,13 +6569,12 @@ if (typeof window !== 'undefined') {
     ROADS.forEach(([a, b]) => {
       const A = byId[a], B = byId[b]; if (!A || !B) return;
       const pa = proj(A.position.x, A.position.z), pb = proj(B.position.x, B.position.z);
-      parts.push(`<line x1="${pa.x.toFixed(1)}" y1="${pa.y.toFixed(1)}" x2="${pb.x.toFixed(1)}" y2="${pb.y.toFixed(1)}" stroke="#eadcb6" stroke-width="3" stroke-linecap="round"/>`);
+      parts.push(`<line x1="${pa.x.toFixed(1)}" y1="${pa.y.toFixed(1)}" x2="${pb.x.toFixed(1)}" y2="${pb.y.toFixed(1)}" stroke="#eadcb6" stroke-width="2" stroke-linecap="round"/>`);
     });
     ds.forEach(d => {
       const p = proj(d.position.x, d.position.z);
       const color = '#' + ((d.palette?.accent ?? 0x888780) >>> 0).toString(16).padStart(6, '0');
-      parts.push(`<circle data-d="${d.id}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="7" fill="${color}" stroke="#1a2238" stroke-width="1.2" class="mm-dot" />`);
-      parts.push(`<text x="${p.x.toFixed(1)}" y="${(p.y - 10).toFixed(1)}" font-size="9" font-weight="600" text-anchor="middle" fill="#1a2238" pointer-events="none">${d.name}</text>`);
+      parts.push(`<circle data-d="${d.id}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.5" fill="${color}" stroke="#1a2238" stroke-width="1" class="mm-dot"><title>${d.name}</title></circle>`);
     });
     parts.push(`</svg>`);
     svg.innerHTML = parts.join('');

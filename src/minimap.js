@@ -27,10 +27,10 @@
       minX = Math.min(minX, d.position.x); maxX = Math.max(maxX, d.position.x);
       minZ = Math.min(minZ, d.position.z); maxZ = Math.max(maxZ, d.position.z);
     });
-    const padding = 15;
+    const padding = 12;
     const w = (maxX - minX) + padding * 2;
     const h = (maxZ - minZ) + padding * 2;
-    const viewW = 240, viewH = 240;
+    const viewW = 150, viewH = 150;
     const scale = Math.min(viewW / w, viewH / h);
     const offX = (viewW - w * scale) / 2 - (minX - padding) * scale;
     const offZ = (viewH - h * scale) / 2 - (minZ - padding) * scale;
@@ -53,13 +53,12 @@
     ROADS.forEach(([a, b]) => {
       const A = byId[a], B = byId[b]; if (!A || !B) return;
       const pa = proj(A.position.x, A.position.z), pb = proj(B.position.x, B.position.z);
-      parts.push(`<line x1="${pa.x.toFixed(1)}" y1="${pa.y.toFixed(1)}" x2="${pb.x.toFixed(1)}" y2="${pb.y.toFixed(1)}" stroke="#eadcb6" stroke-width="3" stroke-linecap="round"/>`);
+      parts.push(`<line x1="${pa.x.toFixed(1)}" y1="${pa.y.toFixed(1)}" x2="${pb.x.toFixed(1)}" y2="${pb.y.toFixed(1)}" stroke="#eadcb6" stroke-width="2" stroke-linecap="round"/>`);
     });
     ds.forEach(d => {
       const p = proj(d.position.x, d.position.z);
       const color = '#' + ((d.palette?.accent ?? 0x888780) >>> 0).toString(16).padStart(6, '0');
-      parts.push(`<circle data-d="${d.id}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="7" fill="${color}" stroke="#1a2238" stroke-width="1.2" class="mm-dot" />`);
-      parts.push(`<text x="${p.x.toFixed(1)}" y="${(p.y - 10).toFixed(1)}" font-size="9" font-weight="600" text-anchor="middle" fill="#1a2238" pointer-events="none">${d.name}</text>`);
+      parts.push(`<circle data-d="${d.id}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.5" fill="${color}" stroke="#1a2238" stroke-width="1" class="mm-dot"><title>${d.name}</title></circle>`);
     });
     parts.push(`</svg>`);
     svg.innerHTML = parts.join('');
