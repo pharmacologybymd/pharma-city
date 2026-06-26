@@ -40,6 +40,7 @@ const appFiles = [
   'mcq.js',
   'compare.js',
   'minimap.js',
+  'flowchart-overlay.js',
   'district-scene.js',
   'city-scene.js',
   'app.js',
@@ -74,13 +75,17 @@ const DISTRICT_ORDER = [
   'chemotherapy', 'toxicology', 'recent_advances',
 ];
 function evalModule(code) { const w = {}; new Function('window', code)(w); return w; }
+const diagW = evalModule(read('content/diagrams.js'));
+const DIAGRAMS = diagW.DIAGRAMS || {};
+const DISTRICT_DIAGRAMS = diagW.DISTRICT_DIAGRAMS || {};
 const classificationData = DISTRICT_ORDER.map(id => {
   const slug = id.replace(/_/g, '-');
   const dist = evalModule(read(`content/districts/${slug}.js`))['DISTRICT_' + id.toUpperCase()];
   let details = {};
   const dpath = `content/details/${slug}.js`;
   if (existsSync(join(root, dpath))) details = evalModule(read(dpath))['DETAILS_' + id.toUpperCase()] || {};
-  return { id, name: dist.name, theme_line: dist.theme_line, classification: dist.classification, details };
+  const diagrams = (DISTRICT_DIAGRAMS[id] || []).map(k => DIAGRAMS[k]).filter(Boolean);
+  return { id, name: dist.name, theme_line: dist.theme_line, classification: dist.classification, details, diagrams };
 });
 let clsHtml = read('src/classification-page.html');
 clsHtml = clsHtml.replace('<!--INJECT_CSS-->', () => read('src/classification-page.css'));

@@ -55,6 +55,12 @@ canvas { display: block; touch-action: none; }
 .cls-empty { font-size: 14px; color: var(--muted-on-card); }
 .cls-flowchart-link { display: inline-block; margin: 0 0 14px; font-size: 12.5px; font-weight: 600; color: var(--accent); text-decoration: none; padding: 6px 10px; border: 1px solid var(--accent); border-radius: 8px; }
 .cls-flowchart-link:hover { background: var(--accent-soft); }
+.cls-diagrams { margin: 0 0 16px; }
+.cls-diagrams > summary { cursor: pointer; font-size: 13px; font-weight: 650; color: var(--text-on-card); padding: 4px 0; }
+.cls-fig { margin: 10px 0 0; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); color: var(--text-on-card); }
+.cls-fig-title { font-size: 12.5px; font-weight: 650; margin-bottom: 4px; }
+.cls-fig-svg svg { width: 100%; height: auto; display: block; }
+.cls-fig figcaption { font-size: 11px; color: var(--muted-on-card); line-height: 1.4; margin-top: 6px; }
 
 .search { position: absolute; top: env(safe-area-inset-top, 0); right: 16px; z-index: 11; }
 .search input { background: var(--card); border: 1px solid var(--border); color: var(--text-on-card); padding: 9px 12px; border-radius: 10px; font-size: 14px; width: 190px; box-shadow: var(--card-shadow); outline: none; }
@@ -115,6 +121,14 @@ canvas { display: block; touch-action: none; }
 
 .btn-theme { padding: 6px 10px; font-size: 16px; line-height: 1; }
 .minimap { position: fixed; top: 60px; right: 16px; z-index: 18; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 6px; box-shadow: var(--card-shadow); }
+
+/* Flowchart overlay — iframes classification.html full-screen. */
+.flowchart-overlay { position: fixed; inset: 0; background: rgba(15, 22, 42, 0.75); backdrop-filter: blur(2px); z-index: 60; flex-direction: column; }
+.fc-bar { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--card); border-bottom: 1px solid var(--border); }
+.fc-title { font-weight: 600; flex: 1; }
+.fc-close { color: var(--text-on-card); }
+.fc-iframe-wrap { flex: 1; min-height: 0; }
+.fc-iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--bg); }
 .minimap-svg svg { display: block; cursor: pointer; border-radius: 8px; }
 .mm-dot { cursor: pointer; transition: r 0.15s ease; }
 .mm-dot:hover { stroke-width: 2; }

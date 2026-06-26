@@ -89,6 +89,7 @@
             <button class="cf-btn" id="cf-theme">🌙</button>
           </div>
           <div class="cf-cite" id="cf-cite"></div>
+          <div class="cf-diagrams" id="cf-diagrams"></div>
           <ul class="cf-tree" id="cf-tree"></ul>
         </main>
       </div>`;
@@ -102,10 +103,24 @@
       dlist.appendChild(li);
     });
 
+    function renderDiagrams() {
+      const d = DATA[state.di];
+      const box = document.getElementById('cf-diagrams');
+      const diags = d.diagrams || [];
+      if (!diags.length) { box.innerHTML = ''; return; }
+      box.innerHTML = `
+        <div class="cf-diagrams-head" id="cf-diag-toggle"><span class="cf-caret">▼</span> 📊 Diagrams &amp; graphs (${diags.length})</div>
+        <div class="cf-diagrams-grid" id="cf-diag-grid">
+          ${diags.map(g => `<figure class="cf-fig"><div class="cf-fig-title">${esc(g.title)}</div><div class="cf-fig-svg">${g.svg}</div><figcaption>${esc(g.caption)}</figcaption></figure>`).join('')}
+        </div>`;
+      document.getElementById('cf-diag-toggle').addEventListener('click', () => box.classList.toggle('cf-collapsed'));
+    }
+
     function renderDistrict() {
       const d = DATA[state.di];
       document.getElementById('cf-title').textContent = d.name;
       [...dlist.children].forEach((li, i) => li.classList.toggle('active', i === state.di));
+      renderDiagrams();
       renderSource();
     }
     function renderSource() {

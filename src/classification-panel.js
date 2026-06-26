@@ -39,11 +39,22 @@
     let currentId = null;
 
     function close() { panel.classList.remove('open'); }
+    function diagramsHTML(districtId) {
+      const reg = (typeof window !== 'undefined' && window.DIAGRAMS) || {};
+      const map = (typeof window !== 'undefined' && window.DISTRICT_DIAGRAMS) || {};
+      const keys = map[districtId] || [];
+      if (!keys.length) return '';
+      const figs = keys.map(k => reg[k]).filter(Boolean).map(g =>
+        `<figure class="cls-fig"><div class="cls-fig-title">${esc(g.title)}</div><div class="cls-fig-svg">${g.svg}</div><figcaption>${esc(g.caption)}</figcaption></figure>`
+      ).join('');
+      return `<details class="cls-diagrams" open><summary>📊 Diagrams &amp; graphs (${keys.length})</summary>${figs}</details>`;
+    }
     function render(d) {
       panel.innerHTML = `
         <button class="btn" style="position:absolute;top:12px;right:12px" id="cls-close" aria-label="Close classification">×</button>
         <div class="cls-title">${esc(d.name ?? '')} — Classification</div>
         <a class="cls-flowchart-link" href="classification.html" target="_blank" rel="noopener">Open full flowchart (ADME · MOA · uses · ADR) ↗</a>
+        ${diagramsHTML(d.id)}
         <div class="cls-body">${renderClassificationHTML(d.classification)}</div>
       `;
       panel.querySelector('#cls-close').onclick = close;
