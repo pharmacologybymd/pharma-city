@@ -5390,7 +5390,7 @@ if (typeof window !== 'undefined') {
       scene.add(cloud); clouds.push(cloud);
     }
 
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(140, 140), new THREE.MeshLambertMaterial({color: 0x639922}));
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(220, 220), new THREE.MeshLambertMaterial({color: 0x639922}));
     ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
 
     const groupRoot = new THREE.Group();
@@ -5495,28 +5495,29 @@ if (typeof window !== 'undefined') {
       const districtRoadMat = currentRoadMat;
 
       // Grid layout: 5 columns, variable rows. Spacing widened so there is
-      // room for a visible road between every pair of buildings.
+      // room for a visible road between every pair of buildings, plus a
+      // comfortable yard of grass around each plinth.
       const COLS = 5;
-      const COL_SPACING = 10;
-      const ROW_SPACING = 11;
+      const COL_SPACING = 14;
+      const ROW_SPACING = 15;
       const rows = Math.max(1, Math.ceil(drugs.length / COLS));
       const xMin = -(COLS - 1) * COL_SPACING / 2;
       const zMin = -(rows - 1) * ROW_SPACING / 2;
 
       // Vertical roads (running along z) between every pair of columns.
-      const verticalRoadLen = (rows - 1) * ROW_SPACING + 9;
+      const verticalRoadLen = (rows - 1) * ROW_SPACING + 12;
       for (let c = 0; c < COLS - 1; c++) {
         const x = xMin + (c + 0.5) * COL_SPACING;
-        const road = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.05, verticalRoadLen), districtRoadMat);
+        const road = new THREE.Mesh(new THREE.BoxGeometry(3, 0.05, verticalRoadLen), districtRoadMat);
         road.position.set(x, 0.06, 0);
         road.receiveShadow = true;
         groupRoot.add(road);
       }
       // Horizontal roads (running along x) between every pair of rows.
-      const horizontalRoadLen = (COLS - 1) * COL_SPACING + 8;
+      const horizontalRoadLen = (COLS - 1) * COL_SPACING + 12;
       for (let r = 0; r < rows - 1; r++) {
         const z = zMin + (r + 0.5) * ROW_SPACING;
-        const road = new THREE.Mesh(new THREE.BoxGeometry(horizontalRoadLen, 0.05, 2.2), districtRoadMat);
+        const road = new THREE.Mesh(new THREE.BoxGeometry(horizontalRoadLen, 0.05, 3), districtRoadMat);
         road.position.set(0, 0.06, z);
         road.receiveShadow = true;
         groupRoot.add(road);
@@ -5555,8 +5556,8 @@ if (typeof window !== 'undefined') {
     const target = new THREE.Vector3(0, 4, 0);
     let yaw = Math.PI * 0.25;
     let pitch = Math.PI * 0.32;
-    let distance = 45;
-    const MIN_DIST = 14, MAX_DIST = 110;
+    let distance = 65;
+    const MIN_DIST = 18, MAX_DIST = 160;
     const MIN_PITCH = 0.15, MAX_PITCH = Math.PI / 2 - 0.05;
 
     function updateCamera() {
