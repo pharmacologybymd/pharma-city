@@ -1,0 +1,94 @@
+/* ── Pharmacology Classification Flowchart — standalone page ───────────── */
+:root {
+  --bg: #eef5fb;
+  --panel: #ffffff;
+  --ink: #16203a;
+  --muted: #5d6883;
+  --accent: #2e7be0;
+  --accent-soft: rgba(46, 123, 224, 0.10);
+  --border: rgba(15, 22, 42, 0.12);
+  --line: #b9c6d8;
+  --gng: #2e7be0;
+  --kdt: #14a06a;
+  --shadow: 0 6px 22px rgba(15, 22, 42, 0.12);
+}
+body.cf-night {
+  --bg: #0f1626;
+  --panel: #182238;
+  --ink: #e8eefb;
+  --muted: #93a0bd;
+  --accent: #6aa6ff;
+  --accent-soft: rgba(106, 166, 255, 0.14);
+  --border: rgba(255, 255, 255, 0.12);
+  --line: #3a4a66;
+  --shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.cf-loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 15px; }
+
+/* layout */
+.cf-app { display: grid; grid-template-columns: 260px 1fr; height: 100vh; }
+.cf-sidebar { background: var(--panel); border-right: 1px solid var(--border); overflow-y: auto; padding: 14px 10px; }
+.cf-brand { font-size: 15px; font-weight: 700; padding: 6px 10px 12px; letter-spacing: 0.01em; }
+.cf-brand small { display: block; font-weight: 400; color: var(--muted); font-size: 11px; margin-top: 3px; }
+.cf-dlist { list-style: none; margin: 0; padding: 0; }
+.cf-dlist li { padding: 9px 12px; border-radius: 9px; cursor: pointer; font-size: 13.5px; font-weight: 500; color: var(--ink); margin-bottom: 2px; transition: background 0.12s ease; }
+.cf-dlist li:hover { background: var(--accent-soft); }
+.cf-dlist li.active { background: var(--accent); color: #fff; }
+.cf-dlist li small { display: block; font-weight: 400; font-size: 10.5px; opacity: 0.75; margin-top: 1px; }
+
+.cf-main { overflow-y: auto; padding: 0 26px 60px; }
+.cf-topbar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding: 18px 0 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.cf-title { font-size: 21px; font-weight: 700; margin: 0; flex: 1 1 auto; }
+.cf-tabs { display: inline-flex; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.cf-tab { padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--muted); }
+.cf-tab.active.gng { background: var(--gng); color: #fff; }
+.cf-tab.active.kdt { background: var(--kdt); color: #fff; }
+.cf-btn { background: var(--panel); border: 1px solid var(--border); color: var(--ink); padding: 8px 12px; border-radius: 9px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.cf-btn:hover { background: var(--accent-soft); }
+.cf-search { background: var(--panel); border: 1px solid var(--border); color: var(--ink); padding: 8px 12px; border-radius: 9px; font-size: 13px; outline: none; min-width: 180px; }
+.cf-search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.cf-cite { font-size: 12px; color: var(--muted); margin: 2px 0 14px; }
+
+/* tree flowchart */
+.cf-tree, .cf-tree ul { list-style: none; margin: 0; padding: 0; }
+.cf-tree ul { margin-left: 18px; padding-left: 16px; border-left: 2px solid var(--line); }
+.cf-tree li { position: relative; margin: 6px 0; }
+.cf-tree ul > li::before { content: ""; position: absolute; left: -16px; top: 16px; width: 14px; height: 2px; background: var(--line); }
+
+.cf-group > .cf-node { display: inline-flex; align-items: center; gap: 7px; background: var(--panel); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 9px; padding: 7px 12px; font-weight: 650; font-size: 13.5px; cursor: pointer; box-shadow: var(--shadow); }
+.cf-group.gng > .cf-node { border-left-color: var(--gng); }
+.cf-group.kdt > .cf-node { border-left-color: var(--kdt); }
+.cf-caret { font-size: 10px; color: var(--muted); transition: transform 0.15s ease; }
+.cf-collapsed > .cf-node .cf-caret { transform: rotate(-90deg); }
+.cf-collapsed > ul { display: none; }
+
+.cf-drug > .cf-node { display: inline-flex; align-items: center; gap: 6px; background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 5px 13px; font-size: 13px; cursor: pointer; transition: background 0.12s ease, border-color 0.12s ease; }
+.cf-drug > .cf-node:hover { background: var(--accent-soft); border-color: var(--accent); }
+.cf-drug.open > .cf-node { background: var(--accent); color: #fff; border-color: var(--accent); }
+.cf-drug .cf-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.cf-drug.open .cf-dot { background: #fff; }
+.cf-drug.nodata > .cf-node { color: var(--muted); font-style: italic; cursor: default; }
+.cf-hit > .cf-node { outline: 2px solid #f5a623; outline-offset: 1px; }
+
+/* detail card */
+.cf-card { margin: 8px 0 4px; max-width: 720px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+.cf-card-head { padding: 11px 16px; font-weight: 700; font-size: 14.5px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.cf-card-head .cf-klass { font-weight: 400; font-size: 11.5px; color: var(--muted); text-align: right; }
+.cf-row { display: grid; grid-template-columns: 132px 1fr; gap: 10px; padding: 9px 16px; border-top: 1px solid var(--border); font-size: 13px; line-height: 1.5; }
+.cf-row:first-child { border-top: none; }
+.cf-row .cf-k { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: var(--muted); padding-top: 2px; }
+.cf-row.adme .cf-k { color: #b06f00; }
+.cf-row.moa  .cf-k { color: var(--accent); }
+.cf-row.uses .cf-k { color: var(--kdt); }
+.cf-row.adr  .cf-k { color: #c0392b; }
+.cf-note { padding: 9px 16px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+@media (max-width: 760px) {
+  .cf-app { grid-template-columns: 1fr; }
+  .cf-sidebar { position: fixed; z-index: 20; width: 240px; height: 100%; transform: translateX(-100%); transition: transform 0.2s ease; }
+  .cf-sidebar.open { transform: translateX(0); }
+  .cf-row { grid-template-columns: 1fr; gap: 2px; }
+}

@@ -29,9 +29,14 @@ A 3D memory-palace city for revising MD Pharmacology, sourced to Goodman & Gilma
 - **Mini-map** (press M or click Map) — SVG overlay of all 14 districts with click-to-navigate dots.
 - **Deep links** — `?d=cholinergic&drug=neostigmine` opens directly on that flashcard.
 
+### Classification flowchart (separate page)
+- **`classification.html`** — a standalone page rendering each district's drug classification as a **collapsible tree flowchart**, with a **14-district sidebar**, **G&G 14e / KDT** source tabs, drug search, and day/night theme.
+- Click any drug node to expand a detail card with **ADME · Mechanism · Uses · Adverse effects**. Every classification leaf across all 14 districts is covered (~780 entries) in `content/details/*.js`.
+- Reachable from inside any district in the main app via the **"Open full flowchart ↗"** link in the Classification panel, or directly at `classification.html` / `https://city.pharmabymd.com/classification.html`.
+
 ## Sharing
 
-Send `dist/pharma-city.html` via WhatsApp, AirDrop, Drive, or just share the URL — `https://city.pharmabymd.com`.
+Send `dist/pharma-city.html` (or `dist/classification.html`) via WhatsApp, AirDrop, Drive, or just share the URL — `https://city.pharmabymd.com`.
 
 ## Development
 

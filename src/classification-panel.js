@@ -43,6 +43,7 @@
       panel.innerHTML = `
         <button class="btn" style="position:absolute;top:12px;right:12px" id="cls-close" aria-label="Close classification">×</button>
         <div class="cls-title">${esc(d.name ?? '')} — Classification</div>
+        <a class="cls-flowchart-link" href="classification.html" target="_blank" rel="noopener">Open full flowchart (ADME · MOA · uses · ADR) ↗</a>
         <div class="cls-body">${renderClassificationHTML(d.classification)}</div>
       `;
       panel.querySelector('#cls-close').onclick = close;
