@@ -101,6 +101,39 @@ canvas { display: block; touch-action: none; }
 .compare-table th:last-child, .compare-table td:last-child { border-right: 0; }
 .compare-table thead th { background: var(--accent-soft); font-weight: 600; color: var(--text-on-card); text-align: left; }
 .compare-table tbody th { background: rgba(15, 22, 42, 0.04); text-align: left; font-weight: 600; color: var(--muted-on-card); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
+
+.btn-theme { padding: 6px 10px; font-size: 16px; line-height: 1; }
+.minimap { position: fixed; top: 60px; right: 16px; z-index: 18; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 10px; box-shadow: var(--card-shadow); }
+.minimap-svg svg { display: block; cursor: pointer; border-radius: 8px; }
+.mm-dot { cursor: pointer; transition: r 0.15s ease; }
+.mm-dot:hover { stroke-width: 2; }
+
+/* Night theme — keep panels readable but darker. 3D sky is handled in JS. */
+body.theme-night {
+  --bg: #0a1530;
+  --text-on-card: #e8edf5;
+  --muted-on-card: #98a4ba;
+  --card: rgba(20, 30, 56, 0.94);
+  --card-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+  --border: rgba(255, 255, 255, 0.10);
+  --accent-soft: rgba(110, 170, 255, 0.16);
+  --hook-bg: #2a2a14;
+  --hook-text: #fde68a;
+  --hook-border: #88661a;
+}
+body.theme-night .btn { color: var(--text-on-card); }
+body.theme-night .btn:hover { background: rgba(40, 55, 90, 0.96); }
+body.theme-night .title { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7); color: #e8edf5; }
+body.theme-night .mcq-option { background: rgba(35, 45, 75, 0.7); color: var(--text-on-card); }
+body.theme-night .mcq-option:hover { background: var(--accent-soft); }
+body.theme-night .compare-dropdown { background: rgba(35, 45, 75, 0.85); color: var(--text-on-card); }
+body.theme-night .compare-druglist { background: rgba(15, 25, 50, 0.5); }
+body.theme-night .compare-table { background: rgba(20, 30, 56, 0.92); color: var(--text-on-card); }
+body.theme-night .compare-table thead th { background: var(--accent-soft); color: var(--text-on-card); }
+body.theme-night .compare-table tbody th { background: rgba(255, 255, 255, 0.04); }
+body.theme-night .btn-due { background: #2a2a14; border-color: #88661a; color: #fde68a; }
+body.theme-night .btn-due:hover { background: #3b3b1e; }
+body.theme-night .wlabel { background: rgba(20, 30, 56, 0.95); color: #ffffff; border-color: rgba(255, 255, 255, 0.2); }
 .btn-good { background: rgba(22, 163, 74, 0.14); border-color: rgba(22, 163, 74, 0.55); color: #0f6b32; }
 .btn-good:hover { background: rgba(22, 163, 74, 0.22); }
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }
@@ -4462,6 +4495,45 @@ if (typeof window !== 'undefined') {
 })();
 
 
+// === src/theme.js ===
+// Theme — day vs night. Drives the 3D scene sky/sun/moon and the body class
+// for CSS overrides. Persisted in localStorage.
+(function(){
+  const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
+  const KEY = 'pharma_theme';
+  const listeners = new Set();
+  function load() {
+    try { return (typeof localStorage !== 'undefined' && localStorage.getItem(KEY)) || 'day'; } catch (_) { return 'day'; }
+  }
+  function save(t) {
+    try { if (typeof localStorage !== 'undefined') localStorage.setItem(KEY, t); } catch (_) {}
+  }
+  let current = load();
+  function apply() {
+    if (typeof document !== 'undefined') {
+      document.body.classList.toggle('theme-night', current === 'night');
+    }
+    listeners.forEach(fn => { try { fn(current); } catch (_) {} });
+  }
+  function setTheme(t) {
+    if (t !== 'day' && t !== 'night') return;
+    if (current === t) return;
+    current = t;
+    save(current);
+    apply();
+  }
+  function toggle() { setTheme(current === 'day' ? 'night' : 'day'); }
+  function getTheme() { return current; }
+  function onChange(fn) { listeners.add(fn); return () => listeners.delete(fn); }
+  // Initial apply on load.
+  if (typeof document !== 'undefined') {
+    if (document.readyState !== 'loading') apply();
+    else document.addEventListener('DOMContentLoaded', apply);
+  }
+  P.theme = { setTheme, toggle, getTheme, onChange };
+})();
+
+
 // === src/walkthrough-panel.js ===
 (function(){
   const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
@@ -5176,6 +5248,106 @@ if (typeof window !== 'undefined') {
 })();
 
 
+// === src/minimap.js ===
+// Mini-map — SVG overlay top-right, dot per district at its world (x,z),
+// click a dot to navigate. Press M or click the map button to toggle.
+(function(){
+  const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
+  let svg = null;
+  let mapEl = null;
+  let visible = false;
+
+  function districts() {
+    const out = [];
+    if (typeof window === 'undefined') return out;
+    for (const k in window) {
+      if (!k.startsWith('DISTRICT_')) continue;
+      const d = window[k];
+      if (d?.id && d?.name && d?.position) out.push(d);
+    }
+    return out;
+  }
+
+  function render() {
+    if (!svg) return;
+    const ds = districts();
+    if (ds.length === 0) return;
+    // Find bounds of district positions.
+    let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity;
+    ds.forEach(d => {
+      minX = Math.min(minX, d.position.x); maxX = Math.max(maxX, d.position.x);
+      minZ = Math.min(minZ, d.position.z); maxZ = Math.max(maxZ, d.position.z);
+    });
+    const padding = 15;
+    const w = (maxX - minX) + padding * 2;
+    const h = (maxZ - minZ) + padding * 2;
+    const viewW = 240, viewH = 240;
+    const scale = Math.min(viewW / w, viewH / h);
+    const offX = (viewW - w * scale) / 2 - (minX - padding) * scale;
+    const offZ = (viewH - h * scale) / 2 - (minZ - padding) * scale;
+    const proj = (px, pz) => ({ x: px * scale + offX, y: pz * scale + offZ });
+
+    // Roads — same edges as city-scene.
+    const ROADS = [
+      ['cholinergic','ans_hub'],['ans_hub','adrenergic'],
+      ['ans_hub','autacoids'],['autacoids','cvs'],
+      ['cvs','respiratory'],['cvs','git'],
+      ['ans_hub','renal'],['ans_hub','respiratory'],
+      ['ans_hub','cns'],['cns','endocrine'],['cns','chemotherapy'],
+      ['chemotherapy','toxicology'],
+      ['general_pharmacology','ans_hub'],['git','recent_advances'],
+    ];
+    const byId = {}; ds.forEach(d => byId[d.id] = d);
+    const parts = [];
+    parts.push(`<svg width="${viewW}" height="${viewH}" viewBox="0 0 ${viewW} ${viewH}" xmlns="http://www.w3.org/2000/svg">`);
+    parts.push(`<rect x="0" y="0" width="${viewW}" height="${viewH}" fill="#b5e26b" rx="10"/>`);
+    ROADS.forEach(([a, b]) => {
+      const A = byId[a], B = byId[b]; if (!A || !B) return;
+      const pa = proj(A.position.x, A.position.z), pb = proj(B.position.x, B.position.z);
+      parts.push(`<line x1="${pa.x.toFixed(1)}" y1="${pa.y.toFixed(1)}" x2="${pb.x.toFixed(1)}" y2="${pb.y.toFixed(1)}" stroke="#eadcb6" stroke-width="3" stroke-linecap="round"/>`);
+    });
+    ds.forEach(d => {
+      const p = proj(d.position.x, d.position.z);
+      const color = '#' + ((d.palette?.accent ?? 0x888780) >>> 0).toString(16).padStart(6, '0');
+      parts.push(`<circle data-d="${d.id}" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="7" fill="${color}" stroke="#1a2238" stroke-width="1.2" class="mm-dot" />`);
+      parts.push(`<text x="${p.x.toFixed(1)}" y="${(p.y - 10).toFixed(1)}" font-size="9" font-weight="600" text-anchor="middle" fill="#1a2238" pointer-events="none">${d.name}</text>`);
+    });
+    parts.push(`</svg>`);
+    svg.innerHTML = parts.join('');
+    svg.querySelectorAll('.mm-dot').forEach(el => {
+      el.addEventListener('click', () => {
+        P.app?.goTo?.('district', { districtId: el.getAttribute('data-d') });
+      });
+    });
+  }
+
+  function open() { if (!mapEl) return; render(); mapEl.style.display = 'block'; visible = true; }
+  function close() { if (mapEl) { mapEl.style.display = 'none'; visible = false; } }
+  function toggle() { visible ? close() : open(); }
+
+  function mount(rootEl) {
+    if (mapEl) return;
+    mapEl = document.createElement('div');
+    mapEl.className = 'minimap';
+    mapEl.style.display = 'none';
+    svg = document.createElement('div');
+    svg.className = 'minimap-svg';
+    mapEl.appendChild(svg);
+    rootEl.appendChild(mapEl);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'm' || e.key === 'M') {
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+          toggle();
+        }
+      });
+    }
+  }
+
+  P.minimap = { mount, open, close, toggle };
+})();
+
+
 // === src/district-scene.js ===
 // District scene (level 2). Mounted ONCE per page from app.js boot(); no dispose path.
 (function(){
@@ -5189,9 +5361,13 @@ if (typeof window !== 'undefined') {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     const scene = new THREE.Scene();
-    // Bright daytime sky, matching the city overview.
+    // Bright daytime sky, matching the city overview. setSkyForTheme() handles night.
     scene.background = new THREE.Color(0xa6dcef);
     scene.fog = new THREE.Fog(0xc9e8f5, 70, 220);
+    function setSkyForTheme(t) {
+      if (t === 'night') { scene.background.set(0x0a1530); scene.fog.color.set(0x101b3c); }
+      else { scene.background.set(0xa6dcef); scene.fog.color.set(0xc9e8f5); }
+    }
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
     scene.add(new THREE.HemisphereLight(0xfff7e6, 0x6cb56b, 0.45));
     scene.add(new THREE.AmbientLight(0xffffff, 0.6));
@@ -5514,6 +5690,8 @@ if (typeof window !== 'undefined') {
       updateLabels();
     }
     P.loop.add(tick);
+    setSkyForTheme(P.theme?.getTheme?.() ?? 'day');
+    P.theme?.onChange?.((t) => setSkyForTheme(t));
     P.app.on('navigate', s => {
       visible = s.level === 'district' || s.level === 'flashcard';
       canvas.style.display = visible ? 'block' : 'none';
@@ -5542,7 +5720,7 @@ if (typeof window !== 'undefined') {
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     const scene = new THREE.Scene();
-    // Bright daytime sky.
+    // Bright daytime sky. setSkyForTheme() swaps colors / objects for night mode.
     scene.background = new THREE.Color(0xa6dcef);
     scene.fog = new THREE.Fog(0xc9e8f5, 110, 320);
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
@@ -5562,13 +5740,35 @@ if (typeof window !== 'undefined') {
     scene.add(dir);
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // Sun + clouds — purely decorative.
-    const sun = new THREE.Mesh(
-      new THREE.SphereGeometry(8, 24, 16),
-      new THREE.MeshBasicMaterial({ color: 0xfff2a8 })
-    );
-    sun.position.set(70, 90, -70);
-    scene.add(sun);
+    // Sun (day) + moon + stars (night).
+    const sun = new THREE.Mesh(new THREE.SphereGeometry(8, 24, 16), new THREE.MeshBasicMaterial({ color: 0xfff2a8 }));
+    sun.position.set(70, 90, -70); scene.add(sun);
+    const moon = new THREE.Mesh(new THREE.SphereGeometry(7, 24, 16), new THREE.MeshBasicMaterial({ color: 0xf0f0ff }));
+    moon.position.set(70, 90, -70); moon.visible = false; scene.add(moon);
+    const starGeom = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(800 * 3);
+    for (let i = 0; i < 800; i++) {
+      const r = 180 + Math.random() * 80;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(0.2 + Math.random() * 0.8); // upper hemisphere
+      starPositions[i*3] = r * Math.sin(phi) * Math.cos(theta);
+      starPositions[i*3+1] = r * Math.cos(phi);
+      starPositions[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+    }
+    starGeom.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const stars = new THREE.Points(starGeom, new THREE.PointsMaterial({ color: 0xffffff, size: 0.9, transparent: true, opacity: 0.85 }));
+    stars.visible = false; scene.add(stars);
+    function setSkyForTheme(t) {
+      if (t === 'night') {
+        scene.background.set(0x0a1530); scene.fog.color.set(0x101b3c);
+        sun.visible = false; moon.visible = true; stars.visible = true;
+        dir.intensity = 0.45; dir.color.set(0xbfd0ff);
+      } else {
+        scene.background.set(0xa6dcef); scene.fog.color.set(0xc9e8f5);
+        sun.visible = true; moon.visible = false; stars.visible = false;
+        dir.intensity = 1.0; dir.color.set(0xfff5d6);
+      }
+    }
     const cloudMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 });
     const clouds = [];
     for (let i = 0; i < 6; i++) {
@@ -5768,6 +5968,10 @@ if (typeof window !== 'undefined') {
       }
     });
     canvas.addEventListener('pointerleave', () => { hoveredId = null; canvas.style.cursor = 'grab'; });
+    // Click-to-fly state. When the user taps a landmark we ease the camera
+    // toward it before firing goTo for a cinematic feel.
+    let flying = null;
+
     function endPointer(e) {
       if (e.pointerId !== activePointer) return;
       activePointer = null;
@@ -5782,7 +5986,17 @@ if (typeof window !== 'undefined') {
         const hit = ray.intersectObjects(pickables, true)[0];
         if (hit) {
           let g = hit.object; while (g && !g.userData?.districtId) g = g.parent;
-          if (g?.userData?.districtId) P.app.goTo('district', { districtId: g.userData.districtId });
+          if (g?.userData?.districtId) {
+            flying = {
+              districtId: g.userData.districtId,
+              tStart: performance.now(),
+              tEnd: performance.now() + 550,
+              targetFrom: target.clone(),
+              targetTo: new THREE.Vector3(g.position.x, 6, g.position.z),
+              distFrom: distance,
+              distTo: Math.max(35, distance * 0.55),
+            };
+          }
         }
       }
     }
@@ -5827,6 +6041,20 @@ if (typeof window !== 'undefined') {
     let visible = true;
     function tick(dt, t) {
       if (!visible) return;
+      if (flying) {
+        const now = performance.now();
+        const p = Math.min(1, (now - flying.tStart) / (flying.tEnd - flying.tStart));
+        // ease-in-out cubic
+        const eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        target.lerpVectors(flying.targetFrom, flying.targetTo, eased);
+        distance = flying.distFrom + (flying.distTo - flying.distFrom) * eased;
+        if (p >= 1) {
+          const id = flying.districtId; flying = null;
+          // Reset camera state for next time entering the city.
+          target.set(0, 6, 0); distance = 90;
+          P.app.goTo('district', { districtId: id });
+        }
+      }
       updateCamera();
       updateHoverAnimations(dt);
       // Drift clouds slowly across the sky.
@@ -5845,6 +6073,9 @@ if (typeof window !== 'undefined') {
       canvas.style.display = visible ? 'block' : 'none';
       labelLayer.style.display = visible ? '' : 'none';
     });
+    // Theme: apply current + subscribe to changes.
+    setSkyForTheme(P.theme?.getTheme?.() ?? 'day');
+    P.theme?.onChange?.((t) => setSkyForTheme(t));
     window.addEventListener('resize', resize); resize();
   }
   P.city = { mount };
@@ -5881,6 +6112,8 @@ if (typeof window !== 'undefined') {
         <button class="btn btn-due" id="dueBtn" aria-label="review drugs due today">Due today</button>
         <button class="btn" id="mcqBtn" aria-label="multiple choice question">MCQ</button>
         <button class="btn" id="compareBtn" aria-label="compare drugs">Compare</button>
+        <button class="btn" id="mapBtn" aria-label="mini map" title="Press M">Map</button>
+        <button class="btn btn-theme" id="themeBtn" aria-label="toggle day/night">🌙</button>
       </div>
       <div class="search" id="search-mount"></div>
     `;
@@ -5891,6 +6124,11 @@ if (typeof window !== 'undefined') {
     document.getElementById('dueBtn').addEventListener('click', () => P.quiz?.startDue?.());
     document.getElementById('mcqBtn').addEventListener('click', () => P.mcq?.open?.());
     document.getElementById('compareBtn').addEventListener('click', () => P.compare?.open?.());
+    document.getElementById('mapBtn').addEventListener('click', () => P.minimap?.toggle?.());
+    const themeBtn = document.getElementById('themeBtn');
+    function syncThemeBtn() { if (themeBtn) themeBtn.textContent = (P.theme?.getTheme?.() === 'night') ? '☀️' : '🌙'; }
+    themeBtn?.addEventListener('click', () => { P.theme?.toggle?.(); syncThemeBtn(); });
+    syncThemeBtn();
     function updateDueBadge() {
       const btn = document.getElementById('dueBtn');
       if (!btn || !P.quiz) return;
@@ -5922,6 +6160,7 @@ if (typeof window !== 'undefined') {
     P.walkthrough?.mount?.(app);
     P.mcq?.mount?.(app);
     P.compare?.mount?.(app);
+    P.minimap?.mount?.(app);
     P.selfTest?.mount?.(app);
     P.selfTest?.onChange?.(() => { P.flashcard?._onSelfTestChange?.(); });
     P.search?.mount?.(document.getElementById('search-mount'));

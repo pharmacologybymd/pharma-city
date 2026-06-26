@@ -13,7 +13,7 @@
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     const scene = new THREE.Scene();
-    // Bright daytime sky.
+    // Bright daytime sky. setSkyForTheme() swaps colors / objects for night mode.
     scene.background = new THREE.Color(0xa6dcef);
     scene.fog = new THREE.Fog(0xc9e8f5, 110, 320);
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
@@ -33,13 +33,35 @@
     scene.add(dir);
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // Sun + clouds — purely decorative.
-    const sun = new THREE.Mesh(
-      new THREE.SphereGeometry(8, 24, 16),
-      new THREE.MeshBasicMaterial({ color: 0xfff2a8 })
-    );
-    sun.position.set(70, 90, -70);
-    scene.add(sun);
+    // Sun (day) + moon + stars (night).
+    const sun = new THREE.Mesh(new THREE.SphereGeometry(8, 24, 16), new THREE.MeshBasicMaterial({ color: 0xfff2a8 }));
+    sun.position.set(70, 90, -70); scene.add(sun);
+    const moon = new THREE.Mesh(new THREE.SphereGeometry(7, 24, 16), new THREE.MeshBasicMaterial({ color: 0xf0f0ff }));
+    moon.position.set(70, 90, -70); moon.visible = false; scene.add(moon);
+    const starGeom = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(800 * 3);
+    for (let i = 0; i < 800; i++) {
+      const r = 180 + Math.random() * 80;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(0.2 + Math.random() * 0.8); // upper hemisphere
+      starPositions[i*3] = r * Math.sin(phi) * Math.cos(theta);
+      starPositions[i*3+1] = r * Math.cos(phi);
+      starPositions[i*3+2] = r * Math.sin(phi) * Math.sin(theta);
+    }
+    starGeom.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    const stars = new THREE.Points(starGeom, new THREE.PointsMaterial({ color: 0xffffff, size: 0.9, transparent: true, opacity: 0.85 }));
+    stars.visible = false; scene.add(stars);
+    function setSkyForTheme(t) {
+      if (t === 'night') {
+        scene.background.set(0x0a1530); scene.fog.color.set(0x101b3c);
+        sun.visible = false; moon.visible = true; stars.visible = true;
+        dir.intensity = 0.45; dir.color.set(0xbfd0ff);
+      } else {
+        scene.background.set(0xa6dcef); scene.fog.color.set(0xc9e8f5);
+        sun.visible = true; moon.visible = false; stars.visible = false;
+        dir.intensity = 1.0; dir.color.set(0xfff5d6);
+      }
+    }
     const cloudMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 });
     const clouds = [];
     for (let i = 0; i < 6; i++) {
@@ -239,6 +261,10 @@
       }
     });
     canvas.addEventListener('pointerleave', () => { hoveredId = null; canvas.style.cursor = 'grab'; });
+    // Click-to-fly state. When the user taps a landmark we ease the camera
+    // toward it before firing goTo for a cinematic feel.
+    let flying = null;
+
     function endPointer(e) {
       if (e.pointerId !== activePointer) return;
       activePointer = null;
@@ -253,7 +279,17 @@
         const hit = ray.intersectObjects(pickables, true)[0];
         if (hit) {
           let g = hit.object; while (g && !g.userData?.districtId) g = g.parent;
-          if (g?.userData?.districtId) P.app.goTo('district', { districtId: g.userData.districtId });
+          if (g?.userData?.districtId) {
+            flying = {
+              districtId: g.userData.districtId,
+              tStart: performance.now(),
+              tEnd: performance.now() + 550,
+              targetFrom: target.clone(),
+              targetTo: new THREE.Vector3(g.position.x, 6, g.position.z),
+              distFrom: distance,
+              distTo: Math.max(35, distance * 0.55),
+            };
+          }
         }
       }
     }
@@ -298,6 +334,20 @@
     let visible = true;
     function tick(dt, t) {
       if (!visible) return;
+      if (flying) {
+        const now = performance.now();
+        const p = Math.min(1, (now - flying.tStart) / (flying.tEnd - flying.tStart));
+        // ease-in-out cubic
+        const eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        target.lerpVectors(flying.targetFrom, flying.targetTo, eased);
+        distance = flying.distFrom + (flying.distTo - flying.distFrom) * eased;
+        if (p >= 1) {
+          const id = flying.districtId; flying = null;
+          // Reset camera state for next time entering the city.
+          target.set(0, 6, 0); distance = 90;
+          P.app.goTo('district', { districtId: id });
+        }
+      }
       updateCamera();
       updateHoverAnimations(dt);
       // Drift clouds slowly across the sky.
@@ -316,6 +366,9 @@
       canvas.style.display = visible ? 'block' : 'none';
       labelLayer.style.display = visible ? '' : 'none';
     });
+    // Theme: apply current + subscribe to changes.
+    setSkyForTheme(P.theme?.getTheme?.() ?? 'day');
+    P.theme?.onChange?.((t) => setSkyForTheme(t));
     window.addEventListener('resize', resize); resize();
   }
   P.city = { mount };

@@ -95,6 +95,39 @@ canvas { display: block; touch-action: none; }
 .compare-table th:last-child, .compare-table td:last-child { border-right: 0; }
 .compare-table thead th { background: var(--accent-soft); font-weight: 600; color: var(--text-on-card); text-align: left; }
 .compare-table tbody th { background: rgba(15, 22, 42, 0.04); text-align: left; font-weight: 600; color: var(--muted-on-card); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; }
+
+.btn-theme { padding: 6px 10px; font-size: 16px; line-height: 1; }
+.minimap { position: fixed; top: 60px; right: 16px; z-index: 18; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 10px; box-shadow: var(--card-shadow); }
+.minimap-svg svg { display: block; cursor: pointer; border-radius: 8px; }
+.mm-dot { cursor: pointer; transition: r 0.15s ease; }
+.mm-dot:hover { stroke-width: 2; }
+
+/* Night theme — keep panels readable but darker. 3D sky is handled in JS. */
+body.theme-night {
+  --bg: #0a1530;
+  --text-on-card: #e8edf5;
+  --muted-on-card: #98a4ba;
+  --card: rgba(20, 30, 56, 0.94);
+  --card-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+  --border: rgba(255, 255, 255, 0.10);
+  --accent-soft: rgba(110, 170, 255, 0.16);
+  --hook-bg: #2a2a14;
+  --hook-text: #fde68a;
+  --hook-border: #88661a;
+}
+body.theme-night .btn { color: var(--text-on-card); }
+body.theme-night .btn:hover { background: rgba(40, 55, 90, 0.96); }
+body.theme-night .title { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7); color: #e8edf5; }
+body.theme-night .mcq-option { background: rgba(35, 45, 75, 0.7); color: var(--text-on-card); }
+body.theme-night .mcq-option:hover { background: var(--accent-soft); }
+body.theme-night .compare-dropdown { background: rgba(35, 45, 75, 0.85); color: var(--text-on-card); }
+body.theme-night .compare-druglist { background: rgba(15, 25, 50, 0.5); }
+body.theme-night .compare-table { background: rgba(20, 30, 56, 0.92); color: var(--text-on-card); }
+body.theme-night .compare-table thead th { background: var(--accent-soft); color: var(--text-on-card); }
+body.theme-night .compare-table tbody th { background: rgba(255, 255, 255, 0.04); }
+body.theme-night .btn-due { background: #2a2a14; border-color: #88661a; color: #fde68a; }
+body.theme-night .btn-due:hover { background: #3b3b1e; }
+body.theme-night .wlabel { background: rgba(20, 30, 56, 0.95); color: #ffffff; border-color: rgba(255, 255, 255, 0.2); }
 .btn-good { background: rgba(22, 163, 74, 0.14); border-color: rgba(22, 163, 74, 0.55); color: #0f6b32; }
 .btn-good:hover { background: rgba(22, 163, 74, 0.22); }
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }

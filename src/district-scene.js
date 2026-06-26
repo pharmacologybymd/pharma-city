@@ -10,9 +10,13 @@
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     const scene = new THREE.Scene();
-    // Bright daytime sky, matching the city overview.
+    // Bright daytime sky, matching the city overview. setSkyForTheme() handles night.
     scene.background = new THREE.Color(0xa6dcef);
     scene.fog = new THREE.Fog(0xc9e8f5, 70, 220);
+    function setSkyForTheme(t) {
+      if (t === 'night') { scene.background.set(0x0a1530); scene.fog.color.set(0x101b3c); }
+      else { scene.background.set(0xa6dcef); scene.fog.color.set(0xc9e8f5); }
+    }
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 500);
     scene.add(new THREE.HemisphereLight(0xfff7e6, 0x6cb56b, 0.45));
     scene.add(new THREE.AmbientLight(0xffffff, 0.6));
@@ -335,6 +339,8 @@
       updateLabels();
     }
     P.loop.add(tick);
+    setSkyForTheme(P.theme?.getTheme?.() ?? 'day');
+    P.theme?.onChange?.((t) => setSkyForTheme(t));
     P.app.on('navigate', s => {
       visible = s.level === 'district' || s.level === 'flashcard';
       canvas.style.display = visible ? 'block' : 'none';
