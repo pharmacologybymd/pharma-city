@@ -12,9 +12,12 @@ describe('build', () => {
     const path = join(projectRoot, 'dist/pharma-city.html');
     expect(existsSync(path)).toBe(true);
     const html = readFileSync(path, 'utf8');
-    // file:// requirement — no runtime network references
+    // file:// requirement — no runtime network references. Only flag
+    // resource-loading hrefs (<link rel=stylesheet>, <link rel=icon>); a
+    // plain user-clickable <a href="https://…"> is fine because it doesn't
+    // fetch anything at load time.
     expect(html).not.toMatch(/src=["']https?:/);
-    expect(html).not.toMatch(/href=["']https?:/);
+    expect(html).not.toMatch(/<link[^>]+href=["']https?:/i);
     expect(html).not.toMatch(/import\s+.*from\s+['"]https?:/);
     // size sanity — Three.js alone is ~600 KB
     expect(statSync(path).size).toBeGreaterThan(500_000);

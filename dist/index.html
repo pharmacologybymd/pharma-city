@@ -6123,12 +6123,24 @@ if (typeof window !== 'undefined') {
     document.getElementById('quizBtn').addEventListener('click', () => P.quiz?.startRandom?.());
     document.getElementById('weakBtn').addEventListener('click', () => P.quiz?.startWeakest?.());
     document.getElementById('dueBtn').addEventListener('click', () => P.quiz?.startDue?.());
+    // Shift-click the Due-today badge to reset progress.
+    document.getElementById('dueBtn').title = 'Click to study drugs due today. Shift-click to reset progress.';
+    document.getElementById('dueBtn').addEventListener('click', (e) => {
+      if (!e.shiftKey) return;
+      e.stopImmediatePropagation();
+      if (!confirm('Reset all study progress? (Mastery, streaks, due-dates.) This cannot be undone.')) return;
+      P.quiz?.reset?.();
+      updateDueBadge();
+      window.location.reload();
+    });
     document.getElementById('mcqBtn').addEventListener('click', () => P.mcq?.open?.());
     document.getElementById('compareBtn').addEventListener('click', () => P.compare?.open?.());
     document.getElementById('mapBtn').addEventListener('click', () => P.minimap?.toggle?.());
     const themeBtn = document.getElementById('themeBtn');
     function syncThemeBtn() { if (themeBtn) themeBtn.textContent = (P.theme?.getTheme?.() === 'night') ? '☀️' : '🌙'; }
     themeBtn?.addEventListener('click', () => { P.theme?.toggle?.(); syncThemeBtn(); });
+    // Sync on initial load AND when the theme changes from any source.
+    P.theme?.onChange?.(syncThemeBtn);
     syncThemeBtn();
     function updateDueBadge() {
       const btn = document.getElementById('dueBtn');

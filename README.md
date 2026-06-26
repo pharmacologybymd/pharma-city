@@ -1,54 +1,64 @@
 # Pharmacology City
 
-A 3D memory-palace city for revising MD Pharmacology (G&G 14e).
-Open `dist/pharma-city.html` by double-clicking. Works offline.
+A 3D memory-palace city for revising MD Pharmacology, sourced to Goodman & Gilman 14e.
+
+**Live:** [https://city.pharmabymd.com](https://city.pharmabymd.com)
+
+14 districts, ~290 drugs, single-file HTML — works offline once loaded, opens by double-clicking, mobile-friendly.
+
+## Features
+
+### Study
+- **Hide-then-reveal flashcards** for every drug: class, mechanism, adverse effects, clinical use, plus a memory hook and the G&G chapter citation.
+- **Quiz me** picks any drug at random.
+- **Practise missed** surfaces the drugs your "Knew it / Missed it" history says are weakest.
+- **Due today** uses a Leitner spaced-repetition box (1d / 3d / 7d / 14d) to schedule each drug; the badge counts unseen + due.
+- **MCQ mode** — 4-option multiple-choice questions; wrong answers are drawn from same-district drugs so they read plausibly.
+- **Compare drugs** — pick 2–4 drugs from any district, see them in a side-by-side table (class / mechanism / ADR / clinical use / memory hook / source).
+- **Self-test mode** hides every label so you can walk the city from memory and identify drugs by their building shape and position.
+- **Drug-name search** jumps straight to any drug's flashcard.
+
+### Visual / navigation
+- Sky-blue **3D city** with sun, drifting clouds, beige road network. District position encodes relatedness (autonomic spine, effector ring, CNS hill cluster).
+- 3-tier buildings (plinth + body + dome) with lit yellow windows.
+- **Hover any building** → lifts and grows; cursor becomes a pointer.
+- **Drag** to rotate, **scroll** to zoom, **click** a building → smooth fly-in then enter.
+- Inside districts: drug buildings on city-block grid with palette-tinted road network.
+- **Mastery visualisation** — every "Knew it" makes a building taller and shifts its dome yellow → lime → green. Missed drugs turn red. The whole district shows you visually where you're strong vs weak.
+- **Day/night theme** (🌙 / ☀️) persists in localStorage.
+- **Mini-map** (press M or click Map) — SVG overlay of all 14 districts with click-to-navigate dots.
+- **Deep links** — `?d=cholinergic&drug=neostigmine` opens directly on that flashcard.
 
 ## Sharing
 
-Send `dist/pharma-city.html` via WhatsApp / Google Drive / AirDrop. Recipients open with one tap.
-
-## Hosting at `city.pharmabymd.com` (GitHub Pages + custom domain)
-
-The repo is set up to be a one-click GitHub Pages site at `city.pharmabymd.com`. `dist/` is **committed** (not gitignored) and contains `index.html`, `pharma-city.html`, `CNAME`, and `.nojekyll`.
-
-**One-time setup (via GitHub Desktop):**
-
-1. Open GitHub Desktop → **File → Add local repository** → choose `/Users/rahulsanghvi/Pharma City`.
-2. Top toolbar → **Publish repository**. Name `pharma-city`, leave "Keep this code private" UNCHECKED, click Publish.
-3. On github.com → your new repo → **Settings → Pages**. Source: `Deploy from a branch`. Branch `main`, folder **`/docs`** (GitHub Pages only allows `/ (root)` or `/docs` as the folder — that's why `build.js` writes the artifacts to both `dist/` and `docs/`). Save.
-4. Wait ~30 s for the first deploy. The temporary URL `https://<your-username>.github.io/pharma-city/` should serve the city.
-5. In the same Pages settings, **Custom domain** → `city.pharmabymd.com`. (The `dist/CNAME` file in the repo also declares this.)
-6. In your **JustNode cPanel → Zone Editor** for `pharmabymd.com`, add a **CNAME** record: name `city`, target `<your-username>.github.io.` (with trailing dot). Save.
-7. Back on the Pages settings page, tick **Enforce HTTPS** once it becomes available (~10 min — GitHub provisions an SSL cert for the subdomain automatically).
-
-Done. `https://city.pharmabymd.com` is live and updates whenever you push.
-
-**Updating the live site:**
-
-1. Edit content (`content/districts/*.js`) or engine (`src/*.js`).
-2. `npm run build` → updates `dist/`.
-3. GitHub Desktop → commit changes → **Push origin**.
-4. Pages redeploys in ~30 s.
+Send `dist/pharma-city.html` via WhatsApp, AirDrop, Drive, or just share the URL — `https://city.pharmabymd.com`.
 
 ## Development
 
-```
+```sh
 npm install
 npm test                # run unit tests
-npm run test:watch      # tests in watch mode
-npm run build           # rebuild dist/pharma-city.html
+npm run test:watch
+npm run build           # rebuild dist/ and docs/
 ```
 
-Source lives in `src/` (engine) and `content/` (drug facts).
-Three.js r160 is vendored in `vendor/three.min.js`.
+Source lives in `src/` (engine) and `content/districts/` (drug facts). Three.js r160 is vendored in `vendor/three.min.js`. The build script concatenates everything into a single `dist/pharma-city.html` (and a copy at `docs/index.html` for GitHub Pages).
+
+## Hosting at `city.pharmabymd.com`
+
+GitHub Pages serves from `main` branch, `/docs` folder. `docs/CNAME` declares the custom domain; a CNAME record on `pharmabymd.com` DNS points `city` → `pharmacologybymd.github.io`. Every `git push` redeploys in ~30 s.
 
 ## Performance
 
-Built and tested on Apple Silicon (arm64), Node 22.11. Target: 30 fps on a Snapdragon 6-series Android.
+Tested on Apple Silicon (arm64), Node 22.11. Target: 30 fps on a Snapdragon-6-series Android.
 
 Render pipeline:
 - Renderer pixelRatio capped at `min(devicePixelRatio, 2)`.
-- City scene shadow map: 1024² on devicePixelRatio≥2, 512² otherwise.
+- City scene shadow map: 1024² on devicePixelRatio ≥ 2, 512² otherwise.
 - District scene: no shadow maps (shadow constraint applies to city only).
 - Render loop pauses on `document.hidden` via `visibilitychange` listener.
 - Geometries and Lambert materials shared via primitives cache (`src/primitives.js`).
+
+## Accuracy
+
+Every flashcard cites its G&G chapter. Use the citation to spot-check borderline cases against the book. See `docs/superpowers/specs/2026-06-24-pharmacology-city-design.md` for the original design and accuracy policy.
