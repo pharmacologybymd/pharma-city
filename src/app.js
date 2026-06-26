@@ -27,6 +27,7 @@
         <button class="btn btn-due" id="dueBtn" aria-label="review drugs due today">Due today</button>
         <button class="btn" id="mcqBtn" aria-label="multiple choice question">MCQ</button>
         <button class="btn" id="compareBtn" aria-label="compare drugs">Compare</button>
+        <button class="btn" id="classifyBtn" aria-label="drug classification" style="display:none">Classify</button>
         <button class="btn" id="mapBtn" aria-label="mini map" title="Press M">Map</button>
         <button class="btn btn-theme" id="themeBtn" aria-label="toggle day/night">🌙</button>
       </div>
@@ -49,6 +50,7 @@
     });
     document.getElementById('mcqBtn').addEventListener('click', () => P.mcq?.open?.());
     document.getElementById('compareBtn').addEventListener('click', () => P.compare?.open?.());
+    document.getElementById('classifyBtn').addEventListener('click', () => P.classification?.open?.());
     document.getElementById('mapBtn').addEventListener('click', () => P.minimap?.toggle?.());
     const themeBtn = document.getElementById('themeBtn');
     function syncThemeBtn() { if (themeBtn) themeBtn.textContent = (P.theme?.getTheme?.() === 'night') ? '☀️' : '🌙'; }
@@ -64,8 +66,11 @@
     }
     updateDueBadge();
     setInterval(updateDueBadge, 5000);
+    const classifyBtn = document.getElementById('classifyBtn');
     on('navigate', s => {
       back.style.display = s.level === 'city' ? 'none' : '';
+      // Classify is per-district — hidden in the city overview.
+      classifyBtn.style.display = (s.level === 'city') ? 'none' : '';
       const districtName = s.districtId
         ? (window['DISTRICT_' + s.districtId.toUpperCase()]?.name ?? s.districtId)
         : null;
@@ -85,6 +90,7 @@
     P.district?.mount?.(app);
     P.flashcard?.mount?.(app);
     P.walkthrough?.mount?.(app);
+    P.classification?.mount?.(app);
     P.mcq?.mount?.(app);
     P.compare?.mount?.(app);
     P.minimap?.mount?.(app);

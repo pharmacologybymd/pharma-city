@@ -7,6 +7,160 @@ const DISTRICT_CVS = {
 Ventricular Boulevard runs east from the atrium. On the south side stands the Lipid Clinic — its HMG-CoA reductase laboratories buried three floors underground — and beside it the fibrate gym and the PCSK9 immunotherapy suite. The northern footpath of Ventricular Boulevard is anticoagulant row: heparin's emergency infusion pump stationed at the near end, warfarin's vitamin-K antagonist dispensary in the middle, and the direct oral anticoagulant (DOAC) high-rise — dabigatran, rivaroxaban, and apixaban — at the far end. The central plaza holds the antiplatelet market: aspirin's ancient COX-1 stall, clopidogrel's prodrug conversion counter beside it, and ticagrelor's reversible lock-up across the square. Behind them all, the ACE-inhibitor arcade and the ARB towers filter the renin-angiotensin signal; the CCB promenade — amlodipine's gentle dihydropyridine café and verapamil's stern non-DHP control room — lines the west side. The organic-nitrate dispensary hovers between the coronary and the arteriolar mains, glyceryl trinitrate vapour drifting across the cobblestones every Monday morning.`,
   palette: { ground: 0xF5C2C2, accent: 0xE24B4A, water: 0xC47E7E },
   position: { x: 0, z: 30 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 28–37',
+        groups: [
+          { heading: 'A. Antiarrhythmic drugs (Vaughan-Williams)', groups: [
+            { heading: 'Class I — Na+ channel blockers', groups: [
+              { heading: 'IA (intermediate kinetics)', drugs: ['Quinidine', 'Procainamide', 'Disopyramide'] },
+              { heading: 'IB (fast kinetics)', drugs: ['Lidocaine', 'Mexiletine', 'Phenytoin'] },
+              { heading: 'IC (slow kinetics)', drugs: ['Flecainide', 'Propafenone'] },
+            ]},
+            { heading: 'Class II — β-adrenergic blockers', drugs: ['Propranolol', 'Esmolol', 'Metoprolol'] },
+            { heading: 'Class III — K+ channel blockers', drugs: ['Amiodarone', 'Sotalol', 'Dronedarone', 'Dofetilide', 'Ibutilide'] },
+            { heading: 'Class IV — Calcium channel blockers', drugs: ['Verapamil', 'Diltiazem'] },
+            { heading: 'Miscellaneous', drugs: ['Adenosine', 'Digoxin', 'Magnesium sulfate'] },
+          ]},
+          { heading: 'B. Drugs for heart failure', groups: [
+            { heading: 'ACE inhibitors', drugs: ['Enalapril', 'Ramipril', 'Lisinopril'] },
+            { heading: 'Angiotensin receptor blockers (ARBs)', drugs: ['Losartan', 'Valsartan'] },
+            { heading: 'Angiotensin receptor–neprilysin inhibitor (ARNI)', drugs: ['Sacubitril/valsartan'] },
+            { heading: 'β-blockers', drugs: ['Carvedilol', 'Bisoprolol', 'Metoprolol'] },
+            { heading: 'Aldosterone antagonists', drugs: ['Spironolactone', 'Eplerenone'] },
+            { heading: 'SGLT2 inhibitors', drugs: ['Dapagliflozin', 'Empagliflozin'] },
+            { heading: 'Diuretics', drugs: ['Furosemide'] },
+            { heading: 'Cardiac glycosides', drugs: ['Digoxin'] },
+            { heading: 'If-channel inhibitor', drugs: ['Ivabradine'] },
+            { heading: 'Vasodilators', drugs: ['Hydralazine + Isosorbide dinitrate'] },
+          ]},
+          { heading: 'C. Antihypertensive drugs', groups: [
+            { heading: 'Diuretics', drugs: ['Hydrochlorothiazide', 'Chlorthalidone', 'Furosemide'] },
+            { heading: 'ACE inhibitors', drugs: ['Enalapril', 'Ramipril', 'Lisinopril'] },
+            { heading: 'Angiotensin receptor blockers (ARBs)', drugs: ['Losartan', 'Valsartan'] },
+            { heading: 'Calcium channel blockers', groups: [
+              { heading: 'Dihydropyridines', drugs: ['Amlodipine', 'Nifedipine'] },
+              { heading: 'Non-dihydropyridines', drugs: ['Verapamil', 'Diltiazem'] },
+            ]},
+            { heading: 'β-blockers', drugs: ['Metoprolol', 'Atenolol', 'Propranolol'] },
+            { heading: 'α-blockers', drugs: ['Prazosin', 'Doxazosin'] },
+            { heading: 'Central sympatholytics', drugs: ['Clonidine', 'Methyldopa'] },
+            { heading: 'Direct vasodilators', drugs: ['Hydralazine', 'Minoxidil', 'Sodium nitroprusside'] },
+          ]},
+          { heading: 'D. Antianginal drugs', groups: [
+            { heading: 'Nitrates', drugs: ['Nitroglycerin', 'Isosorbide dinitrate', 'Isosorbide mononitrate'] },
+            { heading: 'β-blockers', drugs: ['Metoprolol', 'Atenolol'] },
+            { heading: 'Calcium channel blockers', drugs: ['Amlodipine', 'Verapamil', 'Diltiazem'] },
+            { heading: 'Others', drugs: ['Ranolazine', 'Nicorandil', 'Ivabradine', 'Trimetazidine'] },
+          ]},
+          { heading: 'E. Antiplatelet drugs', groups: [
+            { heading: 'COX inhibitor', drugs: ['Aspirin'] },
+            { heading: 'P2Y12 (ADP) receptor inhibitors', drugs: ['Clopidogrel', 'Prasugrel', 'Ticagrelor'] },
+            { heading: 'GP IIb/IIIa inhibitors', drugs: ['Abciximab', 'Tirofiban'] },
+            { heading: 'Phosphodiesterase inhibitors', drugs: ['Dipyridamole', 'Cilostazol'] },
+          ]},
+          { heading: 'F. Anticoagulants', groups: [
+            { heading: 'Parenteral', groups: [
+              { heading: 'Unfractionated heparin (UFH)', drugs: ['Heparin'] },
+              { heading: 'Low-molecular-weight heparin (LMWH)', drugs: ['Enoxaparin'] },
+              { heading: 'Indirect Xa inhibitor', drugs: ['Fondaparinux'] },
+              { heading: 'Direct thrombin inhibitors', drugs: ['Bivalirudin'] },
+            ]},
+            { heading: 'Oral', groups: [
+              { heading: 'Vitamin K antagonist', drugs: ['Warfarin'] },
+              { heading: 'Direct oral anticoagulants (DOACs)', drugs: ['Dabigatran', 'Apixaban', 'Rivaroxaban', 'Edoxaban'] },
+            ]},
+          ]},
+          { heading: 'G. Thrombolytics (fibrinolytics)', drugs: ['Streptokinase', 'Alteplase', 'Tenecteplase', 'Reteplase'] },
+          { heading: 'H. Hypolipidaemic drugs', groups: [
+            { heading: 'Statins (HMG-CoA reductase inhibitors)', drugs: ['Atorvastatin', 'Rosuvastatin', 'Simvastatin'] },
+            { heading: 'Cholesterol-absorption inhibitor', drugs: ['Ezetimibe'] },
+            { heading: 'PCSK9 inhibitors', drugs: ['Evolocumab', 'Alirocumab', 'Inclisiran'] },
+            { heading: 'Fibrates', drugs: ['Fenofibrate', 'Gemfibrozil'] },
+            { heading: 'Bile-acid sequestrants', drugs: ['Cholestyramine'] },
+            { heading: 'Others', drugs: ['Niacin', 'Omega-3 fatty acids'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 37–48',
+        groups: [
+          { heading: 'A. Antiarrhythmic drugs', groups: [
+            { heading: 'Class I — membrane stabilizers (Na+ channel blockers)', groups: [
+              { heading: 'IA', drugs: ['Quinidine', 'Procainamide', 'Disopyramide'] },
+              { heading: 'IB', drugs: ['Lignocaine', 'Mexiletine', 'Phenytoin'] },
+              { heading: 'IC', drugs: ['Flecainide', 'Propafenone'] },
+            ]},
+            { heading: 'Class II — β-adrenergic blockers', drugs: ['Propranolol', 'Esmolol', 'Metoprolol'] },
+            { heading: 'Class III — agents prolonging repolarization', drugs: ['Amiodarone', 'Sotalol', 'Dronedarone', 'Dofetilide', 'Ibutilide'] },
+            { heading: 'Class IV — calcium channel blockers', drugs: ['Verapamil', 'Diltiazem'] },
+            { heading: 'Miscellaneous', drugs: ['Adenosine', 'Digoxin', 'Magnesium sulfate'] },
+          ]},
+          { heading: 'B. Drugs used in congestive heart failure', groups: [
+            { heading: 'Inhibitors of RAAS — ACE inhibitors', drugs: ['Enalapril', 'Ramipril', 'Lisinopril'] },
+            { heading: 'Angiotensin receptor blockers', drugs: ['Losartan', 'Valsartan'] },
+            { heading: 'Angiotensin receptor–neprilysin inhibitor', drugs: ['Sacubitril/valsartan'] },
+            { heading: 'β-adrenergic blockers', drugs: ['Carvedilol', 'Bisoprolol', 'Metoprolol'] },
+            { heading: 'Aldosterone antagonists', drugs: ['Spironolactone', 'Eplerenone'] },
+            { heading: 'SGLT2 inhibitors', drugs: ['Dapagliflozin', 'Empagliflozin'] },
+            { heading: 'Diuretics', drugs: ['Furosemide'] },
+            { heading: 'Cardiac glycosides', drugs: ['Digoxin'] },
+            { heading: 'If-channel inhibitor', drugs: ['Ivabradine'] },
+            { heading: 'Vasodilators', drugs: ['Hydralazine + Isosorbide dinitrate'] },
+          ]},
+          { heading: 'C. Antihypertensive drugs', groups: [
+            { heading: 'Diuretics', drugs: ['Hydrochlorothiazide', 'Chlorthalidone', 'Furosemide'] },
+            { heading: 'ACE inhibitors', drugs: ['Enalapril', 'Ramipril', 'Lisinopril'] },
+            { heading: 'Angiotensin receptor blockers', drugs: ['Losartan', 'Valsartan'] },
+            { heading: 'Calcium channel blockers', groups: [
+              { heading: 'Dihydropyridines', drugs: ['Amlodipine', 'Nifedipine'] },
+              { heading: 'Non-dihydropyridines', drugs: ['Verapamil', 'Diltiazem'] },
+            ]},
+            { heading: 'β-adrenergic blockers', drugs: ['Metoprolol', 'Atenolol', 'Propranolol'] },
+            { heading: 'α-adrenergic blockers', drugs: ['Prazosin', 'Doxazosin'] },
+            { heading: 'Central sympatholytics', drugs: ['Clonidine', 'Methyldopa'] },
+            { heading: 'Direct vasodilators', drugs: ['Hydralazine', 'Minoxidil', 'Sodium nitroprusside'] },
+          ]},
+          { heading: 'D. Antianginal drugs', groups: [
+            { heading: 'Nitrates', drugs: ['Glyceryl trinitrate (nitroglycerin)', 'Isosorbide dinitrate', 'Isosorbide mononitrate'] },
+            { heading: 'β-blockers', drugs: ['Metoprolol', 'Atenolol'] },
+            { heading: 'Calcium channel blockers', drugs: ['Amlodipine', 'Verapamil', 'Diltiazem'] },
+            { heading: 'Others (potassium channel opener / metabolic / If-blocker)', drugs: ['Ranolazine', 'Nicorandil', 'Ivabradine', 'Trimetazidine'] },
+          ]},
+          { heading: 'E. Antiplatelet drugs', groups: [
+            { heading: 'COX inhibitor', drugs: ['Aspirin'] },
+            { heading: 'P2Y12 (ADP) antagonists', drugs: ['Clopidogrel', 'Prasugrel', 'Ticagrelor'] },
+            { heading: 'GP IIb/IIIa antagonists', drugs: ['Abciximab', 'Tirofiban'] },
+            { heading: 'Phosphodiesterase inhibitors', drugs: ['Dipyridamole', 'Cilostazol'] },
+          ]},
+          { heading: 'F. Anticoagulants', groups: [
+            { heading: 'Parenteral', groups: [
+              { heading: 'Unfractionated heparin', drugs: ['Heparin'] },
+              { heading: 'Low-molecular-weight heparins', drugs: ['Enoxaparin'] },
+              { heading: 'Indirect factor Xa inhibitor', drugs: ['Fondaparinux'] },
+              { heading: 'Direct thrombin inhibitors', drugs: ['Bivalirudin'] },
+            ]},
+            { heading: 'Oral', groups: [
+              { heading: 'Vitamin K antagonist (coumarin)', drugs: ['Warfarin'] },
+              { heading: 'Newer oral anticoagulants (DOACs)', drugs: ['Dabigatran', 'Apixaban', 'Rivaroxaban', 'Edoxaban'] },
+            ]},
+          ]},
+          { heading: 'G. Fibrinolytics (thrombolytics)', drugs: ['Streptokinase', 'Alteplase', 'Tenecteplase', 'Reteplase'] },
+          { heading: 'H. Hypolipidaemic drugs', groups: [
+            { heading: 'HMG-CoA reductase inhibitors (statins)', drugs: ['Atorvastatin', 'Rosuvastatin', 'Simvastatin'] },
+            { heading: 'Cholesterol-absorption inhibitor', drugs: ['Ezetimibe'] },
+            { heading: 'PCSK9 inhibitors', drugs: ['Evolocumab', 'Alirocumab', 'Inclisiran'] },
+            { heading: 'Fibric acid derivatives', drugs: ['Fenofibrate', 'Gemfibrozil'] },
+            { heading: 'Bile-acid sequestrants', drugs: ['Cholestyramine'] },
+            { heading: 'Others', drugs: ['Nicotinic acid (niacin)', 'Omega-3 fatty acids'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     // ─── ANTIARRHYTHMICS — CLASS IA ──────────────────────────────────────────
 

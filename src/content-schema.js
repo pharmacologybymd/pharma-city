@@ -17,6 +17,44 @@ function validateDrug(d) {
   return { ok: errors.length === 0, errors, value };
 }
 
+// A classification group is recursive: a non-empty heading plus drugs and/or
+// nested sub-groups (at least one of the two must be present).
+function validateGroup(g, path, errors) {
+  if (!g || typeof g !== 'object') { errors.push(`${path} must be an object`); return; }
+  if (typeof g.heading !== 'string' || g.heading.trim() === '') errors.push(`${path}: missing heading`);
+  const hasDrugs = Array.isArray(g.drugs) && g.drugs.length > 0;
+  const hasGroups = Array.isArray(g.groups) && g.groups.length > 0;
+  if (!hasDrugs && !hasGroups) errors.push(`${path}: needs drugs[] or groups[]`);
+  if (g.drugs !== undefined) {
+    if (!Array.isArray(g.drugs)) errors.push(`${path}.drugs must be an array`);
+    else g.drugs.forEach((name, i) => {
+      if (typeof name !== 'string' || name.trim() === '') errors.push(`${path}.drugs[${i}]: empty drug name`);
+    });
+  }
+  if (g.groups !== undefined) {
+    if (!Array.isArray(g.groups)) errors.push(`${path}.groups must be an array`);
+    else g.groups.forEach((sub, i) => validateGroup(sub, `${path}.groups[${i}]`, errors));
+  }
+}
+
+function validateClassification(c) {
+  const errors = [];
+  if (!c || typeof c !== 'object') return { ok: false, errors: ['classification must be an object'] };
+  if (!Array.isArray(c.sources) || c.sources.length === 0) {
+    errors.push('classification.sources must be a non-empty array');
+    return { ok: false, errors };
+  }
+  c.sources.forEach((s, i) => {
+    const sp = `sources[${i}]`;
+    if (!s || typeof s !== 'object') { errors.push(`${sp} must be an object`); return; }
+    if (typeof s.label !== 'string' || s.label.trim() === '') errors.push(`${sp}: missing label`);
+    if (typeof s.cite !== 'string' || s.cite.trim() === '') errors.push(`${sp}: missing cite`);
+    if (!Array.isArray(s.groups) || s.groups.length === 0) errors.push(`${sp}: missing groups[]`);
+    else s.groups.forEach((g, gi) => validateGroup(g, `${sp}.groups[${gi}]`, errors));
+  });
+  return { ok: errors.length === 0, errors };
+}
+
 function validateDistrict(d) {
   const errors = [];
   if (!d || typeof d !== 'object') return { ok: false, errors: ['district must be an object'] };
@@ -31,6 +69,11 @@ function validateDistrict(d) {
     const { ok, errors: drugErrors } = validateDrug(drug);
     if (!ok) errors.push(`drug[${i}] (${drug?.id}): ${drugErrors.join(', ')}`);
   });
+  // classification is OPTIONAL — only validate when present.
+  if (d.classification != null) {
+    const { ok, errors: cErrors } = validateClassification(d.classification);
+    if (!ok) cErrors.forEach(e => errors.push(`classification: ${e}`));
+  }
   return { ok: errors.length === 0, errors };
 }
 
@@ -46,6 +89,6 @@ function validateCity(c) {
 
 if (typeof window !== 'undefined') {
   window.PHARMA = window.PHARMA || {};
-  window.PHARMA.schema = { validateDrug, validateDistrict, validateCity, DISTRICT_IDS };
+  window.PHARMA.schema = { validateDrug, validateDistrict, validateCity, validateClassification, DISTRICT_IDS };
 }
-export { validateDrug, validateDistrict, validateCity, DISTRICT_IDS };
+export { validateDrug, validateDistrict, validateCity, validateClassification, DISTRICT_IDS };

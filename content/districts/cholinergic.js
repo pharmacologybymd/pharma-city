@@ -7,6 +7,56 @@ const DISTRICT_CHOLINERGIC = {
 Across the black canal sits Anticholinergic Alley: a bone-dry desert quarter where the fountains have all been sealed. No saliva, no tears, no sweat, no bowel sounds — only a fast hollow pulse and pupils wide as dinner plates. Atropine's tower stands at the centre of the alley like an obelisk, its stone carved with the words "dry as a bone, blind as a bat, red as a beet, hot as a hare, mad as a hatter." The two halves of the district are mirror images of each other, and knowing one perfectly is knowing both.`,
   palette: { ground: 0x97C459, accent: 0x1D9E75, water: 0x378ADD },
   position: { x: -30, z: 0 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 11–13',
+        groups: [
+          { heading: 'A. Cholinergic agonists (cholinomimetics)', groups: [
+            { heading: 'I. Direct-acting', groups: [
+              { heading: 'Choline esters', drugs: ['Acetylcholine', 'Methacholine', 'Carbachol', 'Bethanechol'] },
+              { heading: 'Natural alkaloids & analogues', drugs: ['Pilocarpine', 'Muscarine', 'Cevimeline'] },
+            ]},
+            { heading: 'II. Indirect-acting (anticholinesterases)', groups: [
+              { heading: 'Reversible', drugs: ['Edrophonium', 'Neostigmine', 'Pyridostigmine', 'Physostigmine', 'Donepezil', 'Rivastigmine', 'Galantamine'] },
+              { heading: 'Irreversible (organophosphates)', drugs: ['Echothiophate', 'Parathion', 'Malathion', 'Sarin', 'Soman'] },
+              { heading: 'Cholinesterase reactivator', drugs: ['Pralidoxime (2-PAM)'] },
+            ]},
+          ]},
+          { heading: 'B. Muscarinic antagonists (antimuscarinics)', groups: [
+            { heading: 'Belladonna alkaloids', drugs: ['Atropine', 'Hyoscine (scopolamine)'] },
+            { heading: 'Semisynthetic / synthetic', drugs: ['Homatropine', 'Tropicamide', 'Cyclopentolate', 'Ipratropium', 'Tiotropium', 'Glycopyrrolate', 'Oxybutynin', 'Tolterodine', 'Solifenacin', 'Trihexyphenidyl', 'Benztropine'] },
+          ]},
+          { heading: 'C. Inhibitor of ACh release', drugs: ['Botulinum toxin'] },
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 7–9',
+        groups: [
+          { heading: 'A. Cholinergic drugs', groups: [
+            { heading: 'I. Directly acting', groups: [
+              { heading: 'Choline esters', drugs: ['Acetylcholine', 'Methacholine', 'Carbachol', 'Bethanechol'] },
+              { heading: 'Cholinomimetic alkaloids', drugs: ['Pilocarpine', 'Muscarine', 'Arecoline'] },
+            ]},
+            { heading: 'II. Indirectly acting (anticholinesterases)', groups: [
+              { heading: 'Reversible', drugs: ['Physostigmine', 'Neostigmine', 'Pyridostigmine', 'Edrophonium', 'Rivastigmine', 'Donepezil', 'Galantamine', 'Tacrine'] },
+              { heading: 'Irreversible (organophosphates & carbamates)', drugs: ['Dyflos', 'Echothiophate', 'Parathion', 'Malathion', 'Carbaryl', 'Propoxur'] },
+            ]},
+          ]},
+          { heading: 'B. Anticholinergic (antimuscarinic) drugs', groups: [
+            { heading: 'Natural alkaloids', drugs: ['Atropine', 'Hyoscine'] },
+            { heading: 'Semisynthetic derivatives', drugs: ['Homatropine', 'Atropine methonitrate', 'Hyoscine butylbromide', 'Ipratropium bromide', 'Tiotropium bromide'] },
+            { heading: 'Synthetic — mydriatics', drugs: ['Cyclopentolate', 'Tropicamide'] },
+            { heading: 'Synthetic — antisecretory / antispasmodic', drugs: ['Propantheline', 'Glycopyrrolate', 'Clidinium', 'Pirenzepine', 'Dicyclomine'] },
+            { heading: 'Synthetic — vesicoselective (urinary)', drugs: ['Oxybutynin', 'Tolterodine', 'Solifenacin', 'Darifenacin'] },
+            { heading: 'Synthetic — antiparkinsonian', drugs: ['Trihexyphenidyl (benzhexol)', 'Procyclidine', 'Biperiden', 'Benztropine'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     // ─── DIRECT-ACTING CHOLINOMIMETICS ───────────────────────────────────────
 

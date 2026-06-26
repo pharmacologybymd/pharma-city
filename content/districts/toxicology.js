@@ -13,6 +13,69 @@ Flumazenil's booth carries a different kind of warning: two crossed-out symbols 
 The chelation wing occupies the southern end of the district — heavy metal remediation facilities for iron (deferoxamine), arsenic/mercury/gold (dimercaprol/BAL), lead (succimer for children, EDTA-calcium for severe encephalopathy), and cyanide (hydroxocobalamin). The methylene blue silo is marked with a large G6PD warning diamond — it cannot be used in G6PD-deficient patients, in whom it would cause haemolytic anaemia rather than cure methaemoglobinaemia.`,
   palette: { ground: 0xB8A080, accent: 0xFF6B35, water: 0x5A8A6A },
   position: { x: 60, z: -25 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 4, 71–74',
+        groups: [
+          { heading: 'A. Specific antidotes (by poison)', groups: [
+            { heading: 'Paracetamol (acetaminophen)', drugs: ['N-acetylcysteine'] },
+            { heading: 'Opioids', drugs: ['Naloxone'] },
+            { heading: 'Benzodiazepines', drugs: ['Flumazenil'] },
+            { heading: 'Digoxin / digitalis glycosides', drugs: ['Digoxin-specific antibody (Fab) fragments'] },
+            { heading: 'Organophosphates / carbamates', drugs: ['Atropine', 'Pralidoxime (2-PAM)'] },
+            { heading: 'Methaemoglobinaemia', drugs: ['Methylene blue'] },
+            { heading: 'Methanol / ethylene glycol', drugs: ['Fomepizole', 'Ethanol'] },
+            { heading: 'Cyanide', drugs: ['Hydroxocobalamin', 'Sodium thiosulfate', 'Sodium nitrite'] },
+            { heading: 'β-blocker overdose', drugs: ['Glucagon'] },
+            { heading: 'Calcium-channel blocker / hydrofluoric acid / hyperkalaemia', drugs: ['Calcium gluconate'] },
+            { heading: 'Warfarin', drugs: ['Vitamin K1 (phytonadione)'] },
+            { heading: 'Heparin', drugs: ['Protamine sulfate'] },
+            { heading: 'Methotrexate', drugs: ['Folinic acid (leucovorin)'] },
+          ]},
+          { heading: 'B. Chelating agents (heavy-metal poisoning)', groups: [
+            { heading: 'Iron', drugs: ['Deferoxamine'] },
+            { heading: 'Lead', drugs: ['Calcium disodium EDTA', 'Dimercaprol (BAL)', 'Succimer (DMSA)', 'D-penicillamine'] },
+            { heading: 'Arsenic / mercury / gold', drugs: ['Dimercaprol (BAL)', 'DMSA (succimer)', 'DMPS'] },
+            { heading: 'Copper (Wilson\'s disease)', drugs: ['D-penicillamine', 'Trientine'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 64–67',
+        groups: [
+          { heading: 'A. Specific antidotes (by poison)', groups: [
+            { heading: 'Paracetamol (acetaminophen)', drugs: ['N-acetylcysteine'] },
+            { heading: 'Opioids', drugs: ['Naloxone'] },
+            { heading: 'Benzodiazepines', drugs: ['Flumazenil'] },
+            { heading: 'Digoxin', drugs: ['Digoxin-specific antibody (Fab) fragments'] },
+            { heading: 'Organophosphates / carbamates', drugs: ['Atropine', 'Pralidoxime (2-PAM)'] },
+            { heading: 'Methaemoglobinaemia', drugs: ['Methylene blue'] },
+            { heading: 'Methanol / ethylene glycol', drugs: ['Fomepizole', 'Ethanol'] },
+            { heading: 'Cyanide', drugs: ['Hydroxocobalamin', 'Sodium thiosulfate', 'Sodium nitrite'] },
+            { heading: 'β-blocker overdose', drugs: ['Glucagon'] },
+            { heading: 'Calcium-channel blocker / hydrofluoric acid / hyperkalaemia', drugs: ['Calcium gluconate'] },
+            { heading: 'Warfarin', drugs: ['Vitamin K1 (phytonadione)'] },
+            { heading: 'Heparin', drugs: ['Protamine sulfate'] },
+            { heading: 'Methotrexate', drugs: ['Folinic acid (leucovorin)'] },
+          ]},
+          { heading: 'B. Chelating agents (heavy-metal poisoning)', groups: [
+            { heading: 'Iron', drugs: ['Deferoxamine'] },
+            { heading: 'Lead', drugs: ['Calcium disodium EDTA', 'Dimercaprol (BAL)', 'Succimer (DMSA)', 'D-penicillamine'] },
+            { heading: 'Arsenic / mercury / gold', drugs: ['Dimercaprol (BAL)', 'DMSA (succimer)', 'DMPS'] },
+            { heading: 'Copper (Wilson\'s disease)', drugs: ['D-penicillamine', 'Trientine'] },
+          ]},
+          { heading: 'C. General principles of poisoning management', groups: [
+            { heading: 'Decontamination', drugs: ['Gastric lavage', 'Activated charcoal'] },
+            { heading: 'Enhanced elimination', drugs: ['Urinary alkalinization', 'Haemodialysis'] },
+            { heading: 'Supportive care', drugs: ['Airway / breathing / circulation support', 'Maintenance of vitals'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'n_acetylcysteine',

@@ -13,6 +13,68 @@ The COVID therapeutics pavilion opened in 2021 and has since been continuously u
 The pharmacogenomics tower stands at the centre of New Town and is the tallest structure in the district. Its database maps human genetic variants to drug responses — the TPMT-thiopurine axis, CYP2C19-clopidogrel, HLA allele-hypersensitivity reactions — representing the future of prescribing.`,
   palette: { ground: 0xC8E6C9, accent: 0x2E7D32, water: 0x81D4FA },
   position: { x: 0, z: 70 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'cross-chapter',
+        groups: [
+          { heading: 'A. Cell & gene therapies', groups: [
+            { heading: 'CAR-T cell therapy', drugs: ['Tisagenlecleucel', 'Axicabtagene ciloleucel'] },
+          ]},
+          { heading: 'B. Monoclonal antibodies', groups: [
+            { heading: 'Anti-IL-6R', drugs: ['Tocilizumab'] },
+            { heading: 'Anti-amyloid for Alzheimer\'s', drugs: ['Lecanemab', 'Aducanumab', 'Donanemab'] },
+          ]},
+          { heading: 'C. Antibody–drug conjugates (ADCs)', drugs: ['Sacituzumab govitecan', 'Trastuzumab emtansine'] },
+          { heading: 'D. RNA-based therapeutics', groups: [
+            { heading: 'siRNA', drugs: ['Inclisiran', 'Patisiran'] },
+            { heading: 'Antisense oligonucleotides', drugs: ['Nusinersen'] },
+            { heading: 'mRNA vaccines', drugs: ['mRNA vaccines'] },
+          ]},
+          { heading: 'E. Incretin-based & metabolic', groups: [
+            { heading: 'Dual GIP/GLP-1 agonist', drugs: ['Tirzepatide'] },
+          ]},
+          { heading: 'F. Antiviral combinations', groups: [
+            { heading: 'Oral SARS-CoV-2 protease inhibitor', drugs: ['Nirmatrelvir/ritonavir'] },
+          ]},
+          { heading: 'G. Precision medicine & drug safety', groups: [
+            { heading: 'Pharmacogenomics', drugs: ['CYP2C19', 'HLA-B*5701', 'TPMT'] },
+            { heading: 'Pharmacovigilance', drugs: ['Black-box warnings', 'REMS', 'Post-marketing surveillance'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'cross-chapter / appendix',
+        groups: [
+          { heading: 'A. Cell & gene therapies', groups: [
+            { heading: 'CAR-T cell therapy', drugs: ['Tisagenlecleucel', 'Axicabtagene ciloleucel'] },
+          ]},
+          { heading: 'B. Monoclonal antibodies', groups: [
+            { heading: 'Anti-IL-6R', drugs: ['Tocilizumab'] },
+            { heading: 'Anti-amyloid for Alzheimer\'s', drugs: ['Lecanemab', 'Aducanumab', 'Donanemab'] },
+          ]},
+          { heading: 'C. Antibody–drug conjugates (ADCs)', drugs: ['Sacituzumab govitecan', 'Trastuzumab emtansine'] },
+          { heading: 'D. RNA-based therapeutics', groups: [
+            { heading: 'siRNA', drugs: ['Inclisiran', 'Patisiran'] },
+            { heading: 'Antisense oligonucleotides', drugs: ['Nusinersen'] },
+            { heading: 'mRNA vaccines', drugs: ['mRNA vaccines'] },
+          ]},
+          { heading: 'E. Incretin-based & metabolic', groups: [
+            { heading: 'Dual GIP/GLP-1 agonist', drugs: ['Tirzepatide'] },
+          ]},
+          { heading: 'F. Antiviral combinations', groups: [
+            { heading: 'Oral SARS-CoV-2 protease inhibitor', drugs: ['Nirmatrelvir/ritonavir'] },
+          ]},
+          { heading: 'G. Precision medicine & drug safety', groups: [
+            { heading: 'Pharmacogenomics', drugs: ['CYP2C19', 'HLA-B*5701', 'TPMT'] },
+            { heading: 'Pharmacovigilance', drugs: ['Black-box warnings', 'REMS', 'Post-marketing surveillance'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'tisagenlecleucel',

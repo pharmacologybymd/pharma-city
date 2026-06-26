@@ -11,6 +11,71 @@ Across the avenue stand the anticholinergic hangars — ipratropium and tiotropi
 The ICS warehouses — budesonide, fluticasone, and beclometasone — are giant anti-inflammatory factories. They suppress the eosinophilic airway inflammation that underlies persistent asthma, but their dust can coat the throat with candida unless patients rinse after each puff. At the end of the avenue, the biological agents occupy the newest, most expensive docks: omalizumab strips IgE from mast cell surfaces; mepolizumab and benralizumab target the eosinophil survival chain via IL-5 and its receptor. And in the old gasometer district, theophylline still burns — narrow therapeutic index, CYP1A2 metabolism, and a caution sign reading "Do not light a cigarette near the ciprofloxacin pipeline."`,
   palette: { ground: 0xB5D9F0, accent: 0x2268A5, water: 0x70B8E8 },
   position: { x: 25, z: 25 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 44',
+        groups: [
+          { heading: 'A. Bronchodilators', groups: [
+            { heading: 'β2 adrenoceptor agonists', groups: [
+              { heading: 'Short-acting (SABA)', drugs: ['Salbutamol', 'Terbutaline'] },
+              { heading: 'Long-acting (LABA)', drugs: ['Salmeterol', 'Formoterol', 'Vilanterol'] },
+            ]},
+            { heading: 'Anticholinergics (muscarinic antagonists)', groups: [
+              { heading: 'Short-acting (SAMA)', drugs: ['Ipratropium'] },
+              { heading: 'Long-acting (LAMA)', drugs: ['Tiotropium', 'Glycopyrronium', 'Umeclidinium'] },
+            ]},
+            { heading: 'Methylxanthines', drugs: ['Theophylline', 'Aminophylline', 'Doxofylline'] },
+          ]},
+          { heading: 'B. Anti-inflammatory / controllers', groups: [
+            { heading: 'Inhaled corticosteroids (ICS)', drugs: ['Budesonide', 'Fluticasone', 'Beclometasone', 'Ciclesonide'] },
+            { heading: 'Leukotriene modifiers', groups: [
+              { heading: 'LTRA (CysLT1 antagonists)', drugs: ['Montelukast', 'Zafirlukast'] },
+              { heading: '5-LOX inhibitor', drugs: ['Zileuton'] },
+            ]},
+            { heading: 'Mast-cell stabilizers', drugs: ['Sodium cromoglicate', 'Nedocromil'] },
+            { heading: 'PDE-4 inhibitor', drugs: ['Roflumilast'] },
+            { heading: 'Biologics', groups: [
+              { heading: 'Anti-IgE', drugs: ['Omalizumab'] },
+              { heading: 'Anti-IL5 / IL5R', drugs: ['Mepolizumab', 'Reslizumab', 'Benralizumab'] },
+              { heading: 'Anti-IL4 / IL13', drugs: ['Dupilumab'] },
+            ]},
+          ]},
+          { heading: 'C. Mucolytics / mucoactive agents', drugs: ['N-acetylcysteine', 'Carbocisteine', 'Bromhexine', 'Ambroxol', 'Dornase alfa'] },
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 16–17',
+        groups: [
+          { heading: 'A. Drugs for bronchial asthma & COPD', groups: [
+            { heading: 'Bronchodilators', groups: [
+              { heading: 'Sympathomimetics (β2 agonists)', drugs: ['Salbutamol', 'Terbutaline', 'Salmeterol', 'Formoterol'] },
+              { heading: 'Anticholinergics', drugs: ['Ipratropium bromide', 'Tiotropium bromide', 'Glycopyrronium'] },
+              { heading: 'Methylxanthines', drugs: ['Theophylline', 'Aminophylline', 'Doxofylline'] },
+            ]},
+            { heading: 'Leukotriene antagonists', drugs: ['Montelukast', 'Zafirlukast'] },
+            { heading: 'Mast cell stabilizers', drugs: ['Sodium cromoglicate', 'Ketotifen'] },
+            { heading: 'Corticosteroids (inhaled)', drugs: ['Budesonide', 'Fluticasone', 'Beclometasone', 'Ciclesonide'] },
+            { heading: 'Anti-IgE / biologics', drugs: ['Omalizumab', 'Mepolizumab', 'Benralizumab', 'Dupilumab'] },
+            { heading: 'PDE-4 inhibitor', drugs: ['Roflumilast'] },
+          ]},
+          { heading: 'B. Drugs for cough', groups: [
+            { heading: 'Antitussives', groups: [
+              { heading: 'Central — opioid', drugs: ['Codeine', 'Pholcodine'] },
+              { heading: 'Central — non-opioid', drugs: ['Dextromethorphan', 'Noscapine'] },
+              { heading: 'Peripheral', drugs: ['Prenoxdiazine'] },
+            ]},
+            { heading: 'Expectorants & mucolytics', groups: [
+              { heading: 'Bronchial secretion enhancers (expectorants)', drugs: ['Guaifenesin', 'Ammonium chloride', 'Potassium iodide'] },
+              { heading: 'Mucolytics', drugs: ['N-acetylcysteine', 'Carbocisteine', 'Bromhexine', 'Ambroxol', 'Dornase alfa'] },
+            ]},
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'salmeterol',

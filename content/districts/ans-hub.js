@@ -7,6 +7,35 @@ const DISTRICT_ANS_HUB = {
 Walking the plaza you notice six landmark buildings. The Nicotine Exchange occupies the busiest corner: it is a pulsating two-phase trading floor that first floods the switchboard with signals (low dose, stimulation) and then, when the market is overwhelmed, blocks every receptor simultaneously (high dose, ganglionic block and depolarising NMJ block). Beside it stands the Varenicline Partial-Relay Station, a half-speed version of the Exchange that keeps enough activity to prevent withdrawal cravings without ever triggering the full receptor storm that addiction requires. Across the plaza, three classical buildings are preserved as monuments to pharmacological history: the Mecamylamine Governor-House, the Hexamethonium Archive, and the Trimethaphan Emergency Valve — each one a ganglionic blocker that extinguished every postganglionic signal at once, lowering blood pressure so precipitously that the patient had to be propped upright to avoid fainting. Finally, in the quiet northern corner of the plaza, the Cytisine Apprentice-Relay Office stands as a partial agonist cousin of varenicline, a plant alkaloid from Laburnum seeds that has been used in Eastern Europe for smoking cessation since before the modern era. Every drug in this plaza acts on the same relay tower; what differs is whether they turn the gain up, hold it steady at half-power, or slam the circuit breaker shut entirely.`,
   palette: { ground: 0xC8B89A, accent: 0x5DCAA5, water: 0x85B7EB },
   position: { x: 0, z: 0 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 8–11',
+        groups: [
+          { heading: 'A. Ganglionic stimulants', drugs: ['Nicotine', 'Lobeline', 'Varenicline', 'Cytisine', 'Dimethylphenylpiperazinium (DMPP)'] },
+          { heading: 'B. Ganglionic blockers', drugs: ['Hexamethonium', 'Trimethaphan', 'Mecamylamine', 'Pempidine'] },
+          { heading: 'C. Skeletal muscle relaxants (neuromuscular blockers)', groups: [
+            { heading: 'Depolarizing (non-competitive)', drugs: ['Succinylcholine (suxamethonium)', 'Decamethonium'] },
+            { heading: 'Non-depolarizing (competitive)', drugs: ['Tubocurarine', 'Pancuronium', 'Vecuronium', 'Rocuronium', 'Atracurium', 'Cisatracurium', 'Mivacurium'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 7, 16',
+        groups: [
+          { heading: 'A. Ganglionic stimulants (ANS, ch. 7)', drugs: ['Nicotine', 'Lobeline', 'Varenicline', 'Cytisine', 'Dimethylphenylpiperazinium (DMPP)'] },
+          { heading: 'B. Ganglionic blockers (ANS, ch. 7)', drugs: ['Hexamethonium', 'Trimethaphan', 'Mecamylamine', 'Pempidine'] },
+          { heading: 'C. Skeletal muscle relaxants (ch. 16)', groups: [
+            { heading: 'Peripherally acting — Depolarizing (non-competitive)', drugs: ['Succinylcholine (suxamethonium)', 'Decamethonium'] },
+            { heading: 'Peripherally acting — Non-depolarizing (competitive)', drugs: ['Tubocurarine', 'Pancuronium', 'Vecuronium', 'Rocuronium', 'Atracurium', 'Cisatracurium', 'Mivacurium'] },
+            { heading: 'Centrally-acting muscle relaxants', drugs: ['Baclofen', 'Diazepam', 'Tizanidine', 'Methocarbamol', 'Chlorzoxazone'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     // ─── HIGH-YIELD ───────────────────────────────────────────────────────────
 

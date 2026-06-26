@@ -11,6 +11,91 @@ Further down the row, the prokinetic stalls line the middle section. Metoclopram
 At the far end of the row, the IBD biologics occupy a new, gleaming precinct. Mesalazine holds the intestinal wall stall; adalimumab and vedolizumab occupy the immunological tower — targeting TNF-alpha and gut-selective integrins respectively.`,
   palette: { ground: 0xD4A96A, accent: 0x8B4513, water: 0x4682B4 },
   position: { x: 0, z: 50 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 49–51',
+        groups: [
+          { heading: 'A. Drugs for acid-peptic disease', groups: [
+            { heading: 'Proton pump inhibitors', drugs: ['Omeprazole', 'Pantoprazole', 'Esomeprazole', 'Lansoprazole', 'Rabeprazole'] },
+            { heading: 'H2-receptor antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine', 'Nizatidine'] },
+            { heading: 'Antacids', drugs: ['Aluminium hydroxide', 'Magnesium hydroxide', 'Sodium bicarbonate'] },
+            { heading: 'Mucosal protectives', drugs: ['Sucralfate', 'Bismuth subsalicylate/subcitrate', 'Misoprostol'] },
+            { heading: 'Anti-H. pylori regimens (combination)', drugs: ['PPI + Amoxicillin + Clarithromycin (triple)', 'PPI + Bismuth + Metronidazole + Tetracycline (quadruple)'] },
+          ]},
+          { heading: 'B. Prokinetics', drugs: ['Metoclopramide', 'Domperidone', 'Itopride', 'Mosapride', 'Prucalopride', 'Erythromycin'] },
+          { heading: 'C. Antiemetics', groups: [
+            { heading: '5-HT3 antagonists', drugs: ['Ondansetron', 'Granisetron', 'Palonosetron'] },
+            { heading: 'D2 antagonists', drugs: ['Metoclopramide', 'Domperidone', 'Prochlorperazine'] },
+            { heading: 'H1 antihistamines', drugs: ['Cyclizine', 'Cinnarizine', 'Promethazine', 'Doxylamine'] },
+            { heading: 'Antimuscarinic', drugs: ['Hyoscine'] },
+            { heading: 'NK1 antagonists', drugs: ['Aprepitant'] },
+            { heading: 'Corticosteroids / cannabinoids', drugs: ['Dexamethasone', 'Nabilone'] },
+          ]},
+          { heading: 'D. Antidiarrhoeals', groups: [
+            { heading: 'Opioid agonists', drugs: ['Loperamide', 'Diphenoxylate'] },
+            { heading: 'Adsorbents', drugs: ['Kaolin-pectin'] },
+            { heading: 'Oral rehydration & others', drugs: ['ORS', 'Racecadotril'] },
+          ]},
+          { heading: 'E. Laxatives', groups: [
+            { heading: 'Bulk-forming', drugs: ['Ispaghula', 'Methylcellulose'] },
+            { heading: 'Osmotic', drugs: ['Lactulose', 'Polyethylene glycol', 'Magnesium salts'] },
+            { heading: 'Stimulant', drugs: ['Bisacodyl', 'Senna', 'Sodium picosulfate'] },
+            { heading: 'Stool softeners', drugs: ['Docusate'] },
+            { heading: 'Lubricant', drugs: ['Liquid paraffin'] },
+          ]},
+          { heading: 'F. Drugs for inflammatory bowel disease', groups: [
+            { heading: 'Aminosalicylates', drugs: ['Mesalazine', 'Sulfasalazine'] },
+            { heading: 'Corticosteroids', drugs: ['Budesonide', 'Prednisolone'] },
+            { heading: 'Immunomodulators', drugs: ['Azathioprine', 'Methotrexate'] },
+            { heading: 'Biologics', drugs: ['Infliximab (anti-TNF)', 'Adalimumab (anti-TNF)', 'Vedolizumab (anti-integrin)', 'Ustekinumab'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 47–51',
+        groups: [
+          { heading: 'A. Drugs for peptic ulcer & GORD (anti-ulcer)', groups: [
+            { heading: 'Proton pump inhibitors', drugs: ['Omeprazole', 'Esomeprazole', 'Pantoprazole', 'Lansoprazole', 'Rabeprazole'] },
+            { heading: 'H2 receptor antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine', 'Nizatidine'] },
+            { heading: 'Antacids', drugs: ['Aluminium hydroxide', 'Magnesium hydroxide', 'Sodium bicarbonate'] },
+            { heading: 'Ulcer protectives', drugs: ['Sucralfate', 'Colloidal bismuth subcitrate', 'Bismuth subsalicylate'] },
+            { heading: 'Prostaglandin analogue', drugs: ['Misoprostol'] },
+            { heading: 'Anti-H. pylori (combination regimens)', drugs: ['PPI + Amoxicillin + Clarithromycin (triple)', 'PPI + Bismuth + Metronidazole + Tetracycline (quadruple)'] },
+          ]},
+          { heading: 'B. Prokinetics & antiemetics', groups: [
+            { heading: 'Prokinetics', drugs: ['Metoclopramide', 'Domperidone', 'Itopride', 'Mosapride', 'Prucalopride', 'Erythromycin'] },
+            { heading: '5-HT3 antagonists', drugs: ['Ondansetron', 'Granisetron', 'Palonosetron'] },
+            { heading: 'D2 antagonists (antiemetic)', drugs: ['Metoclopramide', 'Domperidone', 'Prochlorperazine'] },
+            { heading: 'H1 antihistaminics', drugs: ['Cyclizine', 'Cinnarizine', 'Promethazine', 'Doxylamine'] },
+            { heading: 'Antimuscarinic', drugs: ['Hyoscine'] },
+            { heading: 'NK1 antagonists', drugs: ['Aprepitant'] },
+            { heading: 'Adjuvant antiemetics', drugs: ['Dexamethasone', 'Nabilone'] },
+          ]},
+          { heading: 'C. Antidiarrhoeals', groups: [
+            { heading: 'Opioid agonists', drugs: ['Loperamide', 'Diphenoxylate'] },
+            { heading: 'Adsorbents', drugs: ['Kaolin-pectin'] },
+            { heading: 'Oral rehydration & others', drugs: ['ORS', 'Racecadotril'] },
+          ]},
+          { heading: 'D. Laxatives', groups: [
+            { heading: 'Bulk-forming', drugs: ['Ispaghula', 'Methylcellulose'] },
+            { heading: 'Osmotic', drugs: ['Lactulose', 'Polyethylene glycol', 'Magnesium salts'] },
+            { heading: 'Stimulant', drugs: ['Bisacodyl', 'Senna', 'Sodium picosulfate'] },
+            { heading: 'Stool softeners', drugs: ['Docusate'] },
+            { heading: 'Lubricant', drugs: ['Liquid paraffin'] },
+          ]},
+          { heading: 'E. Drugs for inflammatory bowel disease', groups: [
+            { heading: 'Aminosalicylates', drugs: ['Mesalazine', 'Sulfasalazine'] },
+            { heading: 'Corticosteroids', drugs: ['Budesonide', 'Prednisolone'] },
+            { heading: 'Immunomodulators', drugs: ['Azathioprine', 'Methotrexate'] },
+            { heading: 'Biologics', drugs: ['Infliximab (anti-TNF)', 'Adalimumab (anti-TNF)', 'Vedolizumab (anti-integrin)', 'Ustekinumab'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'omeprazole',

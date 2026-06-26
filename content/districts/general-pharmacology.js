@@ -13,6 +13,69 @@ At the far end of the road, the renal drainage system processes the vast majorit
 The dose-response amphitheatre stands in the central plaza — where all the curves of efficacy, potency, and receptor occupancy are displayed. Every new trainee must understand the difference between Emax (maximum possible effect) and EC50 (concentration producing half-maximal effect), and between a full agonist's ceiling and a partial agonist's limited platform.`,
   palette: { ground: 0xE8D5A3, accent: 0x8B6914, water: 0xB0C4DE },
   position: { x: -50, z: 50 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 1–7',
+        groups: [
+          { heading: 'A. Pharmacokinetics', groups: [
+            { heading: 'Absorption', drugs: ['Bioavailability (F)', 'First-pass metabolism', 'Routes bypassing first-pass (sublingual, IV, rectal)'] },
+            { heading: 'Distribution', drugs: ['Volume of distribution (Vd)', 'Plasma protein binding (albumin, α1-acid glycoprotein)'] },
+            { heading: 'Metabolism', groups: [
+              { heading: 'Phase I (CYP450 oxidation/reduction/hydrolysis)', drugs: ['CYP3A4', 'CYP2D6', 'CYP2C9'] },
+              { heading: 'Phase II (conjugation)', drugs: ['Glucuronidation', 'Sulfation', 'Acetylation'] },
+              { heading: 'Enzyme inducers', drugs: ['Rifampicin', 'Phenytoin', 'Carbamazepine'] },
+              { heading: 'Enzyme inhibitors', drugs: ['Ketoconazole', 'Erythromycin', 'Cimetidine'] },
+            ]},
+            { heading: 'Excretion', drugs: ['Clearance (CL)', 'Half-life (t½)', 'Zero-order vs first-order kinetics'] },
+          ]},
+          { heading: 'B. Pharmacodynamics', groups: [
+            { heading: 'Dose–response relationships', drugs: ['Graded dose–response', 'Quantal dose–response', 'ED50 / TD50'] },
+            { heading: 'Therapeutic index & narrow-therapeutic-index drugs', drugs: ['Warfarin', 'Digoxin', 'Lithium', 'Phenytoin', 'Theophylline'] },
+            { heading: 'Receptors & signal transduction', drugs: ['G-protein-coupled receptors', 'Ion channels', 'Enzyme-linked receptors', 'Nuclear (intracellular) receptors'] },
+            { heading: 'Agonists & antagonists', drugs: ['Full agonist', 'Partial agonist', 'Inverse agonist', 'Competitive antagonist', 'Non-competitive antagonist'] },
+          ]},
+          { heading: 'C. Drug interactions', groups: [
+            { heading: 'Pharmacokinetic interactions', drugs: ['Absorption', 'Protein-binding displacement', 'Enzyme induction/inhibition', 'Altered excretion'] },
+            { heading: 'Pharmacodynamic interactions', drugs: ['Synergism / additive', 'Antagonism'] },
+          ]},
+          { heading: 'D. Pharmacology in special populations', groups: [
+            { heading: 'Pregnancy & lactation', drugs: ['FDA pregnancy categories', 'Teratogens (Thalidomide, Warfarin, Isotretinoin, Valproate)'] },
+            { heading: 'Geriatric pharmacology', drugs: ['Reduced clearance', 'Altered Vd', 'Polypharmacy'] },
+            { heading: 'Paediatric pharmacology', drugs: ['Weight/BSA-based dosing', 'Immature metabolism & excretion'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 1–5',
+        groups: [
+          { heading: 'A. Pharmacokinetics', groups: [
+            { heading: 'Absorption', drugs: ['Bioavailability', 'First-pass (presystemic) metabolism'] },
+            { heading: 'Distribution', drugs: ['Volume of distribution', 'Plasma protein binding'] },
+            { heading: 'Metabolism (biotransformation)', drugs: ['Phase I (microsomal CYP450)', 'Phase II (conjugation)', 'Inducers: Rifampin, Phenytoin, Carbamazepine', 'Inhibitors: Ketoconazole, Erythromycin, Cimetidine'] },
+            { heading: 'Excretion', drugs: ['Clearance', 'Plasma half-life', 'Zero-order & first-order kinetics'] },
+          ]},
+          { heading: 'B. Pharmacodynamics', groups: [
+            { heading: 'Dose–response & efficacy/potency', drugs: ['Graded & quantal curves', 'ED50 / TD50'] },
+            { heading: 'Therapeutic index & NTI drugs', drugs: ['Warfarin', 'Digoxin', 'Lithium', 'Phenytoin', 'Theophylline'] },
+            { heading: 'Receptors & transducers', drugs: ['GPCRs', 'Ion channels', 'Enzymatic receptors', 'Nuclear receptors'] },
+            { heading: 'Agonists & antagonists', drugs: ['Full/partial agonist', 'Inverse agonist', 'Competitive & non-competitive antagonist'] },
+          ]},
+          { heading: 'C. Drug interactions', groups: [
+            { heading: 'Pharmacokinetic', drugs: ['Absorption', 'Protein binding', 'Metabolism', 'Excretion'] },
+            { heading: 'Pharmacodynamic', drugs: ['Synergism', 'Antagonism'] },
+          ]},
+          { heading: 'D. Special populations', groups: [
+            { heading: 'Pregnancy & lactation', drugs: ['Teratogenic drugs', 'Drug transfer in milk'] },
+            { heading: 'Geriatric', drugs: ['Altered kinetics & dynamics'] },
+            { heading: 'Paediatric', drugs: ['Dose calculation', 'Immature organ function'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'bioavailability_first_pass',

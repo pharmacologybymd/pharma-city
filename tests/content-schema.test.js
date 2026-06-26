@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateDrug, validateDistrict, validateCity } from '../src/content-schema.js';
+import { validateDrug, validateDistrict, validateCity, validateClassification } from '../src/content-schema.js';
 
 describe('validateDrug', () => {
   const valid = {
@@ -51,6 +51,68 @@ describe('validateDistrict', () => {
     const { ok, errors } = validateDistrict({ ...valid, id: 'banana' });
     expect(ok).toBe(false);
     expect(errors.join(' ')).toMatch(/id/);
+  });
+  it('accepts a district with no classification (optional field)', () => {
+    expect(validateDistrict(valid).ok).toBe(true);
+  });
+  it('accepts a district with a well-formed classification', () => {
+    const withClass = { ...valid, classification: goodClassification };
+    expect(validateDistrict(withClass).ok).toBe(true);
+  });
+  it('rejects a district with a malformed classification', () => {
+    const withClass = { ...valid, classification: { sources: [] } };
+    const { ok, errors } = validateDistrict(withClass);
+    expect(ok).toBe(false);
+    expect(errors.join(' ')).toMatch(/classification/);
+  });
+});
+
+const goodClassification = {
+  sources: [
+    {
+      label: 'G&G 14e',
+      cite: 'ch. 11–13',
+      groups: [
+        { heading: 'I. Direct-acting cholinomimetics', groups: [
+          { heading: 'A. Choline esters', drugs: ['Acetylcholine', 'Bethanechol'] },
+        ]},
+        { heading: 'II. Anticholinesterases', drugs: ['Neostigmine', 'Physostigmine'] },
+      ],
+    },
+    { label: 'KDT 9e', cite: 'ch. 7–9', groups: [
+      { heading: 'Cholinergic agonists', drugs: ['Pilocarpine'] },
+    ]},
+  ],
+};
+
+describe('validateClassification', () => {
+  it('accepts a well-formed classification', () => {
+    expect(validateClassification(goodClassification).ok).toBe(true);
+  });
+  it('rejects empty sources', () => {
+    const { ok, errors } = validateClassification({ sources: [] });
+    expect(ok).toBe(false);
+    expect(errors.join(' ')).toMatch(/sources/);
+  });
+  it('rejects a source missing label or cite', () => {
+    const { ok } = validateClassification({ sources: [{ label: '', cite: 'x', groups: [{ heading: 'h', drugs: ['a'] }] }] });
+    expect(ok).toBe(false);
+  });
+  it('rejects a source with empty groups', () => {
+    const { ok } = validateClassification({ sources: [{ label: 'G&G', cite: 'x', groups: [] }] });
+    expect(ok).toBe(false);
+  });
+  it('rejects a group with neither drugs nor sub-groups', () => {
+    const { ok } = validateClassification({ sources: [{ label: 'G&G', cite: 'x', groups: [{ heading: 'h' }] }] });
+    expect(ok).toBe(false);
+  });
+  it('rejects a group with an empty heading', () => {
+    const { ok } = validateClassification({ sources: [{ label: 'G&G', cite: 'x', groups: [{ heading: '', drugs: ['a'] }] }] });
+    expect(ok).toBe(false);
+  });
+  it('rejects empty drug names', () => {
+    const { ok } = validateClassification({ sources: [{ label: 'G&G', cite: 'x', groups: [{ heading: 'h', drugs: [''] }] }] });
+    expect(ok).toBe(false);
   });
 });
 

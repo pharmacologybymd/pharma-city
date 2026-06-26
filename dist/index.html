@@ -45,6 +45,21 @@ canvas { display: block; touch-action: none; }
 .walkthrough { position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, 86vw); background: var(--card); color: var(--text-on-card); border-left: 1px solid var(--border); padding: 50px 22px 22px; transform: translateX(100%); transition: transform 0.25s ease; z-index: 15; overflow-y: auto; box-shadow: var(--card-shadow); }
 .walkthrough.open { transform: translateX(0); }
 
+/* Classification panel — reuses the .walkthrough slide-in shell. */
+.classification-panel { width: min(440px, 92vw); z-index: 16; }
+.cls-title { font-size: 18px; font-weight: 500; margin-bottom: 12px; }
+.cls-source { margin-bottom: 22px; }
+.cls-source-title { font-size: 15px; font-weight: 600; margin: 0 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.cls-cite { font-size: 12px; font-weight: 400; color: var(--muted-on-card); }
+.cls-list, .cls-drugs { margin: 4px 0 4px 0; padding-left: 18px; }
+.cls-list { list-style: none; padding-left: 6px; }
+.cls-list .cls-list { padding-left: 16px; }
+.cls-list > li { margin: 5px 0; font-size: 13.5px; line-height: 1.5; }
+.cls-heading { font-weight: 600; }
+.cls-drugs { list-style: disc; padding-left: 22px; }
+.cls-drugs > li { font-weight: 400; margin: 2px 0; }
+.cls-empty { font-size: 14px; color: var(--muted-on-card); }
+
 .search { position: absolute; top: env(safe-area-inset-top, 0); right: 16px; z-index: 11; }
 .search input { background: var(--card); border: 1px solid var(--border); color: var(--text-on-card); padding: 9px 12px; border-radius: 10px; font-size: 14px; width: 190px; box-shadow: var(--card-shadow); outline: none; }
 .search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
@@ -186,6 +201,71 @@ const DISTRICT_ADRENERGIC = {
 Across the service road stand the antagonists — the circuit breakers and dampeners. Alpha-blocker Row runs a series of parallel switches: phenoxybenzamine clamps the α lines permanently before surgery, phentolamine clips them reversibly in the operating theatre, and prazosin selectively silences only the α1 downstream load without touching presynaptic feedback. Beta-blocker Boulevard is longer still: propranolol throws the master β1/β2 breaker and is CONTRAINDICATED in asthma because it locks the β2 airway-relaxation relay open in reverse; metoprolol, atenolol, and esmolol throw only the cardiac β1 breaker with progressively shorter levers; labetalol and carvedilol throw both the α and β breakers simultaneously, making them the go-to tools when the whole grid is dangerously overloaded in hypertensive emergencies and heart failure.`,
   palette: { ground: 0xD4A857, accent: 0xE8550A, water: 0x8B6914 },
   position: { x: 30, z: 0 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 14–15',
+        groups: [
+          { heading: 'A. Adrenergic agonists (sympathomimetics)', groups: [
+            { heading: 'By mechanism', groups: [
+              { heading: 'Direct-acting', drugs: ['Adrenaline', 'Noradrenaline', 'Isoprenaline', 'Dopamine', 'Dobutamine', 'Phenylephrine', 'Clonidine', 'Salbutamol'] },
+              { heading: 'Indirect-acting', drugs: ['Tyramine', 'Amphetamine', 'Cocaine'] },
+              { heading: 'Mixed-acting', drugs: ['Ephedrine', 'Pseudoephedrine'] },
+            ]},
+            { heading: 'By receptor selectivity', groups: [
+              { heading: 'α1 agonists', drugs: ['Phenylephrine', 'Methoxamine'] },
+              { heading: 'α2 agonists (central)', drugs: ['Clonidine', 'Methyldopa', 'Dexmedetomidine'] },
+              { heading: 'β1 agonists', drugs: ['Dobutamine'] },
+              { heading: 'β2 agonists', drugs: ['Salbutamol', 'Terbutaline', 'Salmeterol'] },
+            ]},
+          ]},
+          { heading: 'B. Adrenergic antagonists (sympatholytics)', groups: [
+            { heading: 'α-blockers', groups: [
+              { heading: 'Non-selective', drugs: ['Phenoxybenzamine (irreversible)', 'Phentolamine (reversible)'] },
+              { heading: 'Selective α1', drugs: ['Prazosin', 'Tamsulosin', 'Doxazosin'] },
+            ]},
+            { heading: 'β-blockers', groups: [
+              { heading: 'Non-selective (β1+β2)', drugs: ['Propranolol', 'Timolol', 'Pindolol (ISA)'] },
+              { heading: 'Selective β1 (cardioselective)', drugs: ['Metoprolol', 'Atenolol', 'Esmolol'] },
+              { heading: 'Combined α+β', drugs: ['Labetalol', 'Carvedilol'] },
+            ]},
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 9–10',
+        groups: [
+          { heading: 'A. Adrenergic (sympathomimetic) drugs', groups: [
+            { heading: 'Directly acting', groups: [
+              { heading: 'α + β (catecholamines)', drugs: ['Adrenaline', 'Noradrenaline', 'Dopamine', 'Dobutamine'] },
+              { heading: 'Predominant α', drugs: ['Phenylephrine', 'Methoxamine', 'Xylometazoline'] },
+              { heading: 'Predominant β', drugs: ['Isoprenaline', 'Salbutamol', 'Terbutaline', 'Salmeterol'] },
+              { heading: 'Central α2', drugs: ['Clonidine', 'Methyldopa'] },
+            ]},
+            { heading: 'Indirectly acting', drugs: ['Tyramine'] },
+            { heading: 'Mixed acting', drugs: ['Ephedrine', 'Amphetamine', 'Pseudoephedrine'] },
+          ]},
+          { heading: 'B. Antiadrenergic (sympatholytic) drugs', groups: [
+            { heading: 'α-adrenergic blockers', groups: [
+              { heading: 'Non-equilibrium (irreversible)', drugs: ['Phenoxybenzamine'] },
+              { heading: 'Equilibrium (reversible) — non-selective', drugs: ['Phentolamine', 'Tolazoline'] },
+              { heading: 'Selective α1', drugs: ['Prazosin', 'Terazosin', 'Doxazosin', 'Tamsulosin'] },
+              { heading: 'Selective α2', drugs: ['Yohimbine'] },
+              { heading: 'Ergot alkaloids', drugs: ['Ergotamine', 'Ergometrine'] },
+            ]},
+            { heading: 'β-adrenergic blockers', groups: [
+              { heading: 'Non-selective', drugs: ['Propranolol', 'Timolol', 'Pindolol', 'Sotalol'] },
+              { heading: 'Cardioselective (β1)', drugs: ['Metoprolol', 'Atenolol', 'Esmolol', 'Bisoprolol', 'Nebivolol'] },
+              { heading: 'With additional α-blockade', drugs: ['Labetalol', 'Carvedilol'] },
+            ]},
+            { heading: 'Adrenergic neurone blockers', drugs: ['Reserpine', 'Guanethidine'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     // ─── CLASS A: CATECHOLAMINES / DIRECT ALPHA+BETA AGONISTS ────────────────
 
@@ -559,6 +639,35 @@ const DISTRICT_ANS_HUB = {
 Walking the plaza you notice six landmark buildings. The Nicotine Exchange occupies the busiest corner: it is a pulsating two-phase trading floor that first floods the switchboard with signals (low dose, stimulation) and then, when the market is overwhelmed, blocks every receptor simultaneously (high dose, ganglionic block and depolarising NMJ block). Beside it stands the Varenicline Partial-Relay Station, a half-speed version of the Exchange that keeps enough activity to prevent withdrawal cravings without ever triggering the full receptor storm that addiction requires. Across the plaza, three classical buildings are preserved as monuments to pharmacological history: the Mecamylamine Governor-House, the Hexamethonium Archive, and the Trimethaphan Emergency Valve — each one a ganglionic blocker that extinguished every postganglionic signal at once, lowering blood pressure so precipitously that the patient had to be propped upright to avoid fainting. Finally, in the quiet northern corner of the plaza, the Cytisine Apprentice-Relay Office stands as a partial agonist cousin of varenicline, a plant alkaloid from Laburnum seeds that has been used in Eastern Europe for smoking cessation since before the modern era. Every drug in this plaza acts on the same relay tower; what differs is whether they turn the gain up, hold it steady at half-power, or slam the circuit breaker shut entirely.`,
   palette: { ground: 0xC8B89A, accent: 0x5DCAA5, water: 0x85B7EB },
   position: { x: 0, z: 0 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 8–11',
+        groups: [
+          { heading: 'A. Ganglionic stimulants', drugs: ['Nicotine', 'Lobeline', 'Varenicline', 'Cytisine', 'Dimethylphenylpiperazinium (DMPP)'] },
+          { heading: 'B. Ganglionic blockers', drugs: ['Hexamethonium', 'Trimethaphan', 'Mecamylamine', 'Pempidine'] },
+          { heading: 'C. Skeletal muscle relaxants (neuromuscular blockers)', groups: [
+            { heading: 'Depolarizing (non-competitive)', drugs: ['Succinylcholine (suxamethonium)', 'Decamethonium'] },
+            { heading: 'Non-depolarizing (competitive)', drugs: ['Tubocurarine', 'Pancuronium', 'Vecuronium', 'Rocuronium', 'Atracurium', 'Cisatracurium', 'Mivacurium'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 7, 16',
+        groups: [
+          { heading: 'A. Ganglionic stimulants (ANS, ch. 7)', drugs: ['Nicotine', 'Lobeline', 'Varenicline', 'Cytisine', 'Dimethylphenylpiperazinium (DMPP)'] },
+          { heading: 'B. Ganglionic blockers (ANS, ch. 7)', drugs: ['Hexamethonium', 'Trimethaphan', 'Mecamylamine', 'Pempidine'] },
+          { heading: 'C. Skeletal muscle relaxants (ch. 16)', groups: [
+            { heading: 'Peripherally acting — Depolarizing (non-competitive)', drugs: ['Succinylcholine (suxamethonium)', 'Decamethonium'] },
+            { heading: 'Peripherally acting — Non-depolarizing (competitive)', drugs: ['Tubocurarine', 'Pancuronium', 'Vecuronium', 'Rocuronium', 'Atracurium', 'Cisatracurium', 'Mivacurium'] },
+            { heading: 'Centrally-acting muscle relaxants', drugs: ['Baclofen', 'Diazepam', 'Tizanidine', 'Methocarbamol', 'Chlorzoxazone'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     // ─── HIGH-YIELD ───────────────────────────────────────────────────────────
 
@@ -684,6 +793,62 @@ const DISTRICT_AUTACOIDS = {
   Deeper into the lane the 5-HT couriers dart between the vascular plaza and the brainstem telegraph office, parcels tucked under their arms. Sumatriptan flags down the 5-HT1B/1D express coaches to squeeze the throbbing migraine vessels shut — but those same coaches run a coronary line, and the booking office posts a red notice: no service for passengers with ischaemic heart disease, Prinzmetal angina, or uncontrolled hypertension. At the inflammatory plaza the prostaglandin fire-brigade (NSAIDs) stamps out the Cox-enzyme furnaces, but sparks can fly: aspirin-sensitive asthma patients suffer bronchospasm in the smoke, third-trimester foetuses find their arterial duct slammed shut, and neonates paradoxically rely on indomethacin to close a ductus that must not remain open — yet that same pharmacist is barred from towns where the ductus is the only route keeping the infant alive. Around the corner, leukotriene modifiers at the asthma docks carry an FDA black-box notice nailed to every crate: neuropsychiatric cargo may include depression, suicidal ideation, and behavioural changes.`,
   palette: { ground: 0xE8C97A, accent: 0xFF8C42, water: 0x8FCCCC },
   position: { x: 0, z: 15 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 39–42',
+        groups: [
+          { heading: 'A. Histamine & antihistamines', groups: [
+            { heading: 'H1 antagonists', groups: [
+              { heading: 'First-generation (sedating)', drugs: ['Chlorpheniramine', 'Diphenhydramine', 'Promethazine', 'Hydroxyzine', 'Cyclizine'] },
+              { heading: 'Second-generation (non-sedating)', drugs: ['Cetirizine', 'Loratadine', 'Fexofenadine', 'Desloratadine', 'Levocetirizine'] },
+            ]},
+            { heading: 'H2 antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine'] },
+          ]},
+          { heading: 'B. 5-HT (serotonin) drugs', groups: [
+            { heading: '5-HT1B/1D agonists (triptans)', drugs: ['Sumatriptan', 'Rizatriptan', 'Zolmitriptan'] },
+            { heading: '5-HT3 antagonists', drugs: ['Ondansetron', 'Granisetron'] },
+            { heading: '5-HT antagonists', drugs: ['Cyproheptadine', 'Ketanserin', 'Methysergide'] },
+          ]},
+          { heading: 'C. Prostaglandins & analogues', drugs: ['Misoprostol (PGE1)', 'Latanoprost (PGF2α — ophthalmic)', 'Alprostadil', 'Dinoprostone', 'Epoprostenol/Iloprost'] },
+          { heading: 'D. NSAIDs (prostaglandin-synthesis inhibitors)', groups: [
+            { heading: 'Non-selective COX inhibitors', drugs: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Indomethacin', 'Ketorolac', 'Piroxicam'] },
+            { heading: 'Preferential COX-2', drugs: ['Meloxicam', 'Nimesulide', 'Etodolac'] },
+            { heading: 'Selective COX-2 inhibitors (coxibs)', drugs: ['Celecoxib', 'Etoricoxib', 'Parecoxib'] },
+            { heading: 'Analgesic-antipyretic (poor anti-inflammatory)', drugs: ['Paracetamol (acetaminophen)', 'Metamizol'] },
+          ]},
+          { heading: 'E. Leukotriene modifiers', drugs: ['Montelukast (LTRA)', 'Zafirlukast (LTRA)', 'Zileuton (5-LOX inhibitor)'] },
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 11–15, 25',
+        groups: [
+          { heading: 'A. Histamine & antihistaminics', groups: [
+            { heading: 'H1 antagonists', groups: [
+              { heading: 'First-generation (sedating)', drugs: ['Chlorpheniramine', 'Diphenhydramine', 'Promethazine', 'Hydroxyzine', 'Cyclizine'] },
+              { heading: 'Second-generation (non-sedating)', drugs: ['Cetirizine', 'Loratadine', 'Fexofenadine', 'Desloratadine', 'Levocetirizine'] },
+            ]},
+            { heading: 'H2 antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine'] },
+          ]},
+          { heading: 'B. 5-HT (serotonin) drugs', groups: [
+            { heading: '5-HT1B/1D agonists (triptans)', drugs: ['Sumatriptan', 'Rizatriptan', 'Zolmitriptan'] },
+            { heading: '5-HT3 antagonists', drugs: ['Ondansetron', 'Granisetron'] },
+            { heading: '5-HT antagonists', drugs: ['Cyproheptadine', 'Ketanserin', 'Methysergide'] },
+          ]},
+          { heading: 'C. Prostaglandins & analogues', drugs: ['Misoprostol (PGE1)', 'Latanoprost (PGF2α — ophthalmic)', 'Alprostadil', 'Dinoprostone', 'Epoprostenol/Iloprost'] },
+          { heading: 'D. NSAIDs (prostaglandin-synthesis inhibitors)', groups: [
+            { heading: 'Non-selective COX inhibitors', drugs: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Indomethacin', 'Ketorolac', 'Piroxicam'] },
+            { heading: 'Preferential COX-2', drugs: ['Meloxicam', 'Nimesulide', 'Etodolac'] },
+            { heading: 'Selective COX-2 inhibitors (coxibs)', drugs: ['Celecoxib', 'Etoricoxib', 'Parecoxib'] },
+            { heading: 'Analgesic-antipyretic (poor anti-inflammatory)', drugs: ['Paracetamol (acetaminophen)', 'Metamizol'] },
+          ]},
+          { heading: 'E. Leukotriene modifiers', drugs: ['Montelukast (LTRA)', 'Zafirlukast (LTRA)', 'Zileuton (5-LOX inhibitor)'] },
+        ],
+      },
+    ],
+  },
   drugs: [
 
     // ─── FIRST-GENERATION H1 ANTIHISTAMINES ──────────────────────────────────
@@ -979,6 +1144,168 @@ const DISTRICT_CHEMOTHERAPY = {
 The Anticancer War Room occupies the highest tower inside the fortress, its walls mapped with cytotoxic battle orders: methotrexate folds the folate supply lines, cyclophosphamide's alkylating bombs demand the mesna fire-brigade for haemorrhagic cystitis, cisplatin's platinum-tipped shells call for saline hydration against nephrotoxicity and ototoxicity, doxorubicin's anthracycline cannonade is counted by the cardiomyopathy dose-meter, vincristine tangles the tubulin cables leaving peripheral nerves silenced, paclitaxel stabilises the tubulin scaffolding until it collapses under hypersensitivity reactions, 5-fluorouracil scorches the mucosa and the hands-feet in hand-foot syndrome. On the parapets of the tower stand the targeted generals: imatinib blockades the BCR-ABL tyrosine kinase drawbridge of CML, rituximab's anti-CD20 monoclonal banner warns of HBV reactivation, bevacizumab's anti-VEGF banner streams in a hypertensive wind. Below the war room, the Immunomodulator Barracks house cyclosporine, tacrolimus, mycophenolate, azathioprine, and infliximab — each with its own watch-post for nephrotoxicity, opportunistic infection, TB reactivation, and teratogenicity. Over the central turret, the fortress flag waves in the wind — a signal to all enemies of the body that its defences are mobilised.`,
   palette: { ground: 0x5A6B7C, accent: 0xC0392B, water: 0x2E4057 },
   position: { x: -50, z: -40 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 56–69',
+        groups: [
+          { heading: 'A. Antibacterials', groups: [
+            { heading: 'Cell-wall synthesis inhibitors', groups: [
+              { heading: 'β-Lactams — Penicillins', drugs: ['Penicillin G', 'Amoxicillin', 'Piperacillin'] },
+              { heading: 'β-Lactams — Cephalosporins', drugs: ['Ceftriaxone', 'Cefazolin', 'Cefepime'] },
+              { heading: 'β-Lactams — Carbapenems', drugs: ['Meropenem', 'Imipenem'] },
+              { heading: 'β-Lactams — Monobactams', drugs: ['Aztreonam'] },
+              { heading: 'Glycopeptides', drugs: ['Vancomycin', 'Teicoplanin'] },
+            ]},
+            { heading: 'Protein synthesis inhibitors', groups: [
+              { heading: 'Aminoglycosides', drugs: ['Gentamicin', 'Amikacin'] },
+              { heading: 'Tetracyclines', drugs: ['Doxycycline', 'Minocycline'] },
+              { heading: 'Macrolides', drugs: ['Azithromycin', 'Erythromycin', 'Clarithromycin'] },
+              { heading: 'Lincosamides', drugs: ['Clindamycin'] },
+              { heading: 'Oxazolidinones', drugs: ['Linezolid'] },
+              { heading: 'Amphenicols', drugs: ['Chloramphenicol'] },
+            ]},
+            { heading: 'Nucleic-acid synthesis inhibitors', groups: [
+              { heading: 'Fluoroquinolones', drugs: ['Ciprofloxacin', 'Levofloxacin', 'Moxifloxacin'] },
+              { heading: 'Rifamycins', drugs: ['Rifampicin'] },
+              { heading: 'Nitroimidazoles', drugs: ['Metronidazole'] },
+            ]},
+            { heading: 'Folate-pathway inhibitors', groups: [
+              { heading: 'Sulfonamides + Trimethoprim', drugs: ['Co-trimoxazole'] },
+            ]},
+            { heading: 'Cell-membrane agents', groups: [
+              { heading: 'Lipopeptides', drugs: ['Daptomycin'] },
+              { heading: 'Polymyxins', drugs: ['Colistin'] },
+            ]},
+          ]},
+          { heading: 'B. Antimycobacterials', groups: [
+            { heading: 'Anti-TB first-line', drugs: ['Isoniazid', 'Rifampicin', 'Pyrazinamide', 'Ethambutol', 'Streptomycin'] },
+            { heading: 'Anti-TB second-line', drugs: ['Levofloxacin', 'Bedaquiline', 'Linezolid', 'Amikacin'] },
+            { heading: 'Antileprotics', drugs: ['Dapsone', 'Clofazimine', 'Rifampicin'] },
+          ]},
+          { heading: 'C. Antifungals', groups: [
+            { heading: 'Polyenes', drugs: ['Amphotericin B', 'Nystatin'] },
+            { heading: 'Azoles', drugs: ['Fluconazole', 'Voriconazole', 'Itraconazole', 'Ketoconazole'] },
+            { heading: 'Echinocandins', drugs: ['Caspofungin', 'Micafungin'] },
+            { heading: 'Allylamines', drugs: ['Terbinafine'] },
+            { heading: 'Antimetabolite', drugs: ['Flucytosine'] },
+            { heading: 'Others', drugs: ['Griseofulvin'] },
+          ]},
+          { heading: 'D. Antivirals', groups: [
+            { heading: 'Anti-herpes', drugs: ['Acyclovir', 'Valacyclovir', 'Ganciclovir'] },
+            { heading: 'Anti-influenza', drugs: ['Oseltamivir', 'Zanamivir', 'Baloxavir'] },
+            { heading: 'Anti-HIV — NRTIs', drugs: ['Tenofovir', 'Zidovudine', 'Lamivudine', 'Abacavir'] },
+            { heading: 'Anti-HIV — NNRTIs', drugs: ['Efavirenz', 'Nevirapine'] },
+            { heading: 'Anti-HIV — Integrase inhibitors', drugs: ['Dolutegravir', 'Raltegravir'] },
+            { heading: 'Anti-HIV — Protease inhibitors', drugs: ['Ritonavir', 'Lopinavir', 'Atazanavir'] },
+            { heading: 'Anti-HCV', drugs: ['Sofosbuvir', 'Ledipasvir'] },
+          ]},
+          { heading: 'E. Antimalarials', drugs: ['Chloroquine', 'Artemether-lumefantrine', 'Primaquine', 'Quinine', 'Mefloquine', 'Atovaquone-proguanil'] },
+          { heading: 'F. Anthelmintics & Antiprotozoals', groups: [
+            { heading: 'Anthelmintics', drugs: ['Albendazole', 'Mebendazole', 'Praziquantel', 'Ivermectin', 'Diethylcarbamazine'] },
+            { heading: 'Antiprotozoals', drugs: ['Metronidazole', 'Tinidazole'] },
+          ]},
+          { heading: 'G. Anticancer drugs', groups: [
+            { heading: 'Alkylating agents', drugs: ['Cyclophosphamide', 'Cisplatin', 'Carboplatin'] },
+            { heading: 'Antimetabolites', drugs: ['Methotrexate', '5-Fluorouracil', 'Cytarabine', 'Gemcitabine'] },
+            { heading: 'Antitumour antibiotics', drugs: ['Doxorubicin', 'Bleomycin'] },
+            { heading: 'Plant alkaloids / microtubule agents', drugs: ['Vincristine', 'Vinblastine', 'Paclitaxel', 'Docetaxel'] },
+            { heading: 'Topoisomerase inhibitors', drugs: ['Etoposide', 'Irinotecan'] },
+            { heading: 'Targeted therapy — tyrosine-kinase inhibitors', drugs: ['Imatinib', 'Erlotinib'] },
+            { heading: 'Targeted therapy — monoclonal antibodies', drugs: ['Rituximab', 'Trastuzumab', 'Bevacizumab'] },
+            { heading: 'Hormonal agents', drugs: ['Tamoxifen', 'Leuprolide', 'Anastrozole'] },
+          ]},
+          { heading: 'H. Immunosuppressants', groups: [
+            { heading: 'Calcineurin inhibitors', drugs: ['Cyclosporine', 'Tacrolimus'] },
+            { heading: 'Antiproliferatives', drugs: ['Mycophenolate', 'Azathioprine'] },
+            { heading: 'mTOR inhibitors', drugs: ['Sirolimus', 'Everolimus'] },
+            { heading: 'Glucocorticoids', drugs: ['Prednisolone'] },
+            { heading: 'Biologics', drugs: ['Infliximab', 'Adalimumab', 'Basiliximab'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 52–61',
+        groups: [
+          { heading: 'A. Antibacterials', groups: [
+            { heading: 'Cell-wall synthesis inhibitors', groups: [
+              { heading: 'β-Lactams — Penicillins', drugs: ['Penicillin G', 'Amoxicillin', 'Piperacillin'] },
+              { heading: 'β-Lactams — Cephalosporins', drugs: ['Ceftriaxone', 'Cefazolin', 'Cefepime'] },
+              { heading: 'β-Lactams — Carbapenems', drugs: ['Meropenem', 'Imipenem'] },
+              { heading: 'β-Lactams — Monobactams', drugs: ['Aztreonam'] },
+              { heading: 'Glycopeptides', drugs: ['Vancomycin', 'Teicoplanin'] },
+            ]},
+            { heading: 'Protein synthesis inhibitors', groups: [
+              { heading: 'Aminoglycosides', drugs: ['Gentamicin', 'Amikacin'] },
+              { heading: 'Tetracyclines', drugs: ['Doxycycline', 'Minocycline'] },
+              { heading: 'Macrolides', drugs: ['Azithromycin', 'Erythromycin', 'Clarithromycin'] },
+              { heading: 'Lincosamides', drugs: ['Clindamycin'] },
+              { heading: 'Oxazolidinones', drugs: ['Linezolid'] },
+              { heading: 'Amphenicols', drugs: ['Chloramphenicol'] },
+            ]},
+            { heading: 'Nucleic-acid synthesis inhibitors', groups: [
+              { heading: 'Fluoroquinolones', drugs: ['Ciprofloxacin', 'Levofloxacin', 'Moxifloxacin'] },
+              { heading: 'Rifamycins', drugs: ['Rifampicin'] },
+              { heading: 'Nitroimidazoles', drugs: ['Metronidazole'] },
+            ]},
+            { heading: 'Folate-pathway inhibitors', groups: [
+              { heading: 'Sulfonamides + Trimethoprim', drugs: ['Co-trimoxazole'] },
+            ]},
+            { heading: 'Cell-membrane agents', groups: [
+              { heading: 'Lipopeptides', drugs: ['Daptomycin'] },
+              { heading: 'Polymyxins', drugs: ['Colistin'] },
+            ]},
+          ]},
+          { heading: 'B. Antimycobacterials', groups: [
+            { heading: 'Anti-TB first-line', drugs: ['Isoniazid', 'Rifampicin', 'Pyrazinamide', 'Ethambutol', 'Streptomycin'] },
+            { heading: 'Anti-TB second-line', drugs: ['Levofloxacin', 'Bedaquiline', 'Linezolid', 'Amikacin'] },
+            { heading: 'Antileprotics', drugs: ['Dapsone', 'Clofazimine', 'Rifampicin'] },
+          ]},
+          { heading: 'C. Antifungals', groups: [
+            { heading: 'Polyenes', drugs: ['Amphotericin B', 'Nystatin'] },
+            { heading: 'Azoles', drugs: ['Fluconazole', 'Voriconazole', 'Itraconazole', 'Ketoconazole'] },
+            { heading: 'Echinocandins', drugs: ['Caspofungin', 'Micafungin'] },
+            { heading: 'Allylamines', drugs: ['Terbinafine'] },
+            { heading: 'Antimetabolite', drugs: ['Flucytosine'] },
+            { heading: 'Others', drugs: ['Griseofulvin'] },
+          ]},
+          { heading: 'D. Antivirals', groups: [
+            { heading: 'Anti-herpes', drugs: ['Acyclovir', 'Valacyclovir', 'Ganciclovir'] },
+            { heading: 'Anti-influenza', drugs: ['Oseltamivir', 'Zanamivir', 'Baloxavir'] },
+            { heading: 'Anti-HIV — NRTIs', drugs: ['Tenofovir', 'Zidovudine', 'Lamivudine', 'Abacavir'] },
+            { heading: 'Anti-HIV — NNRTIs', drugs: ['Efavirenz', 'Nevirapine'] },
+            { heading: 'Anti-HIV — Integrase inhibitors', drugs: ['Dolutegravir', 'Raltegravir'] },
+            { heading: 'Anti-HIV — Protease inhibitors', drugs: ['Ritonavir', 'Lopinavir', 'Atazanavir'] },
+            { heading: 'Anti-HCV', drugs: ['Sofosbuvir', 'Ledipasvir'] },
+          ]},
+          { heading: 'E. Antimalarials', drugs: ['Chloroquine', 'Artemether-lumefantrine', 'Primaquine', 'Quinine', 'Mefloquine', 'Atovaquone-proguanil'] },
+          { heading: 'F. Anthelmintics & Antiprotozoals', groups: [
+            { heading: 'Anthelmintics', drugs: ['Albendazole', 'Mebendazole', 'Praziquantel', 'Ivermectin', 'Diethylcarbamazine'] },
+            { heading: 'Antiprotozoals', drugs: ['Metronidazole', 'Tinidazole'] },
+          ]},
+          { heading: 'G. Anticancer drugs', groups: [
+            { heading: 'Alkylating agents', drugs: ['Cyclophosphamide', 'Cisplatin', 'Carboplatin'] },
+            { heading: 'Antimetabolites', drugs: ['Methotrexate', '5-Fluorouracil', 'Cytarabine', 'Gemcitabine'] },
+            { heading: 'Antitumour antibiotics', drugs: ['Doxorubicin', 'Bleomycin'] },
+            { heading: 'Plant alkaloids / microtubule agents', drugs: ['Vincristine', 'Vinblastine', 'Paclitaxel', 'Docetaxel'] },
+            { heading: 'Topoisomerase inhibitors', drugs: ['Etoposide', 'Irinotecan'] },
+            { heading: 'Targeted therapy — tyrosine-kinase inhibitors', drugs: ['Imatinib', 'Erlotinib'] },
+            { heading: 'Targeted therapy — monoclonal antibodies', drugs: ['Rituximab', 'Trastuzumab', 'Bevacizumab'] },
+            { heading: 'Hormonal agents', drugs: ['Tamoxifen', 'Leuprolide', 'Anastrozole'] },
+          ]},
+          { heading: 'H. Immunosuppressants', groups: [
+            { heading: 'Calcineurin inhibitors', drugs: ['Cyclosporine', 'Tacrolimus'] },
+            { heading: 'Antiproliferatives', drugs: ['Mycophenolate', 'Azathioprine'] },
+            { heading: 'mTOR inhibitors', drugs: ['Sirolimus', 'Everolimus'] },
+            { heading: 'Glucocorticoids', drugs: ['Prednisolone'] },
+            { heading: 'Biologics', drugs: ['Infliximab', 'Adalimumab', 'Basiliximab'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
 
     // ─── β-LACTAMS (cell-wall synthesis inhibitors) ──────────────────────────
@@ -1660,6 +1987,56 @@ const DISTRICT_CHOLINERGIC = {
 Across the black canal sits Anticholinergic Alley: a bone-dry desert quarter where the fountains have all been sealed. No saliva, no tears, no sweat, no bowel sounds — only a fast hollow pulse and pupils wide as dinner plates. Atropine's tower stands at the centre of the alley like an obelisk, its stone carved with the words "dry as a bone, blind as a bat, red as a beet, hot as a hare, mad as a hatter." The two halves of the district are mirror images of each other, and knowing one perfectly is knowing both.`,
   palette: { ground: 0x97C459, accent: 0x1D9E75, water: 0x378ADD },
   position: { x: -30, z: 0 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 11–13',
+        groups: [
+          { heading: 'A. Cholinergic agonists (cholinomimetics)', groups: [
+            { heading: 'I. Direct-acting', groups: [
+              { heading: 'Choline esters', drugs: ['Acetylcholine', 'Methacholine', 'Carbachol', 'Bethanechol'] },
+              { heading: 'Natural alkaloids & analogues', drugs: ['Pilocarpine', 'Muscarine', 'Cevimeline'] },
+            ]},
+            { heading: 'II. Indirect-acting (anticholinesterases)', groups: [
+              { heading: 'Reversible', drugs: ['Edrophonium', 'Neostigmine', 'Pyridostigmine', 'Physostigmine', 'Donepezil', 'Rivastigmine', 'Galantamine'] },
+              { heading: 'Irreversible (organophosphates)', drugs: ['Echothiophate', 'Parathion', 'Malathion', 'Sarin', 'Soman'] },
+              { heading: 'Cholinesterase reactivator', drugs: ['Pralidoxime (2-PAM)'] },
+            ]},
+          ]},
+          { heading: 'B. Muscarinic antagonists (antimuscarinics)', groups: [
+            { heading: 'Belladonna alkaloids', drugs: ['Atropine', 'Hyoscine (scopolamine)'] },
+            { heading: 'Semisynthetic / synthetic', drugs: ['Homatropine', 'Tropicamide', 'Cyclopentolate', 'Ipratropium', 'Tiotropium', 'Glycopyrrolate', 'Oxybutynin', 'Tolterodine', 'Solifenacin', 'Trihexyphenidyl', 'Benztropine'] },
+          ]},
+          { heading: 'C. Inhibitor of ACh release', drugs: ['Botulinum toxin'] },
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 7–9',
+        groups: [
+          { heading: 'A. Cholinergic drugs', groups: [
+            { heading: 'I. Directly acting', groups: [
+              { heading: 'Choline esters', drugs: ['Acetylcholine', 'Methacholine', 'Carbachol', 'Bethanechol'] },
+              { heading: 'Cholinomimetic alkaloids', drugs: ['Pilocarpine', 'Muscarine', 'Arecoline'] },
+            ]},
+            { heading: 'II. Indirectly acting (anticholinesterases)', groups: [
+              { heading: 'Reversible', drugs: ['Physostigmine', 'Neostigmine', 'Pyridostigmine', 'Edrophonium', 'Rivastigmine', 'Donepezil', 'Galantamine', 'Tacrine'] },
+              { heading: 'Irreversible (organophosphates & carbamates)', drugs: ['Dyflos', 'Echothiophate', 'Parathion', 'Malathion', 'Carbaryl', 'Propoxur'] },
+            ]},
+          ]},
+          { heading: 'B. Anticholinergic (antimuscarinic) drugs', groups: [
+            { heading: 'Natural alkaloids', drugs: ['Atropine', 'Hyoscine'] },
+            { heading: 'Semisynthetic derivatives', drugs: ['Homatropine', 'Atropine methonitrate', 'Hyoscine butylbromide', 'Ipratropium bromide', 'Tiotropium bromide'] },
+            { heading: 'Synthetic — mydriatics', drugs: ['Cyclopentolate', 'Tropicamide'] },
+            { heading: 'Synthetic — antisecretory / antispasmodic', drugs: ['Propantheline', 'Glycopyrrolate', 'Clidinium', 'Pirenzepine', 'Dicyclomine'] },
+            { heading: 'Synthetic — vesicoselective (urinary)', drugs: ['Oxybutynin', 'Tolterodine', 'Solifenacin', 'Darifenacin'] },
+            { heading: 'Synthetic — antiparkinsonian', drugs: ['Trihexyphenidyl (benzhexol)', 'Procyclidine', 'Biperiden', 'Benztropine'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     // ─── DIRECT-ACTING CHOLINOMIMETICS ───────────────────────────────────────
 
@@ -1914,6 +2291,114 @@ const DISTRICT_CNS = {
 Deeper into the hill, where the oil-lamps give way to guttering red torches, lies the Opium Den: a subterranean courtyard paved with smooth river-stones, its archways draped with damp silk, the air thick with the sweet weight of the mu receptor. Above ground the Pharmacy-Hill Clock Tower keeps time for the entire quarter — its pendulum swings in exact 90-minute cycles to mark the REM rhythm, and when it strikes midnight the oil-lamps dim throughout the Sleep Quarter simultaneously. Every building on the hill is named for the drug it houses; every drug carries the exact latitude of its action inscribed above its doorway; every wall bears a contraindication plaque in raised iron lettering, because on the CNS hill a dosing error can silence the clock altogether.`,
   palette: { ground: 0x6B7FA3, accent: 0xC8A96E, water: 0x3A5278 },
   position: { x: -20, z: -40 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 16–24',
+        groups: [
+          { heading: 'A. Sedative-hypnotics & anxiolytics', groups: [
+            { heading: 'Benzodiazepines', drugs: ['Diazepam', 'Lorazepam', 'Midazolam', 'Alprazolam'] },
+            { heading: 'Non-benzodiazepine hypnotics (Z-drugs)', drugs: ['Zolpidem', 'Zaleplon', 'Eszopiclone'] },
+            { heading: 'Azapirones', drugs: ['Buspirone'] },
+            { heading: 'Barbiturates', drugs: ['Phenobarbital'] },
+            { heading: 'Melatonergic', drugs: ['Ramelteon'] },
+            { heading: 'Benzodiazepine antagonist', drugs: ['Flumazenil'] },
+          ]},
+          { heading: 'B. Antidepressants', groups: [
+            { heading: 'SSRIs', drugs: ['Fluoxetine', 'Sertraline', 'Escitalopram', 'Paroxetine'] },
+            { heading: 'SNRIs', drugs: ['Venlafaxine', 'Duloxetine'] },
+            { heading: 'Tricyclic antidepressants (TCAs)', drugs: ['Amitriptyline', 'Imipramine', 'Nortriptyline'] },
+            { heading: 'MAO inhibitors', drugs: ['Phenelzine', 'Tranylcypromine', 'Moclobemide'] },
+            { heading: 'Atypical antidepressants', drugs: ['Bupropion', 'Mirtazapine', 'Trazodone', 'Vortioxetine'] },
+          ]},
+          { heading: 'C. Antipsychotics', groups: [
+            { heading: 'Typical (first-generation)', drugs: ['Haloperidol', 'Chlorpromazine', 'Fluphenazine', 'Trifluoperazine'] },
+            { heading: 'Atypical (second-generation)', drugs: ['Clozapine', 'Olanzapine', 'Risperidone', 'Quetiapine', 'Aripiprazole', 'Ziprasidone'] },
+          ]},
+          { heading: 'D. Antiepileptics (by clinical use)', groups: [
+            { heading: 'Generalized tonic-clonic & partial seizures', drugs: ['Phenytoin', 'Carbamazepine', 'Valproate', 'Lamotrigine', 'Levetiracetam', 'Topiramate', 'Lacosamide'] },
+            { heading: 'Absence seizures', drugs: ['Ethosuximide', 'Valproate'] },
+            { heading: 'Status epilepticus', drugs: ['Lorazepam', 'Diazepam', 'Phenytoin', 'Fosphenytoin'] },
+          ]},
+          { heading: 'E. Antiparkinsonian drugs', groups: [
+            { heading: 'Dopamine precursor', drugs: ['Levodopa + Carbidopa'] },
+            { heading: 'Dopamine agonists', drugs: ['Pramipexole', 'Ropinirole', 'Bromocriptine'] },
+            { heading: 'MAO-B inhibitors', drugs: ['Selegiline', 'Rasagiline'] },
+            { heading: 'COMT inhibitors', drugs: ['Entacapone', 'Tolcapone'] },
+            { heading: 'Anticholinergics', drugs: ['Trihexyphenidyl', 'Benztropine'] },
+            { heading: 'Antiviral / NMDA antagonist', drugs: ['Amantadine'] },
+          ]},
+          { heading: 'F. General anaesthetics', groups: [
+            { heading: 'Intravenous', drugs: ['Propofol', 'Ketamine', 'Thiopentone', 'Etomidate', 'Midazolam'] },
+            { heading: 'Inhalational', drugs: ['Sevoflurane', 'Isoflurane', 'Desflurane', 'Nitrous oxide', 'Halothane'] },
+          ]},
+          { heading: 'G. Local anaesthetics', groups: [
+            { heading: 'Amides', drugs: ['Lidocaine', 'Bupivacaine', 'Ropivacaine'] },
+            { heading: 'Esters', drugs: ['Procaine', 'Cocaine', 'Benzocaine', 'Tetracaine'] },
+          ]},
+          { heading: 'H. Opioid analgesics', groups: [
+            { heading: 'Strong agonists', drugs: ['Morphine', 'Fentanyl', 'Methadone', 'Pethidine', 'Oxycodone'] },
+            { heading: 'Mild-to-moderate agonists', drugs: ['Codeine', 'Tramadol'] },
+            { heading: 'Partial agonist / mixed agonist-antagonist', drugs: ['Buprenorphine', 'Pentazocine', 'Nalbuphine'] },
+            { heading: 'Antagonists', drugs: ['Naloxone', 'Naltrexone'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 27–36',
+        groups: [
+          { heading: 'A. Sedative-hypnotics & anxiolytics', groups: [
+            { heading: 'Benzodiazepines', drugs: ['Diazepam', 'Lorazepam', 'Midazolam', 'Alprazolam'] },
+            { heading: 'Newer non-benzodiazepine hypnotics (Z-drugs)', drugs: ['Zolpidem', 'Zaleplon', 'Eszopiclone'] },
+            { heading: 'Azapirones', drugs: ['Buspirone'] },
+            { heading: 'Barbiturates', drugs: ['Phenobarbital'] },
+            { heading: 'Melatonin receptor agonist', drugs: ['Ramelteon'] },
+            { heading: 'Benzodiazepine antagonist', drugs: ['Flumazenil'] },
+          ]},
+          { heading: 'B. Antidepressants', groups: [
+            { heading: 'Selective serotonin reuptake inhibitors (SSRIs)', drugs: ['Fluoxetine', 'Sertraline', 'Escitalopram', 'Paroxetine'] },
+            { heading: 'Serotonin-noradrenaline reuptake inhibitors (SNRIs)', drugs: ['Venlafaxine', 'Duloxetine'] },
+            { heading: 'Tricyclic antidepressants (TCAs)', drugs: ['Amitriptyline', 'Imipramine', 'Nortriptyline'] },
+            { heading: 'Monoamine oxidase inhibitors (MAOIs)', drugs: ['Phenelzine', 'Tranylcypromine', 'Moclobemide'] },
+            { heading: 'Atypical antidepressants', drugs: ['Bupropion', 'Mirtazapine', 'Trazodone', 'Vortioxetine'] },
+          ]},
+          { heading: 'C. Antipsychotics (neuroleptics)', groups: [
+            { heading: 'Typical (first-generation)', drugs: ['Haloperidol', 'Chlorpromazine', 'Fluphenazine', 'Trifluoperazine'] },
+            { heading: 'Atypical (second-generation)', drugs: ['Clozapine', 'Olanzapine', 'Risperidone', 'Quetiapine', 'Aripiprazole', 'Ziprasidone'] },
+          ]},
+          { heading: 'D. Antiepileptic drugs (by clinical use)', groups: [
+            { heading: 'Generalized tonic-clonic & partial seizures', drugs: ['Phenytoin', 'Carbamazepine', 'Valproate', 'Lamotrigine', 'Levetiracetam', 'Topiramate', 'Lacosamide'] },
+            { heading: 'Absence seizures', drugs: ['Ethosuximide', 'Valproate'] },
+            { heading: 'Status epilepticus', drugs: ['Lorazepam', 'Diazepam', 'Phenytoin', 'Fosphenytoin'] },
+          ]},
+          { heading: 'E. Antiparkinsonian drugs', groups: [
+            { heading: 'Dopamine precursor', drugs: ['Levodopa + Carbidopa'] },
+            { heading: 'Dopaminergic agonists', drugs: ['Pramipexole', 'Ropinirole', 'Bromocriptine'] },
+            { heading: 'MAO-B inhibitors', drugs: ['Selegiline', 'Rasagiline'] },
+            { heading: 'COMT inhibitors', drugs: ['Entacapone', 'Tolcapone'] },
+            { heading: 'Central anticholinergics', drugs: ['Trihexyphenidyl', 'Benztropine'] },
+            { heading: 'Amantadine', drugs: ['Amantadine'] },
+          ]},
+          { heading: 'F. General anaesthetics', groups: [
+            { heading: 'Intravenous', drugs: ['Propofol', 'Ketamine', 'Thiopentone', 'Etomidate', 'Midazolam'] },
+            { heading: 'Inhalational', drugs: ['Sevoflurane', 'Isoflurane', 'Desflurane', 'Nitrous oxide', 'Halothane'] },
+          ]},
+          { heading: 'G. Local anaesthetics', groups: [
+            { heading: 'Amides', drugs: ['Lidocaine', 'Bupivacaine', 'Ropivacaine'] },
+            { heading: 'Esters', drugs: ['Procaine', 'Cocaine', 'Benzocaine', 'Tetracaine'] },
+          ]},
+          { heading: 'H. Opioid analgesics', groups: [
+            { heading: 'Strong agonists', drugs: ['Morphine', 'Fentanyl', 'Methadone', 'Pethidine', 'Oxycodone'] },
+            { heading: 'Mild-to-moderate agonists', drugs: ['Codeine', 'Tramadol'] },
+            { heading: 'Partial / mixed agonist-antagonist', drugs: ['Buprenorphine', 'Pentazocine', 'Nalbuphine'] },
+            { heading: 'Antagonists', drugs: ['Naloxone', 'Naltrexone'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
 
     // ─── SEDATIVE-HYPNOTICS & ANXIOLYTICS (ch. 19) ──────────────────────────
@@ -2457,6 +2942,160 @@ const DISTRICT_CVS = {
 Ventricular Boulevard runs east from the atrium. On the south side stands the Lipid Clinic — its HMG-CoA reductase laboratories buried three floors underground — and beside it the fibrate gym and the PCSK9 immunotherapy suite. The northern footpath of Ventricular Boulevard is anticoagulant row: heparin's emergency infusion pump stationed at the near end, warfarin's vitamin-K antagonist dispensary in the middle, and the direct oral anticoagulant (DOAC) high-rise — dabigatran, rivaroxaban, and apixaban — at the far end. The central plaza holds the antiplatelet market: aspirin's ancient COX-1 stall, clopidogrel's prodrug conversion counter beside it, and ticagrelor's reversible lock-up across the square. Behind them all, the ACE-inhibitor arcade and the ARB towers filter the renin-angiotensin signal; the CCB promenade — amlodipine's gentle dihydropyridine café and verapamil's stern non-DHP control room — lines the west side. The organic-nitrate dispensary hovers between the coronary and the arteriolar mains, glyceryl trinitrate vapour drifting across the cobblestones every Monday morning.`,
   palette: { ground: 0xF5C2C2, accent: 0xE24B4A, water: 0xC47E7E },
   position: { x: 0, z: 30 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 28–37',
+        groups: [
+          { heading: 'A. Antiarrhythmic drugs (Vaughan-Williams)', groups: [
+            { heading: 'Class I — Na+ channel blockers', groups: [
+              { heading: 'IA (intermediate kinetics)', drugs: ['Quinidine', 'Procainamide', 'Disopyramide'] },
+              { heading: 'IB (fast kinetics)', drugs: ['Lidocaine', 'Mexiletine', 'Phenytoin'] },
+              { heading: 'IC (slow kinetics)', drugs: ['Flecainide', 'Propafenone'] },
+            ]},
+            { heading: 'Class II — β-adrenergic blockers', drugs: ['Propranolol', 'Esmolol', 'Metoprolol'] },
+            { heading: 'Class III — K+ channel blockers', drugs: ['Amiodarone', 'Sotalol', 'Dronedarone', 'Dofetilide', 'Ibutilide'] },
+            { heading: 'Class IV — Calcium channel blockers', drugs: ['Verapamil', 'Diltiazem'] },
+            { heading: 'Miscellaneous', drugs: ['Adenosine', 'Digoxin', 'Magnesium sulfate'] },
+          ]},
+          { heading: 'B. Drugs for heart failure', groups: [
+            { heading: 'ACE inhibitors', drugs: ['Enalapril', 'Ramipril', 'Lisinopril'] },
+            { heading: 'Angiotensin receptor blockers (ARBs)', drugs: ['Losartan', 'Valsartan'] },
+            { heading: 'Angiotensin receptor–neprilysin inhibitor (ARNI)', drugs: ['Sacubitril/valsartan'] },
+            { heading: 'β-blockers', drugs: ['Carvedilol', 'Bisoprolol', 'Metoprolol'] },
+            { heading: 'Aldosterone antagonists', drugs: ['Spironolactone', 'Eplerenone'] },
+            { heading: 'SGLT2 inhibitors', drugs: ['Dapagliflozin', 'Empagliflozin'] },
+            { heading: 'Diuretics', drugs: ['Furosemide'] },
+            { heading: 'Cardiac glycosides', drugs: ['Digoxin'] },
+            { heading: 'If-channel inhibitor', drugs: ['Ivabradine'] },
+            { heading: 'Vasodilators', drugs: ['Hydralazine + Isosorbide dinitrate'] },
+          ]},
+          { heading: 'C. Antihypertensive drugs', groups: [
+            { heading: 'Diuretics', drugs: ['Hydrochlorothiazide', 'Chlorthalidone', 'Furosemide'] },
+            { heading: 'ACE inhibitors', drugs: ['Enalapril', 'Ramipril', 'Lisinopril'] },
+            { heading: 'Angiotensin receptor blockers (ARBs)', drugs: ['Losartan', 'Valsartan'] },
+            { heading: 'Calcium channel blockers', groups: [
+              { heading: 'Dihydropyridines', drugs: ['Amlodipine', 'Nifedipine'] },
+              { heading: 'Non-dihydropyridines', drugs: ['Verapamil', 'Diltiazem'] },
+            ]},
+            { heading: 'β-blockers', drugs: ['Metoprolol', 'Atenolol', 'Propranolol'] },
+            { heading: 'α-blockers', drugs: ['Prazosin', 'Doxazosin'] },
+            { heading: 'Central sympatholytics', drugs: ['Clonidine', 'Methyldopa'] },
+            { heading: 'Direct vasodilators', drugs: ['Hydralazine', 'Minoxidil', 'Sodium nitroprusside'] },
+          ]},
+          { heading: 'D. Antianginal drugs', groups: [
+            { heading: 'Nitrates', drugs: ['Nitroglycerin', 'Isosorbide dinitrate', 'Isosorbide mononitrate'] },
+            { heading: 'β-blockers', drugs: ['Metoprolol', 'Atenolol'] },
+            { heading: 'Calcium channel blockers', drugs: ['Amlodipine', 'Verapamil', 'Diltiazem'] },
+            { heading: 'Others', drugs: ['Ranolazine', 'Nicorandil', 'Ivabradine', 'Trimetazidine'] },
+          ]},
+          { heading: 'E. Antiplatelet drugs', groups: [
+            { heading: 'COX inhibitor', drugs: ['Aspirin'] },
+            { heading: 'P2Y12 (ADP) receptor inhibitors', drugs: ['Clopidogrel', 'Prasugrel', 'Ticagrelor'] },
+            { heading: 'GP IIb/IIIa inhibitors', drugs: ['Abciximab', 'Tirofiban'] },
+            { heading: 'Phosphodiesterase inhibitors', drugs: ['Dipyridamole', 'Cilostazol'] },
+          ]},
+          { heading: 'F. Anticoagulants', groups: [
+            { heading: 'Parenteral', groups: [
+              { heading: 'Unfractionated heparin (UFH)', drugs: ['Heparin'] },
+              { heading: 'Low-molecular-weight heparin (LMWH)', drugs: ['Enoxaparin'] },
+              { heading: 'Indirect Xa inhibitor', drugs: ['Fondaparinux'] },
+              { heading: 'Direct thrombin inhibitors', drugs: ['Bivalirudin'] },
+            ]},
+            { heading: 'Oral', groups: [
+              { heading: 'Vitamin K antagonist', drugs: ['Warfarin'] },
+              { heading: 'Direct oral anticoagulants (DOACs)', drugs: ['Dabigatran', 'Apixaban', 'Rivaroxaban', 'Edoxaban'] },
+            ]},
+          ]},
+          { heading: 'G. Thrombolytics (fibrinolytics)', drugs: ['Streptokinase', 'Alteplase', 'Tenecteplase', 'Reteplase'] },
+          { heading: 'H. Hypolipidaemic drugs', groups: [
+            { heading: 'Statins (HMG-CoA reductase inhibitors)', drugs: ['Atorvastatin', 'Rosuvastatin', 'Simvastatin'] },
+            { heading: 'Cholesterol-absorption inhibitor', drugs: ['Ezetimibe'] },
+            { heading: 'PCSK9 inhibitors', drugs: ['Evolocumab', 'Alirocumab', 'Inclisiran'] },
+            { heading: 'Fibrates', drugs: ['Fenofibrate', 'Gemfibrozil'] },
+            { heading: 'Bile-acid sequestrants', drugs: ['Cholestyramine'] },
+            { heading: 'Others', drugs: ['Niacin', 'Omega-3 fatty acids'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 37–48',
+        groups: [
+          { heading: 'A. Antiarrhythmic drugs', groups: [
+            { heading: 'Class I — membrane stabilizers (Na+ channel blockers)', groups: [
+              { heading: 'IA', drugs: ['Quinidine', 'Procainamide', 'Disopyramide'] },
+              { heading: 'IB', drugs: ['Lignocaine', 'Mexiletine', 'Phenytoin'] },
+              { heading: 'IC', drugs: ['Flecainide', 'Propafenone'] },
+            ]},
+            { heading: 'Class II — β-adrenergic blockers', drugs: ['Propranolol', 'Esmolol', 'Metoprolol'] },
+            { heading: 'Class III — agents prolonging repolarization', drugs: ['Amiodarone', 'Sotalol', 'Dronedarone', 'Dofetilide', 'Ibutilide'] },
+            { heading: 'Class IV — calcium channel blockers', drugs: ['Verapamil', 'Diltiazem'] },
+            { heading: 'Miscellaneous', drugs: ['Adenosine', 'Digoxin', 'Magnesium sulfate'] },
+          ]},
+          { heading: 'B. Drugs used in congestive heart failure', groups: [
+            { heading: 'Inhibitors of RAAS — ACE inhibitors', drugs: ['Enalapril', 'Ramipril', 'Lisinopril'] },
+            { heading: 'Angiotensin receptor blockers', drugs: ['Losartan', 'Valsartan'] },
+            { heading: 'Angiotensin receptor–neprilysin inhibitor', drugs: ['Sacubitril/valsartan'] },
+            { heading: 'β-adrenergic blockers', drugs: ['Carvedilol', 'Bisoprolol', 'Metoprolol'] },
+            { heading: 'Aldosterone antagonists', drugs: ['Spironolactone', 'Eplerenone'] },
+            { heading: 'SGLT2 inhibitors', drugs: ['Dapagliflozin', 'Empagliflozin'] },
+            { heading: 'Diuretics', drugs: ['Furosemide'] },
+            { heading: 'Cardiac glycosides', drugs: ['Digoxin'] },
+            { heading: 'If-channel inhibitor', drugs: ['Ivabradine'] },
+            { heading: 'Vasodilators', drugs: ['Hydralazine + Isosorbide dinitrate'] },
+          ]},
+          { heading: 'C. Antihypertensive drugs', groups: [
+            { heading: 'Diuretics', drugs: ['Hydrochlorothiazide', 'Chlorthalidone', 'Furosemide'] },
+            { heading: 'ACE inhibitors', drugs: ['Enalapril', 'Ramipril', 'Lisinopril'] },
+            { heading: 'Angiotensin receptor blockers', drugs: ['Losartan', 'Valsartan'] },
+            { heading: 'Calcium channel blockers', groups: [
+              { heading: 'Dihydropyridines', drugs: ['Amlodipine', 'Nifedipine'] },
+              { heading: 'Non-dihydropyridines', drugs: ['Verapamil', 'Diltiazem'] },
+            ]},
+            { heading: 'β-adrenergic blockers', drugs: ['Metoprolol', 'Atenolol', 'Propranolol'] },
+            { heading: 'α-adrenergic blockers', drugs: ['Prazosin', 'Doxazosin'] },
+            { heading: 'Central sympatholytics', drugs: ['Clonidine', 'Methyldopa'] },
+            { heading: 'Direct vasodilators', drugs: ['Hydralazine', 'Minoxidil', 'Sodium nitroprusside'] },
+          ]},
+          { heading: 'D. Antianginal drugs', groups: [
+            { heading: 'Nitrates', drugs: ['Glyceryl trinitrate (nitroglycerin)', 'Isosorbide dinitrate', 'Isosorbide mononitrate'] },
+            { heading: 'β-blockers', drugs: ['Metoprolol', 'Atenolol'] },
+            { heading: 'Calcium channel blockers', drugs: ['Amlodipine', 'Verapamil', 'Diltiazem'] },
+            { heading: 'Others (potassium channel opener / metabolic / If-blocker)', drugs: ['Ranolazine', 'Nicorandil', 'Ivabradine', 'Trimetazidine'] },
+          ]},
+          { heading: 'E. Antiplatelet drugs', groups: [
+            { heading: 'COX inhibitor', drugs: ['Aspirin'] },
+            { heading: 'P2Y12 (ADP) antagonists', drugs: ['Clopidogrel', 'Prasugrel', 'Ticagrelor'] },
+            { heading: 'GP IIb/IIIa antagonists', drugs: ['Abciximab', 'Tirofiban'] },
+            { heading: 'Phosphodiesterase inhibitors', drugs: ['Dipyridamole', 'Cilostazol'] },
+          ]},
+          { heading: 'F. Anticoagulants', groups: [
+            { heading: 'Parenteral', groups: [
+              { heading: 'Unfractionated heparin', drugs: ['Heparin'] },
+              { heading: 'Low-molecular-weight heparins', drugs: ['Enoxaparin'] },
+              { heading: 'Indirect factor Xa inhibitor', drugs: ['Fondaparinux'] },
+              { heading: 'Direct thrombin inhibitors', drugs: ['Bivalirudin'] },
+            ]},
+            { heading: 'Oral', groups: [
+              { heading: 'Vitamin K antagonist (coumarin)', drugs: ['Warfarin'] },
+              { heading: 'Newer oral anticoagulants (DOACs)', drugs: ['Dabigatran', 'Apixaban', 'Rivaroxaban', 'Edoxaban'] },
+            ]},
+          ]},
+          { heading: 'G. Fibrinolytics (thrombolytics)', drugs: ['Streptokinase', 'Alteplase', 'Tenecteplase', 'Reteplase'] },
+          { heading: 'H. Hypolipidaemic drugs', groups: [
+            { heading: 'HMG-CoA reductase inhibitors (statins)', drugs: ['Atorvastatin', 'Rosuvastatin', 'Simvastatin'] },
+            { heading: 'Cholesterol-absorption inhibitor', drugs: ['Ezetimibe'] },
+            { heading: 'PCSK9 inhibitors', drugs: ['Evolocumab', 'Alirocumab', 'Inclisiran'] },
+            { heading: 'Fibric acid derivatives', drugs: ['Fenofibrate', 'Gemfibrozil'] },
+            { heading: 'Bile-acid sequestrants', drugs: ['Cholestyramine'] },
+            { heading: 'Others', drugs: ['Nicotinic acid (niacin)', 'Omega-3 fatty acids'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     // ─── ANTIARRHYTHMICS — CLASS IA ──────────────────────────────────────────
 
@@ -2836,6 +3475,130 @@ const DISTRICT_ENDOCRINE = {
 Hormonal couriers move along covered colonnades — the endocrine signals are slow and powerful, not the lightning of the adrenergic plant nor the chemistry-class rush of the autacoid messenger lane. Each courier carries a lipid or peptide envelope that must be decoded at the receptor before the message inside can act. To learn this district is to trace the colonnades: follow the pituitary dispatch down to the thyroid, the adrenal relay back up to the cortex, the insulin signal from islet to liver. Every therapeutic intervention on this plateau is either a hormone you are replacing, an enzyme you are blocking, or a receptor you are nudging — and every drug here can become dangerous the moment you abruptly cut the courier line.`,
   palette: { ground: 0xE8D5A3, accent: 0xC47E3A, water: 0x7BAFD4 },
   position: { x: 40, z: -40 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 45–52',
+        groups: [
+          { heading: 'A. Antidiabetic drugs', groups: [
+            { heading: 'Insulins', groups: [
+              { heading: 'Rapid-acting', drugs: ['Insulin lispro', 'Insulin aspart', 'Insulin glulisine'] },
+              { heading: 'Short-acting (regular)', drugs: ['Regular insulin'] },
+              { heading: 'Intermediate-acting', drugs: ['NPH (isophane) insulin'] },
+              { heading: 'Long-acting', drugs: ['Insulin glargine', 'Insulin detemir', 'Insulin degludec'] },
+            ]},
+            { heading: 'Biguanides', drugs: ['Metformin'] },
+            { heading: 'Sulfonylureas', drugs: ['Glibenclamide', 'Glimepiride', 'Gliclazide'] },
+            { heading: 'Meglitinides', drugs: ['Repaglinide', 'Nateglinide'] },
+            { heading: 'Thiazolidinediones', drugs: ['Pioglitazone'] },
+            { heading: 'DPP-4 inhibitors (gliptins)', drugs: ['Sitagliptin', 'Vildagliptin', 'Linagliptin'] },
+            { heading: 'GLP-1 receptor agonists', drugs: ['Liraglutide', 'Exenatide', 'Dulaglutide', 'Semaglutide'] },
+            { heading: 'SGLT2 inhibitors (gliflozins)', drugs: ['Empagliflozin', 'Dapagliflozin', 'Canagliflozin'] },
+            { heading: 'α-glucosidase inhibitors', drugs: ['Acarbose', 'Miglitol', 'Voglibose'] },
+            { heading: 'Amylin analogue', drugs: ['Pramlintide'] },
+          ]},
+          { heading: 'B. Thyroid & antithyroid drugs', groups: [
+            { heading: 'Thyroid hormones', drugs: ['Levothyroxine', 'Liothyronine'] },
+            { heading: 'Antithyroid drugs', groups: [
+              { heading: 'Thioamides', drugs: ['Carbimazole', 'Methimazole', 'Propylthiouracil'] },
+              { heading: 'Iodides', drugs: ['Potassium iodide', 'Lugol\'s iodine'] },
+              { heading: 'Radioactive iodine', drugs: ['I-131'] },
+              { heading: 'β-blockers (symptomatic)', drugs: ['Propranolol'] },
+            ]},
+          ]},
+          { heading: 'C. Corticosteroids', groups: [
+            { heading: 'Glucocorticoids', groups: [
+              { heading: 'Short-acting', drugs: ['Hydrocortisone', 'Cortisone'] },
+              { heading: 'Intermediate-acting', drugs: ['Prednisolone', 'Methylprednisolone', 'Triamcinolone'] },
+              { heading: 'Long-acting', drugs: ['Dexamethasone', 'Betamethasone'] },
+            ]},
+            { heading: 'Mineralocorticoids', drugs: ['Fludrocortisone'] },
+          ]},
+          { heading: 'D. Sex hormones & related drugs', groups: [
+            { heading: 'Estrogens & progestins', drugs: ['Combined oral contraceptives'] },
+            { heading: 'SERMs', drugs: ['Tamoxifen', 'Raloxifene', 'Clomiphene'] },
+            { heading: 'Aromatase inhibitors', drugs: ['Anastrozole', 'Letrozole', 'Exemestane'] },
+            { heading: 'Androgens & anti-androgens', drugs: ['Finasteride', 'Dutasteride', 'Flutamide', 'Bicalutamide', 'Leuprolide (GnRH agonist)'] },
+          ]},
+          { heading: 'E. Drugs affecting bone & calcium', groups: [
+            { heading: 'Bisphosphonates', drugs: ['Alendronate', 'Zoledronic acid', 'Risedronate'] },
+            { heading: 'RANKL inhibitor', drugs: ['Denosumab'] },
+            { heading: 'PTH analogue', drugs: ['Teriparatide', 'Abaloparatide'] },
+            { heading: 'SERM', drugs: ['Raloxifene'] },
+            { heading: 'Calcitonin', drugs: ['Calcitonin'] },
+            { heading: 'Vitamin D & calcium', drugs: ['Vitamin D', 'Calcium'] },
+          ]},
+          { heading: 'F. Hypothalamic & pituitary hormones', groups: [
+            { heading: 'Posterior pituitary', drugs: ['Desmopressin (vasopressin)', 'Oxytocin'] },
+            { heading: 'Somatostatin analogue', drugs: ['Octreotide', 'Lanreotide'] },
+            { heading: 'Growth hormone', drugs: ['Somatropin'] },
+            { heading: 'Dopamine agonists', drugs: ['Bromocriptine', 'Cabergoline'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 18–24, 62–63',
+        groups: [
+          { heading: 'A. Antidiabetic drugs', groups: [
+            { heading: 'Insulins', groups: [
+              { heading: 'Rapid-acting', drugs: ['Insulin lispro', 'Insulin aspart', 'Insulin glulisine'] },
+              { heading: 'Short-acting (regular)', drugs: ['Regular (soluble) insulin'] },
+              { heading: 'Intermediate-acting', drugs: ['NPH (isophane) insulin'] },
+              { heading: 'Long-acting', drugs: ['Insulin glargine', 'Insulin detemir', 'Insulin degludec'] },
+            ]},
+            { heading: 'Biguanides', drugs: ['Metformin'] },
+            { heading: 'Sulfonylureas', drugs: ['Glibenclamide', 'Glimepiride', 'Gliclazide'] },
+            { heading: 'Meglitinides / D-phenylalanine analogue', drugs: ['Repaglinide', 'Nateglinide'] },
+            { heading: 'Thiazolidinediones (PPARγ activators)', drugs: ['Pioglitazone'] },
+            { heading: 'DPP-4 inhibitors (gliptins)', drugs: ['Sitagliptin', 'Vildagliptin', 'Linagliptin'] },
+            { heading: 'GLP-1 receptor agonists (incretin mimetics)', drugs: ['Liraglutide', 'Exenatide', 'Dulaglutide', 'Semaglutide'] },
+            { heading: 'SGLT2 inhibitors (gliflozins)', drugs: ['Empagliflozin', 'Dapagliflozin', 'Canagliflozin'] },
+            { heading: 'α-glucosidase inhibitors', drugs: ['Acarbose', 'Miglitol', 'Voglibose'] },
+            { heading: 'Amylin analogue', drugs: ['Pramlintide'] },
+          ]},
+          { heading: 'B. Thyroid & antithyroid drugs', groups: [
+            { heading: 'Thyroid hormones', drugs: ['Levothyroxine (T4)', 'Liothyronine (T3)'] },
+            { heading: 'Antithyroid drugs', groups: [
+              { heading: 'Thioamides (inhibit hormone synthesis)', drugs: ['Carbimazole', 'Methimazole', 'Propylthiouracil'] },
+              { heading: 'Ionic inhibitors / iodides', drugs: ['Potassium iodide', 'Lugol\'s iodine'] },
+              { heading: 'Radioactive iodine', drugs: ['I-131'] },
+              { heading: 'β-adrenergic blockers (symptomatic relief)', drugs: ['Propranolol'] },
+            ]},
+          ]},
+          { heading: 'C. Corticosteroids', groups: [
+            { heading: 'Glucocorticoids', groups: [
+              { heading: 'Short-acting', drugs: ['Hydrocortisone', 'Cortisone'] },
+              { heading: 'Intermediate-acting', drugs: ['Prednisolone', 'Methylprednisolone', 'Triamcinolone'] },
+              { heading: 'Long-acting', drugs: ['Dexamethasone', 'Betamethasone'] },
+            ]},
+            { heading: 'Mineralocorticoids', drugs: ['Fludrocortisone', 'Desoxycorticosterone'] },
+          ]},
+          { heading: 'D. Sex hormones & related drugs', groups: [
+            { heading: 'Estrogens & progestins', drugs: ['Combined oral contraceptives'] },
+            { heading: 'SERMs (anti-estrogens)', drugs: ['Tamoxifen', 'Raloxifene', 'Clomiphene'] },
+            { heading: 'Aromatase inhibitors', drugs: ['Anastrozole', 'Letrozole', 'Exemestane'] },
+            { heading: 'Androgens & anti-androgens', drugs: ['Finasteride', 'Dutasteride', 'Flutamide', 'Bicalutamide', 'Leuprolide (GnRH agonist)'] },
+          ]},
+          { heading: 'E. Drugs affecting bone mineral homeostasis (calcium)', groups: [
+            { heading: 'Bisphosphonates', drugs: ['Alendronate', 'Zoledronic acid', 'Risedronate'] },
+            { heading: 'RANKL inhibitor', drugs: ['Denosumab'] },
+            { heading: 'PTH (teriparatide) analogue', drugs: ['Teriparatide', 'Abaloparatide'] },
+            { heading: 'SERM', drugs: ['Raloxifene'] },
+            { heading: 'Calcitonin', drugs: ['Calcitonin'] },
+            { heading: 'Vitamin D & calcium salts', drugs: ['Vitamin D', 'Calcium'] },
+          ]},
+          { heading: 'F. Hypothalamic & pituitary hormones', groups: [
+            { heading: 'Posterior pituitary hormones', drugs: ['Desmopressin (vasopressin)', 'Oxytocin'] },
+            { heading: 'Somatostatin analogue', drugs: ['Octreotide', 'Lanreotide'] },
+            { heading: 'Growth hormone', drugs: ['Somatropin'] },
+            { heading: 'Dopamine agonists (prolactin inhibitors)', drugs: ['Bromocriptine', 'Cabergoline'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
 
     // ─── DIABETES: INSULIN ────────────────────────────────────────────────────
@@ -3216,6 +3979,69 @@ At the far end of the road, the renal drainage system processes the vast majorit
 The dose-response amphitheatre stands in the central plaza — where all the curves of efficacy, potency, and receptor occupancy are displayed. Every new trainee must understand the difference between Emax (maximum possible effect) and EC50 (concentration producing half-maximal effect), and between a full agonist's ceiling and a partial agonist's limited platform.`,
   palette: { ground: 0xE8D5A3, accent: 0x8B6914, water: 0xB0C4DE },
   position: { x: -50, z: 50 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 1–7',
+        groups: [
+          { heading: 'A. Pharmacokinetics', groups: [
+            { heading: 'Absorption', drugs: ['Bioavailability (F)', 'First-pass metabolism', 'Routes bypassing first-pass (sublingual, IV, rectal)'] },
+            { heading: 'Distribution', drugs: ['Volume of distribution (Vd)', 'Plasma protein binding (albumin, α1-acid glycoprotein)'] },
+            { heading: 'Metabolism', groups: [
+              { heading: 'Phase I (CYP450 oxidation/reduction/hydrolysis)', drugs: ['CYP3A4', 'CYP2D6', 'CYP2C9'] },
+              { heading: 'Phase II (conjugation)', drugs: ['Glucuronidation', 'Sulfation', 'Acetylation'] },
+              { heading: 'Enzyme inducers', drugs: ['Rifampicin', 'Phenytoin', 'Carbamazepine'] },
+              { heading: 'Enzyme inhibitors', drugs: ['Ketoconazole', 'Erythromycin', 'Cimetidine'] },
+            ]},
+            { heading: 'Excretion', drugs: ['Clearance (CL)', 'Half-life (t½)', 'Zero-order vs first-order kinetics'] },
+          ]},
+          { heading: 'B. Pharmacodynamics', groups: [
+            { heading: 'Dose–response relationships', drugs: ['Graded dose–response', 'Quantal dose–response', 'ED50 / TD50'] },
+            { heading: 'Therapeutic index & narrow-therapeutic-index drugs', drugs: ['Warfarin', 'Digoxin', 'Lithium', 'Phenytoin', 'Theophylline'] },
+            { heading: 'Receptors & signal transduction', drugs: ['G-protein-coupled receptors', 'Ion channels', 'Enzyme-linked receptors', 'Nuclear (intracellular) receptors'] },
+            { heading: 'Agonists & antagonists', drugs: ['Full agonist', 'Partial agonist', 'Inverse agonist', 'Competitive antagonist', 'Non-competitive antagonist'] },
+          ]},
+          { heading: 'C. Drug interactions', groups: [
+            { heading: 'Pharmacokinetic interactions', drugs: ['Absorption', 'Protein-binding displacement', 'Enzyme induction/inhibition', 'Altered excretion'] },
+            { heading: 'Pharmacodynamic interactions', drugs: ['Synergism / additive', 'Antagonism'] },
+          ]},
+          { heading: 'D. Pharmacology in special populations', groups: [
+            { heading: 'Pregnancy & lactation', drugs: ['FDA pregnancy categories', 'Teratogens (Thalidomide, Warfarin, Isotretinoin, Valproate)'] },
+            { heading: 'Geriatric pharmacology', drugs: ['Reduced clearance', 'Altered Vd', 'Polypharmacy'] },
+            { heading: 'Paediatric pharmacology', drugs: ['Weight/BSA-based dosing', 'Immature metabolism & excretion'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 1–5',
+        groups: [
+          { heading: 'A. Pharmacokinetics', groups: [
+            { heading: 'Absorption', drugs: ['Bioavailability', 'First-pass (presystemic) metabolism'] },
+            { heading: 'Distribution', drugs: ['Volume of distribution', 'Plasma protein binding'] },
+            { heading: 'Metabolism (biotransformation)', drugs: ['Phase I (microsomal CYP450)', 'Phase II (conjugation)', 'Inducers: Rifampin, Phenytoin, Carbamazepine', 'Inhibitors: Ketoconazole, Erythromycin, Cimetidine'] },
+            { heading: 'Excretion', drugs: ['Clearance', 'Plasma half-life', 'Zero-order & first-order kinetics'] },
+          ]},
+          { heading: 'B. Pharmacodynamics', groups: [
+            { heading: 'Dose–response & efficacy/potency', drugs: ['Graded & quantal curves', 'ED50 / TD50'] },
+            { heading: 'Therapeutic index & NTI drugs', drugs: ['Warfarin', 'Digoxin', 'Lithium', 'Phenytoin', 'Theophylline'] },
+            { heading: 'Receptors & transducers', drugs: ['GPCRs', 'Ion channels', 'Enzymatic receptors', 'Nuclear receptors'] },
+            { heading: 'Agonists & antagonists', drugs: ['Full/partial agonist', 'Inverse agonist', 'Competitive & non-competitive antagonist'] },
+          ]},
+          { heading: 'C. Drug interactions', groups: [
+            { heading: 'Pharmacokinetic', drugs: ['Absorption', 'Protein binding', 'Metabolism', 'Excretion'] },
+            { heading: 'Pharmacodynamic', drugs: ['Synergism', 'Antagonism'] },
+          ]},
+          { heading: 'D. Special populations', groups: [
+            { heading: 'Pregnancy & lactation', drugs: ['Teratogenic drugs', 'Drug transfer in milk'] },
+            { heading: 'Geriatric', drugs: ['Altered kinetics & dynamics'] },
+            { heading: 'Paediatric', drugs: ['Dose calculation', 'Immature organ function'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'bioavailability_first_pass',
@@ -3357,6 +4183,91 @@ Further down the row, the prokinetic stalls line the middle section. Metoclopram
 At the far end of the row, the IBD biologics occupy a new, gleaming precinct. Mesalazine holds the intestinal wall stall; adalimumab and vedolizumab occupy the immunological tower — targeting TNF-alpha and gut-selective integrins respectively.`,
   palette: { ground: 0xD4A96A, accent: 0x8B4513, water: 0x4682B4 },
   position: { x: 0, z: 50 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 49–51',
+        groups: [
+          { heading: 'A. Drugs for acid-peptic disease', groups: [
+            { heading: 'Proton pump inhibitors', drugs: ['Omeprazole', 'Pantoprazole', 'Esomeprazole', 'Lansoprazole', 'Rabeprazole'] },
+            { heading: 'H2-receptor antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine', 'Nizatidine'] },
+            { heading: 'Antacids', drugs: ['Aluminium hydroxide', 'Magnesium hydroxide', 'Sodium bicarbonate'] },
+            { heading: 'Mucosal protectives', drugs: ['Sucralfate', 'Bismuth subsalicylate/subcitrate', 'Misoprostol'] },
+            { heading: 'Anti-H. pylori regimens (combination)', drugs: ['PPI + Amoxicillin + Clarithromycin (triple)', 'PPI + Bismuth + Metronidazole + Tetracycline (quadruple)'] },
+          ]},
+          { heading: 'B. Prokinetics', drugs: ['Metoclopramide', 'Domperidone', 'Itopride', 'Mosapride', 'Prucalopride', 'Erythromycin'] },
+          { heading: 'C. Antiemetics', groups: [
+            { heading: '5-HT3 antagonists', drugs: ['Ondansetron', 'Granisetron', 'Palonosetron'] },
+            { heading: 'D2 antagonists', drugs: ['Metoclopramide', 'Domperidone', 'Prochlorperazine'] },
+            { heading: 'H1 antihistamines', drugs: ['Cyclizine', 'Cinnarizine', 'Promethazine', 'Doxylamine'] },
+            { heading: 'Antimuscarinic', drugs: ['Hyoscine'] },
+            { heading: 'NK1 antagonists', drugs: ['Aprepitant'] },
+            { heading: 'Corticosteroids / cannabinoids', drugs: ['Dexamethasone', 'Nabilone'] },
+          ]},
+          { heading: 'D. Antidiarrhoeals', groups: [
+            { heading: 'Opioid agonists', drugs: ['Loperamide', 'Diphenoxylate'] },
+            { heading: 'Adsorbents', drugs: ['Kaolin-pectin'] },
+            { heading: 'Oral rehydration & others', drugs: ['ORS', 'Racecadotril'] },
+          ]},
+          { heading: 'E. Laxatives', groups: [
+            { heading: 'Bulk-forming', drugs: ['Ispaghula', 'Methylcellulose'] },
+            { heading: 'Osmotic', drugs: ['Lactulose', 'Polyethylene glycol', 'Magnesium salts'] },
+            { heading: 'Stimulant', drugs: ['Bisacodyl', 'Senna', 'Sodium picosulfate'] },
+            { heading: 'Stool softeners', drugs: ['Docusate'] },
+            { heading: 'Lubricant', drugs: ['Liquid paraffin'] },
+          ]},
+          { heading: 'F. Drugs for inflammatory bowel disease', groups: [
+            { heading: 'Aminosalicylates', drugs: ['Mesalazine', 'Sulfasalazine'] },
+            { heading: 'Corticosteroids', drugs: ['Budesonide', 'Prednisolone'] },
+            { heading: 'Immunomodulators', drugs: ['Azathioprine', 'Methotrexate'] },
+            { heading: 'Biologics', drugs: ['Infliximab (anti-TNF)', 'Adalimumab (anti-TNF)', 'Vedolizumab (anti-integrin)', 'Ustekinumab'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 47–51',
+        groups: [
+          { heading: 'A. Drugs for peptic ulcer & GORD (anti-ulcer)', groups: [
+            { heading: 'Proton pump inhibitors', drugs: ['Omeprazole', 'Esomeprazole', 'Pantoprazole', 'Lansoprazole', 'Rabeprazole'] },
+            { heading: 'H2 receptor antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine', 'Nizatidine'] },
+            { heading: 'Antacids', drugs: ['Aluminium hydroxide', 'Magnesium hydroxide', 'Sodium bicarbonate'] },
+            { heading: 'Ulcer protectives', drugs: ['Sucralfate', 'Colloidal bismuth subcitrate', 'Bismuth subsalicylate'] },
+            { heading: 'Prostaglandin analogue', drugs: ['Misoprostol'] },
+            { heading: 'Anti-H. pylori (combination regimens)', drugs: ['PPI + Amoxicillin + Clarithromycin (triple)', 'PPI + Bismuth + Metronidazole + Tetracycline (quadruple)'] },
+          ]},
+          { heading: 'B. Prokinetics & antiemetics', groups: [
+            { heading: 'Prokinetics', drugs: ['Metoclopramide', 'Domperidone', 'Itopride', 'Mosapride', 'Prucalopride', 'Erythromycin'] },
+            { heading: '5-HT3 antagonists', drugs: ['Ondansetron', 'Granisetron', 'Palonosetron'] },
+            { heading: 'D2 antagonists (antiemetic)', drugs: ['Metoclopramide', 'Domperidone', 'Prochlorperazine'] },
+            { heading: 'H1 antihistaminics', drugs: ['Cyclizine', 'Cinnarizine', 'Promethazine', 'Doxylamine'] },
+            { heading: 'Antimuscarinic', drugs: ['Hyoscine'] },
+            { heading: 'NK1 antagonists', drugs: ['Aprepitant'] },
+            { heading: 'Adjuvant antiemetics', drugs: ['Dexamethasone', 'Nabilone'] },
+          ]},
+          { heading: 'C. Antidiarrhoeals', groups: [
+            { heading: 'Opioid agonists', drugs: ['Loperamide', 'Diphenoxylate'] },
+            { heading: 'Adsorbents', drugs: ['Kaolin-pectin'] },
+            { heading: 'Oral rehydration & others', drugs: ['ORS', 'Racecadotril'] },
+          ]},
+          { heading: 'D. Laxatives', groups: [
+            { heading: 'Bulk-forming', drugs: ['Ispaghula', 'Methylcellulose'] },
+            { heading: 'Osmotic', drugs: ['Lactulose', 'Polyethylene glycol', 'Magnesium salts'] },
+            { heading: 'Stimulant', drugs: ['Bisacodyl', 'Senna', 'Sodium picosulfate'] },
+            { heading: 'Stool softeners', drugs: ['Docusate'] },
+            { heading: 'Lubricant', drugs: ['Liquid paraffin'] },
+          ]},
+          { heading: 'E. Drugs for inflammatory bowel disease', groups: [
+            { heading: 'Aminosalicylates', drugs: ['Mesalazine', 'Sulfasalazine'] },
+            { heading: 'Corticosteroids', drugs: ['Budesonide', 'Prednisolone'] },
+            { heading: 'Immunomodulators', drugs: ['Azathioprine', 'Methotrexate'] },
+            { heading: 'Biologics', drugs: ['Infliximab (anti-TNF)', 'Adalimumab (anti-TNF)', 'Vedolizumab (anti-integrin)', 'Ustekinumab'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'omeprazole',
@@ -3608,6 +4519,68 @@ The COVID therapeutics pavilion opened in 2021 and has since been continuously u
 The pharmacogenomics tower stands at the centre of New Town and is the tallest structure in the district. Its database maps human genetic variants to drug responses — the TPMT-thiopurine axis, CYP2C19-clopidogrel, HLA allele-hypersensitivity reactions — representing the future of prescribing.`,
   palette: { ground: 0xC8E6C9, accent: 0x2E7D32, water: 0x81D4FA },
   position: { x: 0, z: 70 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'cross-chapter',
+        groups: [
+          { heading: 'A. Cell & gene therapies', groups: [
+            { heading: 'CAR-T cell therapy', drugs: ['Tisagenlecleucel', 'Axicabtagene ciloleucel'] },
+          ]},
+          { heading: 'B. Monoclonal antibodies', groups: [
+            { heading: 'Anti-IL-6R', drugs: ['Tocilizumab'] },
+            { heading: 'Anti-amyloid for Alzheimer\'s', drugs: ['Lecanemab', 'Aducanumab', 'Donanemab'] },
+          ]},
+          { heading: 'C. Antibody–drug conjugates (ADCs)', drugs: ['Sacituzumab govitecan', 'Trastuzumab emtansine'] },
+          { heading: 'D. RNA-based therapeutics', groups: [
+            { heading: 'siRNA', drugs: ['Inclisiran', 'Patisiran'] },
+            { heading: 'Antisense oligonucleotides', drugs: ['Nusinersen'] },
+            { heading: 'mRNA vaccines', drugs: ['mRNA vaccines'] },
+          ]},
+          { heading: 'E. Incretin-based & metabolic', groups: [
+            { heading: 'Dual GIP/GLP-1 agonist', drugs: ['Tirzepatide'] },
+          ]},
+          { heading: 'F. Antiviral combinations', groups: [
+            { heading: 'Oral SARS-CoV-2 protease inhibitor', drugs: ['Nirmatrelvir/ritonavir'] },
+          ]},
+          { heading: 'G. Precision medicine & drug safety', groups: [
+            { heading: 'Pharmacogenomics', drugs: ['CYP2C19', 'HLA-B*5701', 'TPMT'] },
+            { heading: 'Pharmacovigilance', drugs: ['Black-box warnings', 'REMS', 'Post-marketing surveillance'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'cross-chapter / appendix',
+        groups: [
+          { heading: 'A. Cell & gene therapies', groups: [
+            { heading: 'CAR-T cell therapy', drugs: ['Tisagenlecleucel', 'Axicabtagene ciloleucel'] },
+          ]},
+          { heading: 'B. Monoclonal antibodies', groups: [
+            { heading: 'Anti-IL-6R', drugs: ['Tocilizumab'] },
+            { heading: 'Anti-amyloid for Alzheimer\'s', drugs: ['Lecanemab', 'Aducanumab', 'Donanemab'] },
+          ]},
+          { heading: 'C. Antibody–drug conjugates (ADCs)', drugs: ['Sacituzumab govitecan', 'Trastuzumab emtansine'] },
+          { heading: 'D. RNA-based therapeutics', groups: [
+            { heading: 'siRNA', drugs: ['Inclisiran', 'Patisiran'] },
+            { heading: 'Antisense oligonucleotides', drugs: ['Nusinersen'] },
+            { heading: 'mRNA vaccines', drugs: ['mRNA vaccines'] },
+          ]},
+          { heading: 'E. Incretin-based & metabolic', groups: [
+            { heading: 'Dual GIP/GLP-1 agonist', drugs: ['Tirzepatide'] },
+          ]},
+          { heading: 'F. Antiviral combinations', groups: [
+            { heading: 'Oral SARS-CoV-2 protease inhibitor', drugs: ['Nirmatrelvir/ritonavir'] },
+          ]},
+          { heading: 'G. Precision medicine & drug safety', groups: [
+            { heading: 'Pharmacogenomics', drugs: ['CYP2C19', 'HLA-B*5701', 'TPMT'] },
+            { heading: 'Pharmacovigilance', drugs: ['Black-box warnings', 'REMS', 'Post-marketing surveillance'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'tisagenlecleucel',
@@ -3747,6 +4720,41 @@ Upstream in the proximal convoluted tubule stands the acetazolamide pump-house, 
 At the end of the nephron, in the quiet back alleys of the collecting duct, the aldosterone-sensitive principal cells run the district's finest-grained controls. Spironolactone and eplerenone bar the aldosterone receptor from its nuclear office; amiloride and triamterene block the epithelial sodium channel at the luminal membrane. Both strategies conserve potassium at the expense of sodium and water. And towering over everything is the mannitol reservoir: a massive osmotic tank that drags fluid into the tubule from every compartment — useful for raised intracranial pressure, dangerous when the drain is blocked or the heart is failing.`,
   palette: { ground: 0x9EC8E8, accent: 0x1A6FA8, water: 0x378ADD },
   position: { x: -25, z: 25 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 25–26',
+        groups: [
+          { heading: 'A. High-ceiling (loop) diuretics', drugs: ['Furosemide', 'Bumetanide', 'Torsemide', 'Ethacrynic acid'] },
+          { heading: 'B. Thiazide & thiazide-like diuretics', drugs: ['Hydrochlorothiazide', 'Chlortalidone', 'Indapamide', 'Metolazone'] },
+          { heading: 'C. Potassium-sparing diuretics', groups: [
+            { heading: 'Aldosterone (mineralocorticoid) receptor antagonists', drugs: ['Spironolactone', 'Eplerenone'] },
+            { heading: 'Epithelial Na-channel (ENaC) blockers', drugs: ['Amiloride', 'Triamterene'] },
+          ]},
+          { heading: 'D. Osmotic diuretics', drugs: ['Mannitol', 'Glycerol', 'Isosorbide', 'Urea'] },
+          { heading: 'E. Carbonic anhydrase inhibitors', drugs: ['Acetazolamide', 'Dorzolamide', 'Brinzolamide'] },
+          { heading: 'F. Vasopressin (ADH) V2 antagonists / aquaretics', drugs: ['Tolvaptan', 'Conivaptan'] },
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 41–42',
+        groups: [
+          { heading: 'A. High-ceiling (loop) diuretics', drugs: ['Furosemide', 'Bumetanide', 'Torsemide', 'Ethacrynic acid'] },
+          { heading: 'B. Thiazide & thiazide-like diuretics', drugs: ['Hydrochlorothiazide', 'Chlortalidone', 'Indapamide', 'Metolazone'] },
+          { heading: 'C. Potassium-sparing diuretics', groups: [
+            { heading: 'Aldosterone antagonists', drugs: ['Spironolactone', 'Eplerenone'] },
+            { heading: 'Epithelial Na-channel (ENaC) blockers / inhibitors of renal Na channel', drugs: ['Amiloride', 'Triamterene'] },
+          ]},
+          { heading: 'D. Osmotic diuretics', drugs: ['Mannitol', 'Glycerol', 'Isosorbide', 'Urea'] },
+          { heading: 'E. Carbonic anhydrase inhibitors', drugs: ['Acetazolamide', 'Dorzolamide', 'Brinzolamide'] },
+          { heading: 'F. Vasopressin (ADH) V2 antagonists / aquaretics', drugs: ['Tolvaptan', 'Conivaptan'] },
+          { heading: 'G. Antidiuretics', drugs: ['Antidiuretic hormone (vasopressin)', 'Desmopressin', 'Thiazides (in diabetes insipidus)'] },
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'furosemide',
@@ -3935,6 +4943,71 @@ Across the avenue stand the anticholinergic hangars — ipratropium and tiotropi
 The ICS warehouses — budesonide, fluticasone, and beclometasone — are giant anti-inflammatory factories. They suppress the eosinophilic airway inflammation that underlies persistent asthma, but their dust can coat the throat with candida unless patients rinse after each puff. At the end of the avenue, the biological agents occupy the newest, most expensive docks: omalizumab strips IgE from mast cell surfaces; mepolizumab and benralizumab target the eosinophil survival chain via IL-5 and its receptor. And in the old gasometer district, theophylline still burns — narrow therapeutic index, CYP1A2 metabolism, and a caution sign reading "Do not light a cigarette near the ciprofloxacin pipeline."`,
   palette: { ground: 0xB5D9F0, accent: 0x2268A5, water: 0x70B8E8 },
   position: { x: 25, z: 25 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 44',
+        groups: [
+          { heading: 'A. Bronchodilators', groups: [
+            { heading: 'β2 adrenoceptor agonists', groups: [
+              { heading: 'Short-acting (SABA)', drugs: ['Salbutamol', 'Terbutaline'] },
+              { heading: 'Long-acting (LABA)', drugs: ['Salmeterol', 'Formoterol', 'Vilanterol'] },
+            ]},
+            { heading: 'Anticholinergics (muscarinic antagonists)', groups: [
+              { heading: 'Short-acting (SAMA)', drugs: ['Ipratropium'] },
+              { heading: 'Long-acting (LAMA)', drugs: ['Tiotropium', 'Glycopyrronium', 'Umeclidinium'] },
+            ]},
+            { heading: 'Methylxanthines', drugs: ['Theophylline', 'Aminophylline', 'Doxofylline'] },
+          ]},
+          { heading: 'B. Anti-inflammatory / controllers', groups: [
+            { heading: 'Inhaled corticosteroids (ICS)', drugs: ['Budesonide', 'Fluticasone', 'Beclometasone', 'Ciclesonide'] },
+            { heading: 'Leukotriene modifiers', groups: [
+              { heading: 'LTRA (CysLT1 antagonists)', drugs: ['Montelukast', 'Zafirlukast'] },
+              { heading: '5-LOX inhibitor', drugs: ['Zileuton'] },
+            ]},
+            { heading: 'Mast-cell stabilizers', drugs: ['Sodium cromoglicate', 'Nedocromil'] },
+            { heading: 'PDE-4 inhibitor', drugs: ['Roflumilast'] },
+            { heading: 'Biologics', groups: [
+              { heading: 'Anti-IgE', drugs: ['Omalizumab'] },
+              { heading: 'Anti-IL5 / IL5R', drugs: ['Mepolizumab', 'Reslizumab', 'Benralizumab'] },
+              { heading: 'Anti-IL4 / IL13', drugs: ['Dupilumab'] },
+            ]},
+          ]},
+          { heading: 'C. Mucolytics / mucoactive agents', drugs: ['N-acetylcysteine', 'Carbocisteine', 'Bromhexine', 'Ambroxol', 'Dornase alfa'] },
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 16–17',
+        groups: [
+          { heading: 'A. Drugs for bronchial asthma & COPD', groups: [
+            { heading: 'Bronchodilators', groups: [
+              { heading: 'Sympathomimetics (β2 agonists)', drugs: ['Salbutamol', 'Terbutaline', 'Salmeterol', 'Formoterol'] },
+              { heading: 'Anticholinergics', drugs: ['Ipratropium bromide', 'Tiotropium bromide', 'Glycopyrronium'] },
+              { heading: 'Methylxanthines', drugs: ['Theophylline', 'Aminophylline', 'Doxofylline'] },
+            ]},
+            { heading: 'Leukotriene antagonists', drugs: ['Montelukast', 'Zafirlukast'] },
+            { heading: 'Mast cell stabilizers', drugs: ['Sodium cromoglicate', 'Ketotifen'] },
+            { heading: 'Corticosteroids (inhaled)', drugs: ['Budesonide', 'Fluticasone', 'Beclometasone', 'Ciclesonide'] },
+            { heading: 'Anti-IgE / biologics', drugs: ['Omalizumab', 'Mepolizumab', 'Benralizumab', 'Dupilumab'] },
+            { heading: 'PDE-4 inhibitor', drugs: ['Roflumilast'] },
+          ]},
+          { heading: 'B. Drugs for cough', groups: [
+            { heading: 'Antitussives', groups: [
+              { heading: 'Central — opioid', drugs: ['Codeine', 'Pholcodine'] },
+              { heading: 'Central — non-opioid', drugs: ['Dextromethorphan', 'Noscapine'] },
+              { heading: 'Peripheral', drugs: ['Prenoxdiazine'] },
+            ]},
+            { heading: 'Expectorants & mucolytics', groups: [
+              { heading: 'Bronchial secretion enhancers (expectorants)', drugs: ['Guaifenesin', 'Ammonium chloride', 'Potassium iodide'] },
+              { heading: 'Mucolytics', drugs: ['N-acetylcysteine', 'Carbocisteine', 'Bromhexine', 'Ambroxol', 'Dornase alfa'] },
+            ]},
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'salmeterol',
@@ -4156,6 +5229,69 @@ Flumazenil's booth carries a different kind of warning: two crossed-out symbols 
 The chelation wing occupies the southern end of the district — heavy metal remediation facilities for iron (deferoxamine), arsenic/mercury/gold (dimercaprol/BAL), lead (succimer for children, EDTA-calcium for severe encephalopathy), and cyanide (hydroxocobalamin). The methylene blue silo is marked with a large G6PD warning diamond — it cannot be used in G6PD-deficient patients, in whom it would cause haemolytic anaemia rather than cure methaemoglobinaemia.`,
   palette: { ground: 0xB8A080, accent: 0xFF6B35, water: 0x5A8A6A },
   position: { x: 60, z: -25 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 4, 71–74',
+        groups: [
+          { heading: 'A. Specific antidotes (by poison)', groups: [
+            { heading: 'Paracetamol (acetaminophen)', drugs: ['N-acetylcysteine'] },
+            { heading: 'Opioids', drugs: ['Naloxone'] },
+            { heading: 'Benzodiazepines', drugs: ['Flumazenil'] },
+            { heading: 'Digoxin / digitalis glycosides', drugs: ['Digoxin-specific antibody (Fab) fragments'] },
+            { heading: 'Organophosphates / carbamates', drugs: ['Atropine', 'Pralidoxime (2-PAM)'] },
+            { heading: 'Methaemoglobinaemia', drugs: ['Methylene blue'] },
+            { heading: 'Methanol / ethylene glycol', drugs: ['Fomepizole', 'Ethanol'] },
+            { heading: 'Cyanide', drugs: ['Hydroxocobalamin', 'Sodium thiosulfate', 'Sodium nitrite'] },
+            { heading: 'β-blocker overdose', drugs: ['Glucagon'] },
+            { heading: 'Calcium-channel blocker / hydrofluoric acid / hyperkalaemia', drugs: ['Calcium gluconate'] },
+            { heading: 'Warfarin', drugs: ['Vitamin K1 (phytonadione)'] },
+            { heading: 'Heparin', drugs: ['Protamine sulfate'] },
+            { heading: 'Methotrexate', drugs: ['Folinic acid (leucovorin)'] },
+          ]},
+          { heading: 'B. Chelating agents (heavy-metal poisoning)', groups: [
+            { heading: 'Iron', drugs: ['Deferoxamine'] },
+            { heading: 'Lead', drugs: ['Calcium disodium EDTA', 'Dimercaprol (BAL)', 'Succimer (DMSA)', 'D-penicillamine'] },
+            { heading: 'Arsenic / mercury / gold', drugs: ['Dimercaprol (BAL)', 'DMSA (succimer)', 'DMPS'] },
+            { heading: 'Copper (Wilson\'s disease)', drugs: ['D-penicillamine', 'Trientine'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 64–67',
+        groups: [
+          { heading: 'A. Specific antidotes (by poison)', groups: [
+            { heading: 'Paracetamol (acetaminophen)', drugs: ['N-acetylcysteine'] },
+            { heading: 'Opioids', drugs: ['Naloxone'] },
+            { heading: 'Benzodiazepines', drugs: ['Flumazenil'] },
+            { heading: 'Digoxin', drugs: ['Digoxin-specific antibody (Fab) fragments'] },
+            { heading: 'Organophosphates / carbamates', drugs: ['Atropine', 'Pralidoxime (2-PAM)'] },
+            { heading: 'Methaemoglobinaemia', drugs: ['Methylene blue'] },
+            { heading: 'Methanol / ethylene glycol', drugs: ['Fomepizole', 'Ethanol'] },
+            { heading: 'Cyanide', drugs: ['Hydroxocobalamin', 'Sodium thiosulfate', 'Sodium nitrite'] },
+            { heading: 'β-blocker overdose', drugs: ['Glucagon'] },
+            { heading: 'Calcium-channel blocker / hydrofluoric acid / hyperkalaemia', drugs: ['Calcium gluconate'] },
+            { heading: 'Warfarin', drugs: ['Vitamin K1 (phytonadione)'] },
+            { heading: 'Heparin', drugs: ['Protamine sulfate'] },
+            { heading: 'Methotrexate', drugs: ['Folinic acid (leucovorin)'] },
+          ]},
+          { heading: 'B. Chelating agents (heavy-metal poisoning)', groups: [
+            { heading: 'Iron', drugs: ['Deferoxamine'] },
+            { heading: 'Lead', drugs: ['Calcium disodium EDTA', 'Dimercaprol (BAL)', 'Succimer (DMSA)', 'D-penicillamine'] },
+            { heading: 'Arsenic / mercury / gold', drugs: ['Dimercaprol (BAL)', 'DMSA (succimer)', 'DMPS'] },
+            { heading: 'Copper (Wilson\'s disease)', drugs: ['D-penicillamine', 'Trientine'] },
+          ]},
+          { heading: 'C. General principles of poisoning management', groups: [
+            { heading: 'Decontamination', drugs: ['Gastric lavage', 'Activated charcoal'] },
+            { heading: 'Enhanced elimination', drugs: ['Urinary alkalinization', 'Haemodialysis'] },
+            { heading: 'Supportive care', drugs: ['Airway / breathing / circulation support', 'Maintenance of vitals'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'n_acetylcysteine',
@@ -4350,6 +5486,44 @@ function validateDrug(d) {
   return { ok: errors.length === 0, errors, value };
 }
 
+// A classification group is recursive: a non-empty heading plus drugs and/or
+// nested sub-groups (at least one of the two must be present).
+function validateGroup(g, path, errors) {
+  if (!g || typeof g !== 'object') { errors.push(`${path} must be an object`); return; }
+  if (typeof g.heading !== 'string' || g.heading.trim() === '') errors.push(`${path}: missing heading`);
+  const hasDrugs = Array.isArray(g.drugs) && g.drugs.length > 0;
+  const hasGroups = Array.isArray(g.groups) && g.groups.length > 0;
+  if (!hasDrugs && !hasGroups) errors.push(`${path}: needs drugs[] or groups[]`);
+  if (g.drugs !== undefined) {
+    if (!Array.isArray(g.drugs)) errors.push(`${path}.drugs must be an array`);
+    else g.drugs.forEach((name, i) => {
+      if (typeof name !== 'string' || name.trim() === '') errors.push(`${path}.drugs[${i}]: empty drug name`);
+    });
+  }
+  if (g.groups !== undefined) {
+    if (!Array.isArray(g.groups)) errors.push(`${path}.groups must be an array`);
+    else g.groups.forEach((sub, i) => validateGroup(sub, `${path}.groups[${i}]`, errors));
+  }
+}
+
+function validateClassification(c) {
+  const errors = [];
+  if (!c || typeof c !== 'object') return { ok: false, errors: ['classification must be an object'] };
+  if (!Array.isArray(c.sources) || c.sources.length === 0) {
+    errors.push('classification.sources must be a non-empty array');
+    return { ok: false, errors };
+  }
+  c.sources.forEach((s, i) => {
+    const sp = `sources[${i}]`;
+    if (!s || typeof s !== 'object') { errors.push(`${sp} must be an object`); return; }
+    if (typeof s.label !== 'string' || s.label.trim() === '') errors.push(`${sp}: missing label`);
+    if (typeof s.cite !== 'string' || s.cite.trim() === '') errors.push(`${sp}: missing cite`);
+    if (!Array.isArray(s.groups) || s.groups.length === 0) errors.push(`${sp}: missing groups[]`);
+    else s.groups.forEach((g, gi) => validateGroup(g, `${sp}.groups[${gi}]`, errors));
+  });
+  return { ok: errors.length === 0, errors };
+}
+
 function validateDistrict(d) {
   const errors = [];
   if (!d || typeof d !== 'object') return { ok: false, errors: ['district must be an object'] };
@@ -4364,6 +5538,11 @@ function validateDistrict(d) {
     const { ok, errors: drugErrors } = validateDrug(drug);
     if (!ok) errors.push(`drug[${i}] (${drug?.id}): ${drugErrors.join(', ')}`);
   });
+  // classification is OPTIONAL — only validate when present.
+  if (d.classification != null) {
+    const { ok, errors: cErrors } = validateClassification(d.classification);
+    if (!ok) cErrors.forEach(e => errors.push(`classification: ${e}`));
+  }
   return { ok: errors.length === 0, errors };
 }
 
@@ -4379,7 +5558,7 @@ function validateCity(c) {
 
 if (typeof window !== 'undefined') {
   window.PHARMA = window.PHARMA || {};
-  window.PHARMA.schema = { validateDrug, validateDistrict, validateCity, DISTRICT_IDS };
+  window.PHARMA.schema = { validateDrug, validateDistrict, validateCity, validateClassification, DISTRICT_IDS };
 }
 
 
@@ -4590,6 +5769,89 @@ if (typeof window !== 'undefined') {
   }
   P.walkthrough = { mount };
 })();
+
+
+// === src/classification-panel.js ===
+(function(){
+  const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]); }
+
+  // Recursively render a classification group as a nested list item.
+  function renderGroup(g) {
+    const heading = `<span class="cls-heading">${esc(g.heading)}</span>`;
+    let inner = '';
+    if (Array.isArray(g.groups) && g.groups.length) {
+      inner += `<ul class="cls-list">${g.groups.map(renderGroup).join('')}</ul>`;
+    }
+    if (Array.isArray(g.drugs) && g.drugs.length) {
+      inner += `<ul class="cls-drugs">${g.drugs.map(d => `<li>${esc(d)}</li>`).join('')}</ul>`;
+    }
+    return `<li>${heading}${inner}</li>`;
+  }
+
+  // Pure renderer: classification object → HTML string. One <section> per
+  // source (G&G, KDT), each labelled with its citation, then the nested
+  // outline. Returns a friendly message when there is no classification yet.
+  function renderClassificationHTML(classification) {
+    if (!classification || !Array.isArray(classification.sources) || classification.sources.length === 0) {
+      return `<div class="cls-empty">No classification recorded for this district yet.</div>`;
+    }
+    return classification.sources.map(s => `
+      <section class="cls-source">
+        <h3 class="cls-source-title">${esc(s.label)} <span class="cls-cite">${esc(s.cite)}</span></h3>
+        <ul class="cls-list">${(s.groups || []).map(renderGroup).join('')}</ul>
+      </section>
+    `).join('');
+  }
+
+  function mount(rootEl) {
+    const panel = document.createElement('aside');
+    panel.className = 'walkthrough classification-panel';
+    rootEl.appendChild(panel);
+
+    let currentId = null;
+
+    function close() { panel.classList.remove('open'); }
+    function render(d) {
+      panel.innerHTML = `
+        <button class="btn" style="position:absolute;top:12px;right:12px" id="cls-close" aria-label="Close classification">×</button>
+        <div class="cls-title">${esc(d.name ?? '')} — Classification</div>
+        <div class="cls-body">${renderClassificationHTML(d.classification)}</div>
+      `;
+      panel.querySelector('#cls-close').onclick = close;
+    }
+    function open() {
+      if (!currentId) return;
+      const d = window['DISTRICT_' + currentId.toUpperCase()];
+      if (!d) return;
+      render(d);
+      panel.classList.add('open');
+    }
+
+    // Tapping anywhere outside the open panel dismisses it.
+    document.addEventListener('pointerdown', (e) => {
+      if (!panel.classList.contains('open')) return;
+      if (panel.contains(e.target)) return;
+      // Don't close when the click is the Classify button re-opening us.
+      if (e.target && e.target.id === 'classifyBtn') return;
+      close();
+    });
+
+    P.app.on('navigate', s => {
+      // Classification is per-district; keep the district context when on a
+      // flashcard so the button still works, otherwise drop it.
+      currentId = (s.level === 'district' || s.level === 'flashcard') ? s.districtId : null;
+      if (!currentId) close();
+    });
+
+    P.classification.open = open;
+    P.classification.close = close;
+  }
+
+  P.classification = { mount, renderClassificationHTML };
+})();
+
 
 
 // === src/flashcard.js ===
@@ -6113,6 +7375,7 @@ if (typeof window !== 'undefined') {
         <button class="btn btn-due" id="dueBtn" aria-label="review drugs due today">Due today</button>
         <button class="btn" id="mcqBtn" aria-label="multiple choice question">MCQ</button>
         <button class="btn" id="compareBtn" aria-label="compare drugs">Compare</button>
+        <button class="btn" id="classifyBtn" aria-label="drug classification" style="display:none">Classify</button>
         <button class="btn" id="mapBtn" aria-label="mini map" title="Press M">Map</button>
         <button class="btn btn-theme" id="themeBtn" aria-label="toggle day/night">🌙</button>
       </div>
@@ -6135,6 +7398,7 @@ if (typeof window !== 'undefined') {
     });
     document.getElementById('mcqBtn').addEventListener('click', () => P.mcq?.open?.());
     document.getElementById('compareBtn').addEventListener('click', () => P.compare?.open?.());
+    document.getElementById('classifyBtn').addEventListener('click', () => P.classification?.open?.());
     document.getElementById('mapBtn').addEventListener('click', () => P.minimap?.toggle?.());
     const themeBtn = document.getElementById('themeBtn');
     function syncThemeBtn() { if (themeBtn) themeBtn.textContent = (P.theme?.getTheme?.() === 'night') ? '☀️' : '🌙'; }
@@ -6150,8 +7414,11 @@ if (typeof window !== 'undefined') {
     }
     updateDueBadge();
     setInterval(updateDueBadge, 5000);
+    const classifyBtn = document.getElementById('classifyBtn');
     on('navigate', s => {
       back.style.display = s.level === 'city' ? 'none' : '';
+      // Classify is per-district — hidden in the city overview.
+      classifyBtn.style.display = (s.level === 'city') ? 'none' : '';
       const districtName = s.districtId
         ? (window['DISTRICT_' + s.districtId.toUpperCase()]?.name ?? s.districtId)
         : null;
@@ -6171,6 +7438,7 @@ if (typeof window !== 'undefined') {
     P.district?.mount?.(app);
     P.flashcard?.mount?.(app);
     P.walkthrough?.mount?.(app);
+    P.classification?.mount?.(app);
     P.mcq?.mount?.(app);
     P.compare?.mount?.(app);
     P.minimap?.mount?.(app);

@@ -7,6 +7,168 @@ const DISTRICT_CHEMOTHERAPY = {
 The Anticancer War Room occupies the highest tower inside the fortress, its walls mapped with cytotoxic battle orders: methotrexate folds the folate supply lines, cyclophosphamide's alkylating bombs demand the mesna fire-brigade for haemorrhagic cystitis, cisplatin's platinum-tipped shells call for saline hydration against nephrotoxicity and ototoxicity, doxorubicin's anthracycline cannonade is counted by the cardiomyopathy dose-meter, vincristine tangles the tubulin cables leaving peripheral nerves silenced, paclitaxel stabilises the tubulin scaffolding until it collapses under hypersensitivity reactions, 5-fluorouracil scorches the mucosa and the hands-feet in hand-foot syndrome. On the parapets of the tower stand the targeted generals: imatinib blockades the BCR-ABL tyrosine kinase drawbridge of CML, rituximab's anti-CD20 monoclonal banner warns of HBV reactivation, bevacizumab's anti-VEGF banner streams in a hypertensive wind. Below the war room, the Immunomodulator Barracks house cyclosporine, tacrolimus, mycophenolate, azathioprine, and infliximab — each with its own watch-post for nephrotoxicity, opportunistic infection, TB reactivation, and teratogenicity. Over the central turret, the fortress flag waves in the wind — a signal to all enemies of the body that its defences are mobilised.`,
   palette: { ground: 0x5A6B7C, accent: 0xC0392B, water: 0x2E4057 },
   position: { x: -50, z: -40 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 56–69',
+        groups: [
+          { heading: 'A. Antibacterials', groups: [
+            { heading: 'Cell-wall synthesis inhibitors', groups: [
+              { heading: 'β-Lactams — Penicillins', drugs: ['Penicillin G', 'Amoxicillin', 'Piperacillin'] },
+              { heading: 'β-Lactams — Cephalosporins', drugs: ['Ceftriaxone', 'Cefazolin', 'Cefepime'] },
+              { heading: 'β-Lactams — Carbapenems', drugs: ['Meropenem', 'Imipenem'] },
+              { heading: 'β-Lactams — Monobactams', drugs: ['Aztreonam'] },
+              { heading: 'Glycopeptides', drugs: ['Vancomycin', 'Teicoplanin'] },
+            ]},
+            { heading: 'Protein synthesis inhibitors', groups: [
+              { heading: 'Aminoglycosides', drugs: ['Gentamicin', 'Amikacin'] },
+              { heading: 'Tetracyclines', drugs: ['Doxycycline', 'Minocycline'] },
+              { heading: 'Macrolides', drugs: ['Azithromycin', 'Erythromycin', 'Clarithromycin'] },
+              { heading: 'Lincosamides', drugs: ['Clindamycin'] },
+              { heading: 'Oxazolidinones', drugs: ['Linezolid'] },
+              { heading: 'Amphenicols', drugs: ['Chloramphenicol'] },
+            ]},
+            { heading: 'Nucleic-acid synthesis inhibitors', groups: [
+              { heading: 'Fluoroquinolones', drugs: ['Ciprofloxacin', 'Levofloxacin', 'Moxifloxacin'] },
+              { heading: 'Rifamycins', drugs: ['Rifampicin'] },
+              { heading: 'Nitroimidazoles', drugs: ['Metronidazole'] },
+            ]},
+            { heading: 'Folate-pathway inhibitors', groups: [
+              { heading: 'Sulfonamides + Trimethoprim', drugs: ['Co-trimoxazole'] },
+            ]},
+            { heading: 'Cell-membrane agents', groups: [
+              { heading: 'Lipopeptides', drugs: ['Daptomycin'] },
+              { heading: 'Polymyxins', drugs: ['Colistin'] },
+            ]},
+          ]},
+          { heading: 'B. Antimycobacterials', groups: [
+            { heading: 'Anti-TB first-line', drugs: ['Isoniazid', 'Rifampicin', 'Pyrazinamide', 'Ethambutol', 'Streptomycin'] },
+            { heading: 'Anti-TB second-line', drugs: ['Levofloxacin', 'Bedaquiline', 'Linezolid', 'Amikacin'] },
+            { heading: 'Antileprotics', drugs: ['Dapsone', 'Clofazimine', 'Rifampicin'] },
+          ]},
+          { heading: 'C. Antifungals', groups: [
+            { heading: 'Polyenes', drugs: ['Amphotericin B', 'Nystatin'] },
+            { heading: 'Azoles', drugs: ['Fluconazole', 'Voriconazole', 'Itraconazole', 'Ketoconazole'] },
+            { heading: 'Echinocandins', drugs: ['Caspofungin', 'Micafungin'] },
+            { heading: 'Allylamines', drugs: ['Terbinafine'] },
+            { heading: 'Antimetabolite', drugs: ['Flucytosine'] },
+            { heading: 'Others', drugs: ['Griseofulvin'] },
+          ]},
+          { heading: 'D. Antivirals', groups: [
+            { heading: 'Anti-herpes', drugs: ['Acyclovir', 'Valacyclovir', 'Ganciclovir'] },
+            { heading: 'Anti-influenza', drugs: ['Oseltamivir', 'Zanamivir', 'Baloxavir'] },
+            { heading: 'Anti-HIV — NRTIs', drugs: ['Tenofovir', 'Zidovudine', 'Lamivudine', 'Abacavir'] },
+            { heading: 'Anti-HIV — NNRTIs', drugs: ['Efavirenz', 'Nevirapine'] },
+            { heading: 'Anti-HIV — Integrase inhibitors', drugs: ['Dolutegravir', 'Raltegravir'] },
+            { heading: 'Anti-HIV — Protease inhibitors', drugs: ['Ritonavir', 'Lopinavir', 'Atazanavir'] },
+            { heading: 'Anti-HCV', drugs: ['Sofosbuvir', 'Ledipasvir'] },
+          ]},
+          { heading: 'E. Antimalarials', drugs: ['Chloroquine', 'Artemether-lumefantrine', 'Primaquine', 'Quinine', 'Mefloquine', 'Atovaquone-proguanil'] },
+          { heading: 'F. Anthelmintics & Antiprotozoals', groups: [
+            { heading: 'Anthelmintics', drugs: ['Albendazole', 'Mebendazole', 'Praziquantel', 'Ivermectin', 'Diethylcarbamazine'] },
+            { heading: 'Antiprotozoals', drugs: ['Metronidazole', 'Tinidazole'] },
+          ]},
+          { heading: 'G. Anticancer drugs', groups: [
+            { heading: 'Alkylating agents', drugs: ['Cyclophosphamide', 'Cisplatin', 'Carboplatin'] },
+            { heading: 'Antimetabolites', drugs: ['Methotrexate', '5-Fluorouracil', 'Cytarabine', 'Gemcitabine'] },
+            { heading: 'Antitumour antibiotics', drugs: ['Doxorubicin', 'Bleomycin'] },
+            { heading: 'Plant alkaloids / microtubule agents', drugs: ['Vincristine', 'Vinblastine', 'Paclitaxel', 'Docetaxel'] },
+            { heading: 'Topoisomerase inhibitors', drugs: ['Etoposide', 'Irinotecan'] },
+            { heading: 'Targeted therapy — tyrosine-kinase inhibitors', drugs: ['Imatinib', 'Erlotinib'] },
+            { heading: 'Targeted therapy — monoclonal antibodies', drugs: ['Rituximab', 'Trastuzumab', 'Bevacizumab'] },
+            { heading: 'Hormonal agents', drugs: ['Tamoxifen', 'Leuprolide', 'Anastrozole'] },
+          ]},
+          { heading: 'H. Immunosuppressants', groups: [
+            { heading: 'Calcineurin inhibitors', drugs: ['Cyclosporine', 'Tacrolimus'] },
+            { heading: 'Antiproliferatives', drugs: ['Mycophenolate', 'Azathioprine'] },
+            { heading: 'mTOR inhibitors', drugs: ['Sirolimus', 'Everolimus'] },
+            { heading: 'Glucocorticoids', drugs: ['Prednisolone'] },
+            { heading: 'Biologics', drugs: ['Infliximab', 'Adalimumab', 'Basiliximab'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 52–61',
+        groups: [
+          { heading: 'A. Antibacterials', groups: [
+            { heading: 'Cell-wall synthesis inhibitors', groups: [
+              { heading: 'β-Lactams — Penicillins', drugs: ['Penicillin G', 'Amoxicillin', 'Piperacillin'] },
+              { heading: 'β-Lactams — Cephalosporins', drugs: ['Ceftriaxone', 'Cefazolin', 'Cefepime'] },
+              { heading: 'β-Lactams — Carbapenems', drugs: ['Meropenem', 'Imipenem'] },
+              { heading: 'β-Lactams — Monobactams', drugs: ['Aztreonam'] },
+              { heading: 'Glycopeptides', drugs: ['Vancomycin', 'Teicoplanin'] },
+            ]},
+            { heading: 'Protein synthesis inhibitors', groups: [
+              { heading: 'Aminoglycosides', drugs: ['Gentamicin', 'Amikacin'] },
+              { heading: 'Tetracyclines', drugs: ['Doxycycline', 'Minocycline'] },
+              { heading: 'Macrolides', drugs: ['Azithromycin', 'Erythromycin', 'Clarithromycin'] },
+              { heading: 'Lincosamides', drugs: ['Clindamycin'] },
+              { heading: 'Oxazolidinones', drugs: ['Linezolid'] },
+              { heading: 'Amphenicols', drugs: ['Chloramphenicol'] },
+            ]},
+            { heading: 'Nucleic-acid synthesis inhibitors', groups: [
+              { heading: 'Fluoroquinolones', drugs: ['Ciprofloxacin', 'Levofloxacin', 'Moxifloxacin'] },
+              { heading: 'Rifamycins', drugs: ['Rifampicin'] },
+              { heading: 'Nitroimidazoles', drugs: ['Metronidazole'] },
+            ]},
+            { heading: 'Folate-pathway inhibitors', groups: [
+              { heading: 'Sulfonamides + Trimethoprim', drugs: ['Co-trimoxazole'] },
+            ]},
+            { heading: 'Cell-membrane agents', groups: [
+              { heading: 'Lipopeptides', drugs: ['Daptomycin'] },
+              { heading: 'Polymyxins', drugs: ['Colistin'] },
+            ]},
+          ]},
+          { heading: 'B. Antimycobacterials', groups: [
+            { heading: 'Anti-TB first-line', drugs: ['Isoniazid', 'Rifampicin', 'Pyrazinamide', 'Ethambutol', 'Streptomycin'] },
+            { heading: 'Anti-TB second-line', drugs: ['Levofloxacin', 'Bedaquiline', 'Linezolid', 'Amikacin'] },
+            { heading: 'Antileprotics', drugs: ['Dapsone', 'Clofazimine', 'Rifampicin'] },
+          ]},
+          { heading: 'C. Antifungals', groups: [
+            { heading: 'Polyenes', drugs: ['Amphotericin B', 'Nystatin'] },
+            { heading: 'Azoles', drugs: ['Fluconazole', 'Voriconazole', 'Itraconazole', 'Ketoconazole'] },
+            { heading: 'Echinocandins', drugs: ['Caspofungin', 'Micafungin'] },
+            { heading: 'Allylamines', drugs: ['Terbinafine'] },
+            { heading: 'Antimetabolite', drugs: ['Flucytosine'] },
+            { heading: 'Others', drugs: ['Griseofulvin'] },
+          ]},
+          { heading: 'D. Antivirals', groups: [
+            { heading: 'Anti-herpes', drugs: ['Acyclovir', 'Valacyclovir', 'Ganciclovir'] },
+            { heading: 'Anti-influenza', drugs: ['Oseltamivir', 'Zanamivir', 'Baloxavir'] },
+            { heading: 'Anti-HIV — NRTIs', drugs: ['Tenofovir', 'Zidovudine', 'Lamivudine', 'Abacavir'] },
+            { heading: 'Anti-HIV — NNRTIs', drugs: ['Efavirenz', 'Nevirapine'] },
+            { heading: 'Anti-HIV — Integrase inhibitors', drugs: ['Dolutegravir', 'Raltegravir'] },
+            { heading: 'Anti-HIV — Protease inhibitors', drugs: ['Ritonavir', 'Lopinavir', 'Atazanavir'] },
+            { heading: 'Anti-HCV', drugs: ['Sofosbuvir', 'Ledipasvir'] },
+          ]},
+          { heading: 'E. Antimalarials', drugs: ['Chloroquine', 'Artemether-lumefantrine', 'Primaquine', 'Quinine', 'Mefloquine', 'Atovaquone-proguanil'] },
+          { heading: 'F. Anthelmintics & Antiprotozoals', groups: [
+            { heading: 'Anthelmintics', drugs: ['Albendazole', 'Mebendazole', 'Praziquantel', 'Ivermectin', 'Diethylcarbamazine'] },
+            { heading: 'Antiprotozoals', drugs: ['Metronidazole', 'Tinidazole'] },
+          ]},
+          { heading: 'G. Anticancer drugs', groups: [
+            { heading: 'Alkylating agents', drugs: ['Cyclophosphamide', 'Cisplatin', 'Carboplatin'] },
+            { heading: 'Antimetabolites', drugs: ['Methotrexate', '5-Fluorouracil', 'Cytarabine', 'Gemcitabine'] },
+            { heading: 'Antitumour antibiotics', drugs: ['Doxorubicin', 'Bleomycin'] },
+            { heading: 'Plant alkaloids / microtubule agents', drugs: ['Vincristine', 'Vinblastine', 'Paclitaxel', 'Docetaxel'] },
+            { heading: 'Topoisomerase inhibitors', drugs: ['Etoposide', 'Irinotecan'] },
+            { heading: 'Targeted therapy — tyrosine-kinase inhibitors', drugs: ['Imatinib', 'Erlotinib'] },
+            { heading: 'Targeted therapy — monoclonal antibodies', drugs: ['Rituximab', 'Trastuzumab', 'Bevacizumab'] },
+            { heading: 'Hormonal agents', drugs: ['Tamoxifen', 'Leuprolide', 'Anastrozole'] },
+          ]},
+          { heading: 'H. Immunosuppressants', groups: [
+            { heading: 'Calcineurin inhibitors', drugs: ['Cyclosporine', 'Tacrolimus'] },
+            { heading: 'Antiproliferatives', drugs: ['Mycophenolate', 'Azathioprine'] },
+            { heading: 'mTOR inhibitors', drugs: ['Sirolimus', 'Everolimus'] },
+            { heading: 'Glucocorticoids', drugs: ['Prednisolone'] },
+            { heading: 'Biologics', drugs: ['Infliximab', 'Adalimumab', 'Basiliximab'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
 
     // ─── β-LACTAMS (cell-wall synthesis inhibitors) ──────────────────────────

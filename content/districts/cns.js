@@ -7,6 +7,114 @@ const DISTRICT_CNS = {
 Deeper into the hill, where the oil-lamps give way to guttering red torches, lies the Opium Den: a subterranean courtyard paved with smooth river-stones, its archways draped with damp silk, the air thick with the sweet weight of the mu receptor. Above ground the Pharmacy-Hill Clock Tower keeps time for the entire quarter — its pendulum swings in exact 90-minute cycles to mark the REM rhythm, and when it strikes midnight the oil-lamps dim throughout the Sleep Quarter simultaneously. Every building on the hill is named for the drug it houses; every drug carries the exact latitude of its action inscribed above its doorway; every wall bears a contraindication plaque in raised iron lettering, because on the CNS hill a dosing error can silence the clock altogether.`,
   palette: { ground: 0x6B7FA3, accent: 0xC8A96E, water: 0x3A5278 },
   position: { x: -20, z: -40 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 16–24',
+        groups: [
+          { heading: 'A. Sedative-hypnotics & anxiolytics', groups: [
+            { heading: 'Benzodiazepines', drugs: ['Diazepam', 'Lorazepam', 'Midazolam', 'Alprazolam'] },
+            { heading: 'Non-benzodiazepine hypnotics (Z-drugs)', drugs: ['Zolpidem', 'Zaleplon', 'Eszopiclone'] },
+            { heading: 'Azapirones', drugs: ['Buspirone'] },
+            { heading: 'Barbiturates', drugs: ['Phenobarbital'] },
+            { heading: 'Melatonergic', drugs: ['Ramelteon'] },
+            { heading: 'Benzodiazepine antagonist', drugs: ['Flumazenil'] },
+          ]},
+          { heading: 'B. Antidepressants', groups: [
+            { heading: 'SSRIs', drugs: ['Fluoxetine', 'Sertraline', 'Escitalopram', 'Paroxetine'] },
+            { heading: 'SNRIs', drugs: ['Venlafaxine', 'Duloxetine'] },
+            { heading: 'Tricyclic antidepressants (TCAs)', drugs: ['Amitriptyline', 'Imipramine', 'Nortriptyline'] },
+            { heading: 'MAO inhibitors', drugs: ['Phenelzine', 'Tranylcypromine', 'Moclobemide'] },
+            { heading: 'Atypical antidepressants', drugs: ['Bupropion', 'Mirtazapine', 'Trazodone', 'Vortioxetine'] },
+          ]},
+          { heading: 'C. Antipsychotics', groups: [
+            { heading: 'Typical (first-generation)', drugs: ['Haloperidol', 'Chlorpromazine', 'Fluphenazine', 'Trifluoperazine'] },
+            { heading: 'Atypical (second-generation)', drugs: ['Clozapine', 'Olanzapine', 'Risperidone', 'Quetiapine', 'Aripiprazole', 'Ziprasidone'] },
+          ]},
+          { heading: 'D. Antiepileptics (by clinical use)', groups: [
+            { heading: 'Generalized tonic-clonic & partial seizures', drugs: ['Phenytoin', 'Carbamazepine', 'Valproate', 'Lamotrigine', 'Levetiracetam', 'Topiramate', 'Lacosamide'] },
+            { heading: 'Absence seizures', drugs: ['Ethosuximide', 'Valproate'] },
+            { heading: 'Status epilepticus', drugs: ['Lorazepam', 'Diazepam', 'Phenytoin', 'Fosphenytoin'] },
+          ]},
+          { heading: 'E. Antiparkinsonian drugs', groups: [
+            { heading: 'Dopamine precursor', drugs: ['Levodopa + Carbidopa'] },
+            { heading: 'Dopamine agonists', drugs: ['Pramipexole', 'Ropinirole', 'Bromocriptine'] },
+            { heading: 'MAO-B inhibitors', drugs: ['Selegiline', 'Rasagiline'] },
+            { heading: 'COMT inhibitors', drugs: ['Entacapone', 'Tolcapone'] },
+            { heading: 'Anticholinergics', drugs: ['Trihexyphenidyl', 'Benztropine'] },
+            { heading: 'Antiviral / NMDA antagonist', drugs: ['Amantadine'] },
+          ]},
+          { heading: 'F. General anaesthetics', groups: [
+            { heading: 'Intravenous', drugs: ['Propofol', 'Ketamine', 'Thiopentone', 'Etomidate', 'Midazolam'] },
+            { heading: 'Inhalational', drugs: ['Sevoflurane', 'Isoflurane', 'Desflurane', 'Nitrous oxide', 'Halothane'] },
+          ]},
+          { heading: 'G. Local anaesthetics', groups: [
+            { heading: 'Amides', drugs: ['Lidocaine', 'Bupivacaine', 'Ropivacaine'] },
+            { heading: 'Esters', drugs: ['Procaine', 'Cocaine', 'Benzocaine', 'Tetracaine'] },
+          ]},
+          { heading: 'H. Opioid analgesics', groups: [
+            { heading: 'Strong agonists', drugs: ['Morphine', 'Fentanyl', 'Methadone', 'Pethidine', 'Oxycodone'] },
+            { heading: 'Mild-to-moderate agonists', drugs: ['Codeine', 'Tramadol'] },
+            { heading: 'Partial agonist / mixed agonist-antagonist', drugs: ['Buprenorphine', 'Pentazocine', 'Nalbuphine'] },
+            { heading: 'Antagonists', drugs: ['Naloxone', 'Naltrexone'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 27–36',
+        groups: [
+          { heading: 'A. Sedative-hypnotics & anxiolytics', groups: [
+            { heading: 'Benzodiazepines', drugs: ['Diazepam', 'Lorazepam', 'Midazolam', 'Alprazolam'] },
+            { heading: 'Newer non-benzodiazepine hypnotics (Z-drugs)', drugs: ['Zolpidem', 'Zaleplon', 'Eszopiclone'] },
+            { heading: 'Azapirones', drugs: ['Buspirone'] },
+            { heading: 'Barbiturates', drugs: ['Phenobarbital'] },
+            { heading: 'Melatonin receptor agonist', drugs: ['Ramelteon'] },
+            { heading: 'Benzodiazepine antagonist', drugs: ['Flumazenil'] },
+          ]},
+          { heading: 'B. Antidepressants', groups: [
+            { heading: 'Selective serotonin reuptake inhibitors (SSRIs)', drugs: ['Fluoxetine', 'Sertraline', 'Escitalopram', 'Paroxetine'] },
+            { heading: 'Serotonin-noradrenaline reuptake inhibitors (SNRIs)', drugs: ['Venlafaxine', 'Duloxetine'] },
+            { heading: 'Tricyclic antidepressants (TCAs)', drugs: ['Amitriptyline', 'Imipramine', 'Nortriptyline'] },
+            { heading: 'Monoamine oxidase inhibitors (MAOIs)', drugs: ['Phenelzine', 'Tranylcypromine', 'Moclobemide'] },
+            { heading: 'Atypical antidepressants', drugs: ['Bupropion', 'Mirtazapine', 'Trazodone', 'Vortioxetine'] },
+          ]},
+          { heading: 'C. Antipsychotics (neuroleptics)', groups: [
+            { heading: 'Typical (first-generation)', drugs: ['Haloperidol', 'Chlorpromazine', 'Fluphenazine', 'Trifluoperazine'] },
+            { heading: 'Atypical (second-generation)', drugs: ['Clozapine', 'Olanzapine', 'Risperidone', 'Quetiapine', 'Aripiprazole', 'Ziprasidone'] },
+          ]},
+          { heading: 'D. Antiepileptic drugs (by clinical use)', groups: [
+            { heading: 'Generalized tonic-clonic & partial seizures', drugs: ['Phenytoin', 'Carbamazepine', 'Valproate', 'Lamotrigine', 'Levetiracetam', 'Topiramate', 'Lacosamide'] },
+            { heading: 'Absence seizures', drugs: ['Ethosuximide', 'Valproate'] },
+            { heading: 'Status epilepticus', drugs: ['Lorazepam', 'Diazepam', 'Phenytoin', 'Fosphenytoin'] },
+          ]},
+          { heading: 'E. Antiparkinsonian drugs', groups: [
+            { heading: 'Dopamine precursor', drugs: ['Levodopa + Carbidopa'] },
+            { heading: 'Dopaminergic agonists', drugs: ['Pramipexole', 'Ropinirole', 'Bromocriptine'] },
+            { heading: 'MAO-B inhibitors', drugs: ['Selegiline', 'Rasagiline'] },
+            { heading: 'COMT inhibitors', drugs: ['Entacapone', 'Tolcapone'] },
+            { heading: 'Central anticholinergics', drugs: ['Trihexyphenidyl', 'Benztropine'] },
+            { heading: 'Amantadine', drugs: ['Amantadine'] },
+          ]},
+          { heading: 'F. General anaesthetics', groups: [
+            { heading: 'Intravenous', drugs: ['Propofol', 'Ketamine', 'Thiopentone', 'Etomidate', 'Midazolam'] },
+            { heading: 'Inhalational', drugs: ['Sevoflurane', 'Isoflurane', 'Desflurane', 'Nitrous oxide', 'Halothane'] },
+          ]},
+          { heading: 'G. Local anaesthetics', groups: [
+            { heading: 'Amides', drugs: ['Lidocaine', 'Bupivacaine', 'Ropivacaine'] },
+            { heading: 'Esters', drugs: ['Procaine', 'Cocaine', 'Benzocaine', 'Tetracaine'] },
+          ]},
+          { heading: 'H. Opioid analgesics', groups: [
+            { heading: 'Strong agonists', drugs: ['Morphine', 'Fentanyl', 'Methadone', 'Pethidine', 'Oxycodone'] },
+            { heading: 'Mild-to-moderate agonists', drugs: ['Codeine', 'Tramadol'] },
+            { heading: 'Partial / mixed agonist-antagonist', drugs: ['Buprenorphine', 'Pentazocine', 'Nalbuphine'] },
+            { heading: 'Antagonists', drugs: ['Naloxone', 'Naltrexone'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
 
     // ─── SEDATIVE-HYPNOTICS & ANXIOLYTICS (ch. 19) ──────────────────────────

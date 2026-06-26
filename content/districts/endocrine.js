@@ -7,6 +7,130 @@ const DISTRICT_ENDOCRINE = {
 Hormonal couriers move along covered colonnades — the endocrine signals are slow and powerful, not the lightning of the adrenergic plant nor the chemistry-class rush of the autacoid messenger lane. Each courier carries a lipid or peptide envelope that must be decoded at the receptor before the message inside can act. To learn this district is to trace the colonnades: follow the pituitary dispatch down to the thyroid, the adrenal relay back up to the cortex, the insulin signal from islet to liver. Every therapeutic intervention on this plateau is either a hormone you are replacing, an enzyme you are blocking, or a receptor you are nudging — and every drug here can become dangerous the moment you abruptly cut the courier line.`,
   palette: { ground: 0xE8D5A3, accent: 0xC47E3A, water: 0x7BAFD4 },
   position: { x: 40, z: -40 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 45–52',
+        groups: [
+          { heading: 'A. Antidiabetic drugs', groups: [
+            { heading: 'Insulins', groups: [
+              { heading: 'Rapid-acting', drugs: ['Insulin lispro', 'Insulin aspart', 'Insulin glulisine'] },
+              { heading: 'Short-acting (regular)', drugs: ['Regular insulin'] },
+              { heading: 'Intermediate-acting', drugs: ['NPH (isophane) insulin'] },
+              { heading: 'Long-acting', drugs: ['Insulin glargine', 'Insulin detemir', 'Insulin degludec'] },
+            ]},
+            { heading: 'Biguanides', drugs: ['Metformin'] },
+            { heading: 'Sulfonylureas', drugs: ['Glibenclamide', 'Glimepiride', 'Gliclazide'] },
+            { heading: 'Meglitinides', drugs: ['Repaglinide', 'Nateglinide'] },
+            { heading: 'Thiazolidinediones', drugs: ['Pioglitazone'] },
+            { heading: 'DPP-4 inhibitors (gliptins)', drugs: ['Sitagliptin', 'Vildagliptin', 'Linagliptin'] },
+            { heading: 'GLP-1 receptor agonists', drugs: ['Liraglutide', 'Exenatide', 'Dulaglutide', 'Semaglutide'] },
+            { heading: 'SGLT2 inhibitors (gliflozins)', drugs: ['Empagliflozin', 'Dapagliflozin', 'Canagliflozin'] },
+            { heading: 'α-glucosidase inhibitors', drugs: ['Acarbose', 'Miglitol', 'Voglibose'] },
+            { heading: 'Amylin analogue', drugs: ['Pramlintide'] },
+          ]},
+          { heading: 'B. Thyroid & antithyroid drugs', groups: [
+            { heading: 'Thyroid hormones', drugs: ['Levothyroxine', 'Liothyronine'] },
+            { heading: 'Antithyroid drugs', groups: [
+              { heading: 'Thioamides', drugs: ['Carbimazole', 'Methimazole', 'Propylthiouracil'] },
+              { heading: 'Iodides', drugs: ['Potassium iodide', 'Lugol\'s iodine'] },
+              { heading: 'Radioactive iodine', drugs: ['I-131'] },
+              { heading: 'β-blockers (symptomatic)', drugs: ['Propranolol'] },
+            ]},
+          ]},
+          { heading: 'C. Corticosteroids', groups: [
+            { heading: 'Glucocorticoids', groups: [
+              { heading: 'Short-acting', drugs: ['Hydrocortisone', 'Cortisone'] },
+              { heading: 'Intermediate-acting', drugs: ['Prednisolone', 'Methylprednisolone', 'Triamcinolone'] },
+              { heading: 'Long-acting', drugs: ['Dexamethasone', 'Betamethasone'] },
+            ]},
+            { heading: 'Mineralocorticoids', drugs: ['Fludrocortisone'] },
+          ]},
+          { heading: 'D. Sex hormones & related drugs', groups: [
+            { heading: 'Estrogens & progestins', drugs: ['Combined oral contraceptives'] },
+            { heading: 'SERMs', drugs: ['Tamoxifen', 'Raloxifene', 'Clomiphene'] },
+            { heading: 'Aromatase inhibitors', drugs: ['Anastrozole', 'Letrozole', 'Exemestane'] },
+            { heading: 'Androgens & anti-androgens', drugs: ['Finasteride', 'Dutasteride', 'Flutamide', 'Bicalutamide', 'Leuprolide (GnRH agonist)'] },
+          ]},
+          { heading: 'E. Drugs affecting bone & calcium', groups: [
+            { heading: 'Bisphosphonates', drugs: ['Alendronate', 'Zoledronic acid', 'Risedronate'] },
+            { heading: 'RANKL inhibitor', drugs: ['Denosumab'] },
+            { heading: 'PTH analogue', drugs: ['Teriparatide', 'Abaloparatide'] },
+            { heading: 'SERM', drugs: ['Raloxifene'] },
+            { heading: 'Calcitonin', drugs: ['Calcitonin'] },
+            { heading: 'Vitamin D & calcium', drugs: ['Vitamin D', 'Calcium'] },
+          ]},
+          { heading: 'F. Hypothalamic & pituitary hormones', groups: [
+            { heading: 'Posterior pituitary', drugs: ['Desmopressin (vasopressin)', 'Oxytocin'] },
+            { heading: 'Somatostatin analogue', drugs: ['Octreotide', 'Lanreotide'] },
+            { heading: 'Growth hormone', drugs: ['Somatropin'] },
+            { heading: 'Dopamine agonists', drugs: ['Bromocriptine', 'Cabergoline'] },
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 18–24, 62–63',
+        groups: [
+          { heading: 'A. Antidiabetic drugs', groups: [
+            { heading: 'Insulins', groups: [
+              { heading: 'Rapid-acting', drugs: ['Insulin lispro', 'Insulin aspart', 'Insulin glulisine'] },
+              { heading: 'Short-acting (regular)', drugs: ['Regular (soluble) insulin'] },
+              { heading: 'Intermediate-acting', drugs: ['NPH (isophane) insulin'] },
+              { heading: 'Long-acting', drugs: ['Insulin glargine', 'Insulin detemir', 'Insulin degludec'] },
+            ]},
+            { heading: 'Biguanides', drugs: ['Metformin'] },
+            { heading: 'Sulfonylureas', drugs: ['Glibenclamide', 'Glimepiride', 'Gliclazide'] },
+            { heading: 'Meglitinides / D-phenylalanine analogue', drugs: ['Repaglinide', 'Nateglinide'] },
+            { heading: 'Thiazolidinediones (PPARγ activators)', drugs: ['Pioglitazone'] },
+            { heading: 'DPP-4 inhibitors (gliptins)', drugs: ['Sitagliptin', 'Vildagliptin', 'Linagliptin'] },
+            { heading: 'GLP-1 receptor agonists (incretin mimetics)', drugs: ['Liraglutide', 'Exenatide', 'Dulaglutide', 'Semaglutide'] },
+            { heading: 'SGLT2 inhibitors (gliflozins)', drugs: ['Empagliflozin', 'Dapagliflozin', 'Canagliflozin'] },
+            { heading: 'α-glucosidase inhibitors', drugs: ['Acarbose', 'Miglitol', 'Voglibose'] },
+            { heading: 'Amylin analogue', drugs: ['Pramlintide'] },
+          ]},
+          { heading: 'B. Thyroid & antithyroid drugs', groups: [
+            { heading: 'Thyroid hormones', drugs: ['Levothyroxine (T4)', 'Liothyronine (T3)'] },
+            { heading: 'Antithyroid drugs', groups: [
+              { heading: 'Thioamides (inhibit hormone synthesis)', drugs: ['Carbimazole', 'Methimazole', 'Propylthiouracil'] },
+              { heading: 'Ionic inhibitors / iodides', drugs: ['Potassium iodide', 'Lugol\'s iodine'] },
+              { heading: 'Radioactive iodine', drugs: ['I-131'] },
+              { heading: 'β-adrenergic blockers (symptomatic relief)', drugs: ['Propranolol'] },
+            ]},
+          ]},
+          { heading: 'C. Corticosteroids', groups: [
+            { heading: 'Glucocorticoids', groups: [
+              { heading: 'Short-acting', drugs: ['Hydrocortisone', 'Cortisone'] },
+              { heading: 'Intermediate-acting', drugs: ['Prednisolone', 'Methylprednisolone', 'Triamcinolone'] },
+              { heading: 'Long-acting', drugs: ['Dexamethasone', 'Betamethasone'] },
+            ]},
+            { heading: 'Mineralocorticoids', drugs: ['Fludrocortisone', 'Desoxycorticosterone'] },
+          ]},
+          { heading: 'D. Sex hormones & related drugs', groups: [
+            { heading: 'Estrogens & progestins', drugs: ['Combined oral contraceptives'] },
+            { heading: 'SERMs (anti-estrogens)', drugs: ['Tamoxifen', 'Raloxifene', 'Clomiphene'] },
+            { heading: 'Aromatase inhibitors', drugs: ['Anastrozole', 'Letrozole', 'Exemestane'] },
+            { heading: 'Androgens & anti-androgens', drugs: ['Finasteride', 'Dutasteride', 'Flutamide', 'Bicalutamide', 'Leuprolide (GnRH agonist)'] },
+          ]},
+          { heading: 'E. Drugs affecting bone mineral homeostasis (calcium)', groups: [
+            { heading: 'Bisphosphonates', drugs: ['Alendronate', 'Zoledronic acid', 'Risedronate'] },
+            { heading: 'RANKL inhibitor', drugs: ['Denosumab'] },
+            { heading: 'PTH (teriparatide) analogue', drugs: ['Teriparatide', 'Abaloparatide'] },
+            { heading: 'SERM', drugs: ['Raloxifene'] },
+            { heading: 'Calcitonin', drugs: ['Calcitonin'] },
+            { heading: 'Vitamin D & calcium salts', drugs: ['Vitamin D', 'Calcium'] },
+          ]},
+          { heading: 'F. Hypothalamic & pituitary hormones', groups: [
+            { heading: 'Posterior pituitary hormones', drugs: ['Desmopressin (vasopressin)', 'Oxytocin'] },
+            { heading: 'Somatostatin analogue', drugs: ['Octreotide', 'Lanreotide'] },
+            { heading: 'Growth hormone', drugs: ['Somatropin'] },
+            { heading: 'Dopamine agonists (prolactin inhibitors)', drugs: ['Bromocriptine', 'Cabergoline'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
 
     // ─── DIABETES: INSULIN ────────────────────────────────────────────────────

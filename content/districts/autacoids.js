@@ -7,6 +7,62 @@ const DISTRICT_AUTACOIDS = {
   Deeper into the lane the 5-HT couriers dart between the vascular plaza and the brainstem telegraph office, parcels tucked under their arms. Sumatriptan flags down the 5-HT1B/1D express coaches to squeeze the throbbing migraine vessels shut — but those same coaches run a coronary line, and the booking office posts a red notice: no service for passengers with ischaemic heart disease, Prinzmetal angina, or uncontrolled hypertension. At the inflammatory plaza the prostaglandin fire-brigade (NSAIDs) stamps out the Cox-enzyme furnaces, but sparks can fly: aspirin-sensitive asthma patients suffer bronchospasm in the smoke, third-trimester foetuses find their arterial duct slammed shut, and neonates paradoxically rely on indomethacin to close a ductus that must not remain open — yet that same pharmacist is barred from towns where the ductus is the only route keeping the infant alive. Around the corner, leukotriene modifiers at the asthma docks carry an FDA black-box notice nailed to every crate: neuropsychiatric cargo may include depression, suicidal ideation, and behavioural changes.`,
   palette: { ground: 0xE8C97A, accent: 0xFF8C42, water: 0x8FCCCC },
   position: { x: 0, z: 15 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 39–42',
+        groups: [
+          { heading: 'A. Histamine & antihistamines', groups: [
+            { heading: 'H1 antagonists', groups: [
+              { heading: 'First-generation (sedating)', drugs: ['Chlorpheniramine', 'Diphenhydramine', 'Promethazine', 'Hydroxyzine', 'Cyclizine'] },
+              { heading: 'Second-generation (non-sedating)', drugs: ['Cetirizine', 'Loratadine', 'Fexofenadine', 'Desloratadine', 'Levocetirizine'] },
+            ]},
+            { heading: 'H2 antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine'] },
+          ]},
+          { heading: 'B. 5-HT (serotonin) drugs', groups: [
+            { heading: '5-HT1B/1D agonists (triptans)', drugs: ['Sumatriptan', 'Rizatriptan', 'Zolmitriptan'] },
+            { heading: '5-HT3 antagonists', drugs: ['Ondansetron', 'Granisetron'] },
+            { heading: '5-HT antagonists', drugs: ['Cyproheptadine', 'Ketanserin', 'Methysergide'] },
+          ]},
+          { heading: 'C. Prostaglandins & analogues', drugs: ['Misoprostol (PGE1)', 'Latanoprost (PGF2α — ophthalmic)', 'Alprostadil', 'Dinoprostone', 'Epoprostenol/Iloprost'] },
+          { heading: 'D. NSAIDs (prostaglandin-synthesis inhibitors)', groups: [
+            { heading: 'Non-selective COX inhibitors', drugs: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Indomethacin', 'Ketorolac', 'Piroxicam'] },
+            { heading: 'Preferential COX-2', drugs: ['Meloxicam', 'Nimesulide', 'Etodolac'] },
+            { heading: 'Selective COX-2 inhibitors (coxibs)', drugs: ['Celecoxib', 'Etoricoxib', 'Parecoxib'] },
+            { heading: 'Analgesic-antipyretic (poor anti-inflammatory)', drugs: ['Paracetamol (acetaminophen)', 'Metamizol'] },
+          ]},
+          { heading: 'E. Leukotriene modifiers', drugs: ['Montelukast (LTRA)', 'Zafirlukast (LTRA)', 'Zileuton (5-LOX inhibitor)'] },
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 11–15, 25',
+        groups: [
+          { heading: 'A. Histamine & antihistaminics', groups: [
+            { heading: 'H1 antagonists', groups: [
+              { heading: 'First-generation (sedating)', drugs: ['Chlorpheniramine', 'Diphenhydramine', 'Promethazine', 'Hydroxyzine', 'Cyclizine'] },
+              { heading: 'Second-generation (non-sedating)', drugs: ['Cetirizine', 'Loratadine', 'Fexofenadine', 'Desloratadine', 'Levocetirizine'] },
+            ]},
+            { heading: 'H2 antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine'] },
+          ]},
+          { heading: 'B. 5-HT (serotonin) drugs', groups: [
+            { heading: '5-HT1B/1D agonists (triptans)', drugs: ['Sumatriptan', 'Rizatriptan', 'Zolmitriptan'] },
+            { heading: '5-HT3 antagonists', drugs: ['Ondansetron', 'Granisetron'] },
+            { heading: '5-HT antagonists', drugs: ['Cyproheptadine', 'Ketanserin', 'Methysergide'] },
+          ]},
+          { heading: 'C. Prostaglandins & analogues', drugs: ['Misoprostol (PGE1)', 'Latanoprost (PGF2α — ophthalmic)', 'Alprostadil', 'Dinoprostone', 'Epoprostenol/Iloprost'] },
+          { heading: 'D. NSAIDs (prostaglandin-synthesis inhibitors)', groups: [
+            { heading: 'Non-selective COX inhibitors', drugs: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Indomethacin', 'Ketorolac', 'Piroxicam'] },
+            { heading: 'Preferential COX-2', drugs: ['Meloxicam', 'Nimesulide', 'Etodolac'] },
+            { heading: 'Selective COX-2 inhibitors (coxibs)', drugs: ['Celecoxib', 'Etoricoxib', 'Parecoxib'] },
+            { heading: 'Analgesic-antipyretic (poor anti-inflammatory)', drugs: ['Paracetamol (acetaminophen)', 'Metamizol'] },
+          ]},
+          { heading: 'E. Leukotriene modifiers', drugs: ['Montelukast (LTRA)', 'Zafirlukast (LTRA)', 'Zileuton (5-LOX inhibitor)'] },
+        ],
+      },
+    ],
+  },
   drugs: [
 
     // ─── FIRST-GENERATION H1 ANTIHISTAMINES ──────────────────────────────────

@@ -7,6 +7,71 @@ const DISTRICT_ADRENERGIC = {
 Across the service road stand the antagonists — the circuit breakers and dampeners. Alpha-blocker Row runs a series of parallel switches: phenoxybenzamine clamps the α lines permanently before surgery, phentolamine clips them reversibly in the operating theatre, and prazosin selectively silences only the α1 downstream load without touching presynaptic feedback. Beta-blocker Boulevard is longer still: propranolol throws the master β1/β2 breaker and is CONTRAINDICATED in asthma because it locks the β2 airway-relaxation relay open in reverse; metoprolol, atenolol, and esmolol throw only the cardiac β1 breaker with progressively shorter levers; labetalol and carvedilol throw both the α and β breakers simultaneously, making them the go-to tools when the whole grid is dangerously overloaded in hypertensive emergencies and heart failure.`,
   palette: { ground: 0xD4A857, accent: 0xE8550A, water: 0x8B6914 },
   position: { x: 30, z: 0 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 14–15',
+        groups: [
+          { heading: 'A. Adrenergic agonists (sympathomimetics)', groups: [
+            { heading: 'By mechanism', groups: [
+              { heading: 'Direct-acting', drugs: ['Adrenaline', 'Noradrenaline', 'Isoprenaline', 'Dopamine', 'Dobutamine', 'Phenylephrine', 'Clonidine', 'Salbutamol'] },
+              { heading: 'Indirect-acting', drugs: ['Tyramine', 'Amphetamine', 'Cocaine'] },
+              { heading: 'Mixed-acting', drugs: ['Ephedrine', 'Pseudoephedrine'] },
+            ]},
+            { heading: 'By receptor selectivity', groups: [
+              { heading: 'α1 agonists', drugs: ['Phenylephrine', 'Methoxamine'] },
+              { heading: 'α2 agonists (central)', drugs: ['Clonidine', 'Methyldopa', 'Dexmedetomidine'] },
+              { heading: 'β1 agonists', drugs: ['Dobutamine'] },
+              { heading: 'β2 agonists', drugs: ['Salbutamol', 'Terbutaline', 'Salmeterol'] },
+            ]},
+          ]},
+          { heading: 'B. Adrenergic antagonists (sympatholytics)', groups: [
+            { heading: 'α-blockers', groups: [
+              { heading: 'Non-selective', drugs: ['Phenoxybenzamine (irreversible)', 'Phentolamine (reversible)'] },
+              { heading: 'Selective α1', drugs: ['Prazosin', 'Tamsulosin', 'Doxazosin'] },
+            ]},
+            { heading: 'β-blockers', groups: [
+              { heading: 'Non-selective (β1+β2)', drugs: ['Propranolol', 'Timolol', 'Pindolol (ISA)'] },
+              { heading: 'Selective β1 (cardioselective)', drugs: ['Metoprolol', 'Atenolol', 'Esmolol'] },
+              { heading: 'Combined α+β', drugs: ['Labetalol', 'Carvedilol'] },
+            ]},
+          ]},
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 9–10',
+        groups: [
+          { heading: 'A. Adrenergic (sympathomimetic) drugs', groups: [
+            { heading: 'Directly acting', groups: [
+              { heading: 'α + β (catecholamines)', drugs: ['Adrenaline', 'Noradrenaline', 'Dopamine', 'Dobutamine'] },
+              { heading: 'Predominant α', drugs: ['Phenylephrine', 'Methoxamine', 'Xylometazoline'] },
+              { heading: 'Predominant β', drugs: ['Isoprenaline', 'Salbutamol', 'Terbutaline', 'Salmeterol'] },
+              { heading: 'Central α2', drugs: ['Clonidine', 'Methyldopa'] },
+            ]},
+            { heading: 'Indirectly acting', drugs: ['Tyramine'] },
+            { heading: 'Mixed acting', drugs: ['Ephedrine', 'Amphetamine', 'Pseudoephedrine'] },
+          ]},
+          { heading: 'B. Antiadrenergic (sympatholytic) drugs', groups: [
+            { heading: 'α-adrenergic blockers', groups: [
+              { heading: 'Non-equilibrium (irreversible)', drugs: ['Phenoxybenzamine'] },
+              { heading: 'Equilibrium (reversible) — non-selective', drugs: ['Phentolamine', 'Tolazoline'] },
+              { heading: 'Selective α1', drugs: ['Prazosin', 'Terazosin', 'Doxazosin', 'Tamsulosin'] },
+              { heading: 'Selective α2', drugs: ['Yohimbine'] },
+              { heading: 'Ergot alkaloids', drugs: ['Ergotamine', 'Ergometrine'] },
+            ]},
+            { heading: 'β-adrenergic blockers', groups: [
+              { heading: 'Non-selective', drugs: ['Propranolol', 'Timolol', 'Pindolol', 'Sotalol'] },
+              { heading: 'Cardioselective (β1)', drugs: ['Metoprolol', 'Atenolol', 'Esmolol', 'Bisoprolol', 'Nebivolol'] },
+              { heading: 'With additional α-blockade', drugs: ['Labetalol', 'Carvedilol'] },
+            ]},
+            { heading: 'Adrenergic neurone blockers', drugs: ['Reserpine', 'Guanethidine'] },
+          ]},
+        ],
+      },
+    ],
+  },
   drugs: [
     // ─── CLASS A: CATECHOLAMINES / DIRECT ALPHA+BETA AGONISTS ────────────────
 

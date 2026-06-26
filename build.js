@@ -32,6 +32,7 @@ const appFiles = [
   'animations.js',
   'theme.js',
   'walkthrough-panel.js',
+  'classification-panel.js',
   'flashcard.js',
   'search.js',
   'self-test.js',

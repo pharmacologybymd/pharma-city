@@ -9,6 +9,41 @@ Upstream in the proximal convoluted tubule stands the acetazolamide pump-house, 
 At the end of the nephron, in the quiet back alleys of the collecting duct, the aldosterone-sensitive principal cells run the district's finest-grained controls. Spironolactone and eplerenone bar the aldosterone receptor from its nuclear office; amiloride and triamterene block the epithelial sodium channel at the luminal membrane. Both strategies conserve potassium at the expense of sodium and water. And towering over everything is the mannitol reservoir: a massive osmotic tank that drags fluid into the tubule from every compartment — useful for raised intracranial pressure, dangerous when the drain is blocked or the heart is failing.`,
   palette: { ground: 0x9EC8E8, accent: 0x1A6FA8, water: 0x378ADD },
   position: { x: -25, z: 25 },
+  classification: {
+    sources: [
+      {
+        label: 'G&G 14e',
+        cite: 'ch. 25–26',
+        groups: [
+          { heading: 'A. High-ceiling (loop) diuretics', drugs: ['Furosemide', 'Bumetanide', 'Torsemide', 'Ethacrynic acid'] },
+          { heading: 'B. Thiazide & thiazide-like diuretics', drugs: ['Hydrochlorothiazide', 'Chlortalidone', 'Indapamide', 'Metolazone'] },
+          { heading: 'C. Potassium-sparing diuretics', groups: [
+            { heading: 'Aldosterone (mineralocorticoid) receptor antagonists', drugs: ['Spironolactone', 'Eplerenone'] },
+            { heading: 'Epithelial Na-channel (ENaC) blockers', drugs: ['Amiloride', 'Triamterene'] },
+          ]},
+          { heading: 'D. Osmotic diuretics', drugs: ['Mannitol', 'Glycerol', 'Isosorbide', 'Urea'] },
+          { heading: 'E. Carbonic anhydrase inhibitors', drugs: ['Acetazolamide', 'Dorzolamide', 'Brinzolamide'] },
+          { heading: 'F. Vasopressin (ADH) V2 antagonists / aquaretics', drugs: ['Tolvaptan', 'Conivaptan'] },
+        ],
+      },
+      {
+        label: 'KDT 8e/9e',
+        cite: 'ch. 41–42',
+        groups: [
+          { heading: 'A. High-ceiling (loop) diuretics', drugs: ['Furosemide', 'Bumetanide', 'Torsemide', 'Ethacrynic acid'] },
+          { heading: 'B. Thiazide & thiazide-like diuretics', drugs: ['Hydrochlorothiazide', 'Chlortalidone', 'Indapamide', 'Metolazone'] },
+          { heading: 'C. Potassium-sparing diuretics', groups: [
+            { heading: 'Aldosterone antagonists', drugs: ['Spironolactone', 'Eplerenone'] },
+            { heading: 'Epithelial Na-channel (ENaC) blockers / inhibitors of renal Na channel', drugs: ['Amiloride', 'Triamterene'] },
+          ]},
+          { heading: 'D. Osmotic diuretics', drugs: ['Mannitol', 'Glycerol', 'Isosorbide', 'Urea'] },
+          { heading: 'E. Carbonic anhydrase inhibitors', drugs: ['Acetazolamide', 'Dorzolamide', 'Brinzolamide'] },
+          { heading: 'F. Vasopressin (ADH) V2 antagonists / aquaretics', drugs: ['Tolvaptan', 'Conivaptan'] },
+          { heading: 'G. Antidiuretics', drugs: ['Antidiuretic hormone (vasopressin)', 'Desmopressin', 'Thiazides (in diabetes insipidus)'] },
+        ],
+      },
+    ],
+  },
   drugs: [
     {
       id: 'furosemide',
