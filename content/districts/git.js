@@ -18,7 +18,7 @@ At the far end of the row, the IBD biologics occupy a new, gleaming precinct. Me
         cite: 'ch. 49–51',
         groups: [
           { heading: 'A. Drugs for acid-peptic disease', groups: [
-            { heading: 'Proton pump inhibitors', drugs: ['Omeprazole', 'Pantoprazole', 'Esomeprazole', 'Lansoprazole', 'Rabeprazole'] },
+            { heading: 'Proton pump inhibitors', drugs: ['Omeprazole', 'Pantoprazole', 'Esomeprazole', 'Lansoprazole', 'Dexlansoprazole', 'Rabeprazole'] },
             { heading: 'H2-receptor antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine', 'Nizatidine'] },
             { heading: 'Antacids', drugs: ['Aluminium hydroxide', 'Magnesium hydroxide', 'Sodium bicarbonate'] },
             { heading: 'Mucosal protectives', drugs: ['Sucralfate', 'Bismuth subsalicylate/subcitrate', 'Misoprostol'] },
@@ -41,15 +41,21 @@ At the far end of the row, the IBD biologics occupy a new, gleaming precinct. Me
           { heading: 'E. Laxatives', groups: [
             { heading: 'Bulk-forming', drugs: ['Ispaghula', 'Methylcellulose'] },
             { heading: 'Osmotic', drugs: ['Lactulose', 'Polyethylene glycol', 'Magnesium salts'] },
-            { heading: 'Stimulant', drugs: ['Bisacodyl', 'Senna', 'Sodium picosulfate'] },
+            { heading: 'Stimulant', drugs: ['Bisacodyl', 'Senna', 'Sodium picosulfate', 'Castor oil'] },
             { heading: 'Stool softeners', drugs: ['Docusate'] },
             { heading: 'Lubricant', drugs: ['Liquid paraffin'] },
           ]},
           { heading: 'F. Drugs for inflammatory bowel disease', groups: [
-            { heading: 'Aminosalicylates', drugs: ['Mesalazine', 'Sulfasalazine'] },
+            { heading: 'Aminosalicylates', drugs: ['Mesalazine', 'Sulfasalazine', 'Olsalazine'] },
             { heading: 'Corticosteroids', drugs: ['Budesonide', 'Prednisolone'] },
             { heading: 'Immunomodulators', drugs: ['Azathioprine', 'Methotrexate'] },
             { heading: 'Biologics', drugs: ['Infliximab (anti-TNF)', 'Adalimumab (anti-TNF)', 'Vedolizumab (anti-integrin)', 'Ustekinumab'] },
+          ]},
+          { heading: 'G. Antispasmodics', drugs: ['Dicyclomine', 'Mebeverine', 'Hyoscine'] },
+          { heading: 'H. Miscellaneous GI drugs', groups: [
+            { heading: 'Bile acid (cholelitholytic)', drugs: ['Ursodeoxycholic acid'] },
+            { heading: 'Non-absorbable antibiotic', drugs: ['Rifaximin'] },
+            { heading: 'Somatostatin analogue (variceal bleed)', drugs: ['Octreotide'] },
           ]},
         ],
       },
@@ -58,7 +64,7 @@ At the far end of the row, the IBD biologics occupy a new, gleaming precinct. Me
         cite: 'ch. 47–51',
         groups: [
           { heading: 'A. Drugs for peptic ulcer & GORD (anti-ulcer)', groups: [
-            { heading: 'Proton pump inhibitors', drugs: ['Omeprazole', 'Esomeprazole', 'Pantoprazole', 'Lansoprazole', 'Rabeprazole'] },
+            { heading: 'Proton pump inhibitors', drugs: ['Omeprazole', 'Esomeprazole', 'Pantoprazole', 'Lansoprazole', 'Dexlansoprazole', 'Rabeprazole'] },
             { heading: 'H2 receptor antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine', 'Nizatidine'] },
             { heading: 'Antacids', drugs: ['Aluminium hydroxide', 'Magnesium hydroxide', 'Sodium bicarbonate'] },
             { heading: 'Ulcer protectives', drugs: ['Sucralfate', 'Colloidal bismuth subcitrate', 'Bismuth subsalicylate'] },
@@ -82,15 +88,21 @@ At the far end of the row, the IBD biologics occupy a new, gleaming precinct. Me
           { heading: 'D. Laxatives', groups: [
             { heading: 'Bulk-forming', drugs: ['Ispaghula', 'Methylcellulose'] },
             { heading: 'Osmotic', drugs: ['Lactulose', 'Polyethylene glycol', 'Magnesium salts'] },
-            { heading: 'Stimulant', drugs: ['Bisacodyl', 'Senna', 'Sodium picosulfate'] },
+            { heading: 'Stimulant', drugs: ['Bisacodyl', 'Senna', 'Sodium picosulfate', 'Castor oil'] },
             { heading: 'Stool softeners', drugs: ['Docusate'] },
             { heading: 'Lubricant', drugs: ['Liquid paraffin'] },
           ]},
           { heading: 'E. Drugs for inflammatory bowel disease', groups: [
-            { heading: 'Aminosalicylates', drugs: ['Mesalazine', 'Sulfasalazine'] },
+            { heading: 'Aminosalicylates', drugs: ['Mesalazine', 'Sulfasalazine', 'Olsalazine'] },
             { heading: 'Corticosteroids', drugs: ['Budesonide', 'Prednisolone'] },
             { heading: 'Immunomodulators', drugs: ['Azathioprine', 'Methotrexate'] },
             { heading: 'Biologics', drugs: ['Infliximab (anti-TNF)', 'Adalimumab (anti-TNF)', 'Vedolizumab (anti-integrin)', 'Ustekinumab'] },
+          ]},
+          { heading: 'F. Antispasmodics', drugs: ['Dicyclomine', 'Mebeverine', 'Hyoscine'] },
+          { heading: 'G. Miscellaneous GI drugs', groups: [
+            { heading: 'Bile acid (cholelitholytic)', drugs: ['Ursodeoxycholic acid'] },
+            { heading: 'Non-absorbable antibiotic', drugs: ['Rifaximin'] },
+            { heading: 'Somatostatin analogue (variceal bleed)', drugs: ['Octreotide'] },
           ]},
         ],
       },

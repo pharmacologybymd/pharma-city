@@ -30,10 +30,14 @@ Deeper into the hill, where the oil-lamps give way to guttering red torches, lie
           ]},
           { heading: 'C. Antipsychotics', groups: [
             { heading: 'Typical (first-generation)', drugs: ['Haloperidol', 'Chlorpromazine', 'Fluphenazine', 'Trifluoperazine'] },
-            { heading: 'Atypical (second-generation)', drugs: ['Clozapine', 'Olanzapine', 'Risperidone', 'Quetiapine', 'Aripiprazole', 'Ziprasidone'] },
+            { heading: 'Atypical (second-generation)', drugs: ['Clozapine', 'Olanzapine', 'Risperidone', 'Quetiapine', 'Aripiprazole', 'Ziprasidone', 'Lurasidone'] },
+          ]},
+          { heading: 'C2. Mood stabilisers', groups: [
+            { heading: 'Antimanic / mood stabiliser', drugs: ['Lithium'] },
           ]},
           { heading: 'D. Antiepileptics (by clinical use)', groups: [
-            { heading: 'Generalized tonic-clonic & partial seizures', drugs: ['Phenytoin', 'Carbamazepine', 'Valproate', 'Lamotrigine', 'Levetiracetam', 'Topiramate', 'Lacosamide'] },
+            { heading: 'Generalized tonic-clonic & partial seizures', drugs: ['Phenytoin', 'Carbamazepine', 'Valproate', 'Lamotrigine', 'Levetiracetam', 'Topiramate', 'Lacosamide', 'Brivaracetam', 'Perampanel'] },
+            { heading: 'Gabapentinoids (focal seizures / neuropathic pain)', drugs: ['Gabapentin', 'Pregabalin'] },
             { heading: 'Absence seizures', drugs: ['Ethosuximide', 'Valproate'] },
             { heading: 'Status epilepticus', drugs: ['Lorazepam', 'Diazepam', 'Phenytoin', 'Fosphenytoin'] },
           ]},
@@ -46,7 +50,7 @@ Deeper into the hill, where the oil-lamps give way to guttering red torches, lie
             { heading: 'Antiviral / NMDA antagonist', drugs: ['Amantadine'] },
           ]},
           { heading: 'F. General anaesthetics', groups: [
-            { heading: 'Intravenous', drugs: ['Propofol', 'Ketamine', 'Thiopentone', 'Etomidate', 'Midazolam'] },
+            { heading: 'Intravenous', drugs: ['Propofol', 'Ketamine', 'Thiopentone', 'Etomidate', 'Midazolam', 'Dexmedetomidine'] },
             { heading: 'Inhalational', drugs: ['Sevoflurane', 'Isoflurane', 'Desflurane', 'Nitrous oxide', 'Halothane'] },
           ]},
           { heading: 'G. Local anaesthetics', groups: [
@@ -82,10 +86,14 @@ Deeper into the hill, where the oil-lamps give way to guttering red torches, lie
           ]},
           { heading: 'C. Antipsychotics (neuroleptics)', groups: [
             { heading: 'Typical (first-generation)', drugs: ['Haloperidol', 'Chlorpromazine', 'Fluphenazine', 'Trifluoperazine'] },
-            { heading: 'Atypical (second-generation)', drugs: ['Clozapine', 'Olanzapine', 'Risperidone', 'Quetiapine', 'Aripiprazole', 'Ziprasidone'] },
+            { heading: 'Atypical (second-generation)', drugs: ['Clozapine', 'Olanzapine', 'Risperidone', 'Quetiapine', 'Aripiprazole', 'Ziprasidone', 'Lurasidone'] },
+          ]},
+          { heading: 'C2. Mood stabilisers', groups: [
+            { heading: 'Antimanic / mood stabiliser', drugs: ['Lithium'] },
           ]},
           { heading: 'D. Antiepileptic drugs (by clinical use)', groups: [
-            { heading: 'Generalized tonic-clonic & partial seizures', drugs: ['Phenytoin', 'Carbamazepine', 'Valproate', 'Lamotrigine', 'Levetiracetam', 'Topiramate', 'Lacosamide'] },
+            { heading: 'Generalized tonic-clonic & partial seizures', drugs: ['Phenytoin', 'Carbamazepine', 'Valproate', 'Lamotrigine', 'Levetiracetam', 'Topiramate', 'Lacosamide', 'Brivaracetam', 'Perampanel'] },
+            { heading: 'Gabapentinoids (focal seizures / neuropathic pain)', drugs: ['Gabapentin', 'Pregabalin'] },
             { heading: 'Absence seizures', drugs: ['Ethosuximide', 'Valproate'] },
             { heading: 'Status epilepticus', drugs: ['Lorazepam', 'Diazepam', 'Phenytoin', 'Fosphenytoin'] },
           ]},
@@ -98,7 +106,7 @@ Deeper into the hill, where the oil-lamps give way to guttering red torches, lie
             { heading: 'Amantadine', drugs: ['Amantadine'] },
           ]},
           { heading: 'F. General anaesthetics', groups: [
-            { heading: 'Intravenous', drugs: ['Propofol', 'Ketamine', 'Thiopentone', 'Etomidate', 'Midazolam'] },
+            { heading: 'Intravenous', drugs: ['Propofol', 'Ketamine', 'Thiopentone', 'Etomidate', 'Midazolam', 'Dexmedetomidine'] },
             { heading: 'Inhalational', drugs: ['Sevoflurane', 'Isoflurane', 'Desflurane', 'Nitrous oxide', 'Halothane'] },
           ]},
           { heading: 'G. Local anaesthetics', groups: [

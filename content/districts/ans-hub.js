@@ -18,6 +18,8 @@ Walking the plaza you notice six landmark buildings. The Nicotine Exchange occup
           { heading: 'C. Skeletal muscle relaxants (neuromuscular blockers)', groups: [
             { heading: 'Depolarizing (non-competitive)', drugs: ['Succinylcholine (suxamethonium)', 'Decamethonium'] },
             { heading: 'Non-depolarizing (competitive)', drugs: ['Tubocurarine', 'Pancuronium', 'Vecuronium', 'Rocuronium', 'Atracurium', 'Cisatracurium', 'Mivacurium'] },
+            { heading: 'Reversal of non-depolarizing block', drugs: ['Neostigmine', 'Sugammadex'] },
+            { heading: 'Directly acting', drugs: ['Dantrolene'] },
           ]},
         ],
       },
@@ -30,6 +32,8 @@ Walking the plaza you notice six landmark buildings. The Nicotine Exchange occup
           { heading: 'C. Skeletal muscle relaxants (ch. 16)', groups: [
             { heading: 'Peripherally acting — Depolarizing (non-competitive)', drugs: ['Succinylcholine (suxamethonium)', 'Decamethonium'] },
             { heading: 'Peripherally acting — Non-depolarizing (competitive)', drugs: ['Tubocurarine', 'Pancuronium', 'Vecuronium', 'Rocuronium', 'Atracurium', 'Cisatracurium', 'Mivacurium'] },
+            { heading: 'Reversal of non-depolarizing block', drugs: ['Neostigmine', 'Sugammadex'] },
+            { heading: 'Directly acting', drugs: ['Dantrolene'] },
             { heading: 'Centrally-acting muscle relaxants', drugs: ['Baclofen', 'Diazepam', 'Tizanidine', 'Methocarbamol', 'Chlorzoxazone'] },
           ]},
         ],

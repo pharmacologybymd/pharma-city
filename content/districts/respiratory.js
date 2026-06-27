@@ -19,19 +19,19 @@ The ICS warehouses — budesonide, fluticasone, and beclometasone — are giant 
         groups: [
           { heading: 'A. Bronchodilators', groups: [
             { heading: 'β2 adrenoceptor agonists', groups: [
-              { heading: 'Short-acting (SABA)', drugs: ['Salbutamol', 'Terbutaline'] },
-              { heading: 'Long-acting (LABA)', drugs: ['Salmeterol', 'Formoterol', 'Vilanterol'] },
+              { heading: 'Short-acting (SABA)', drugs: ['Salbutamol', 'Terbutaline', 'Levalbuterol'] },
+              { heading: 'Long-acting (LABA)', drugs: ['Salmeterol', 'Formoterol', 'Vilanterol', 'Indacaterol'] },
             ]},
             { heading: 'Anticholinergics (muscarinic antagonists)', groups: [
               { heading: 'Short-acting (SAMA)', drugs: ['Ipratropium'] },
-              { heading: 'Long-acting (LAMA)', drugs: ['Tiotropium', 'Glycopyrronium', 'Umeclidinium'] },
+              { heading: 'Long-acting (LAMA)', drugs: ['Tiotropium', 'Glycopyrronium', 'Umeclidinium', 'Aclidinium'] },
             ]},
             { heading: 'Methylxanthines', drugs: ['Theophylline', 'Aminophylline', 'Doxofylline'] },
           ]},
           { heading: 'B. Anti-inflammatory / controllers', groups: [
-            { heading: 'Inhaled corticosteroids (ICS)', drugs: ['Budesonide', 'Fluticasone', 'Beclometasone', 'Ciclesonide'] },
+            { heading: 'Inhaled corticosteroids (ICS)', drugs: ['Budesonide', 'Fluticasone', 'Beclometasone', 'Ciclesonide', 'Mometasone'] },
             { heading: 'Leukotriene modifiers', groups: [
-              { heading: 'LTRA (CysLT1 antagonists)', drugs: ['Montelukast', 'Zafirlukast'] },
+              { heading: 'LTRA (CysLT1 antagonists)', drugs: ['Montelukast', 'Zafirlukast', 'Pranlukast'] },
               { heading: '5-LOX inhibitor', drugs: ['Zileuton'] },
             ]},
             { heading: 'Mast-cell stabilizers', drugs: ['Sodium cromoglicate', 'Nedocromil'] },
@@ -40,9 +40,18 @@ The ICS warehouses — budesonide, fluticasone, and beclometasone — are giant 
               { heading: 'Anti-IgE', drugs: ['Omalizumab'] },
               { heading: 'Anti-IL5 / IL5R', drugs: ['Mepolizumab', 'Reslizumab', 'Benralizumab'] },
               { heading: 'Anti-IL4 / IL13', drugs: ['Dupilumab'] },
+              { heading: 'Anti-TSLP', drugs: ['Tezepelumab'] },
             ]},
           ]},
           { heading: 'C. Mucolytics / mucoactive agents', drugs: ['N-acetylcysteine', 'Carbocisteine', 'Bromhexine', 'Ambroxol', 'Dornase alfa'] },
+          { heading: 'D. Drugs for pulmonary arterial hypertension', groups: [
+            { heading: 'PDE-5 inhibitors', drugs: ['Sildenafil'] },
+            { heading: 'Endothelin receptor antagonists', drugs: ['Bosentan', 'Ambrisentan', 'Macitentan'] },
+            { heading: 'Soluble guanylate cyclase stimulator', drugs: ['Riociguat'] },
+            { heading: 'Prostacyclin analogues / agonists', drugs: ['Epoprostenol', 'Treprostinil', 'Selexipag'] },
+          ]},
+          { heading: 'E. Antifibrotics (idiopathic pulmonary fibrosis)', drugs: ['Nintedanib', 'Pirfenidone'] },
+          { heading: 'F. Pulmonary surfactant', drugs: ['Beractant'] },
         ],
       },
       {
@@ -51,27 +60,29 @@ The ICS warehouses — budesonide, fluticasone, and beclometasone — are giant 
         groups: [
           { heading: 'A. Drugs for bronchial asthma & COPD', groups: [
             { heading: 'Bronchodilators', groups: [
-              { heading: 'Sympathomimetics (β2 agonists)', drugs: ['Salbutamol', 'Terbutaline', 'Salmeterol', 'Formoterol'] },
-              { heading: 'Anticholinergics', drugs: ['Ipratropium bromide', 'Tiotropium bromide', 'Glycopyrronium'] },
+              { heading: 'Sympathomimetics (β2 agonists)', drugs: ['Salbutamol', 'Terbutaline', 'Levalbuterol', 'Salmeterol', 'Formoterol', 'Indacaterol'] },
+              { heading: 'Anticholinergics', drugs: ['Ipratropium bromide', 'Tiotropium bromide', 'Glycopyrronium', 'Aclidinium'] },
               { heading: 'Methylxanthines', drugs: ['Theophylline', 'Aminophylline', 'Doxofylline'] },
             ]},
-            { heading: 'Leukotriene antagonists', drugs: ['Montelukast', 'Zafirlukast'] },
+            { heading: 'Leukotriene antagonists', drugs: ['Montelukast', 'Zafirlukast', 'Pranlukast'] },
             { heading: 'Mast cell stabilizers', drugs: ['Sodium cromoglicate', 'Ketotifen'] },
-            { heading: 'Corticosteroids (inhaled)', drugs: ['Budesonide', 'Fluticasone', 'Beclometasone', 'Ciclesonide'] },
-            { heading: 'Anti-IgE / biologics', drugs: ['Omalizumab', 'Mepolizumab', 'Benralizumab', 'Dupilumab'] },
+            { heading: 'Corticosteroids (inhaled)', drugs: ['Budesonide', 'Fluticasone', 'Beclometasone', 'Ciclesonide', 'Mometasone'] },
+            { heading: 'Anti-IgE / biologics', drugs: ['Omalizumab', 'Mepolizumab', 'Benralizumab', 'Dupilumab', 'Tezepelumab'] },
             { heading: 'PDE-4 inhibitor', drugs: ['Roflumilast'] },
           ]},
           { heading: 'B. Drugs for cough', groups: [
             { heading: 'Antitussives', groups: [
               { heading: 'Central — opioid', drugs: ['Codeine', 'Pholcodine'] },
               { heading: 'Central — non-opioid', drugs: ['Dextromethorphan', 'Noscapine'] },
-              { heading: 'Peripheral', drugs: ['Prenoxdiazine'] },
+              { heading: 'Peripheral', drugs: ['Prenoxdiazine', 'Levodropropizine'] },
             ]},
             { heading: 'Expectorants & mucolytics', groups: [
               { heading: 'Bronchial secretion enhancers (expectorants)', drugs: ['Guaifenesin', 'Ammonium chloride', 'Potassium iodide'] },
               { heading: 'Mucolytics', drugs: ['N-acetylcysteine', 'Carbocisteine', 'Bromhexine', 'Ambroxol', 'Dornase alfa'] },
             ]},
           ]},
+          { heading: 'C. Nasal decongestants', drugs: ['Pseudoephedrine', 'Xylometazoline'] },
+          { heading: 'D. Other agents in acute severe asthma', drugs: ['Magnesium sulfate'] },
         ],
       },
     ],

@@ -15,8 +15,8 @@ const DISTRICT_AUTACOIDS = {
         groups: [
           { heading: 'A. Histamine & antihistamines', groups: [
             { heading: 'H1 antagonists', groups: [
-              { heading: 'First-generation (sedating)', drugs: ['Chlorpheniramine', 'Diphenhydramine', 'Promethazine', 'Hydroxyzine', 'Cyclizine'] },
-              { heading: 'Second-generation (non-sedating)', drugs: ['Cetirizine', 'Loratadine', 'Fexofenadine', 'Desloratadine', 'Levocetirizine'] },
+              { heading: 'First-generation (sedating)', drugs: ['Chlorpheniramine', 'Diphenhydramine', 'Promethazine', 'Hydroxyzine', 'Cyclizine', 'Pheniramine', 'Cinnarizine', 'Meclizine'] },
+              { heading: 'Second-generation (non-sedating)', drugs: ['Cetirizine', 'Loratadine', 'Fexofenadine', 'Desloratadine', 'Levocetirizine', 'Ebastine', 'Bilastine', 'Rupatadine'] },
             ]},
             { heading: 'H2 antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine'] },
           ]},
@@ -27,7 +27,7 @@ const DISTRICT_AUTACOIDS = {
           ]},
           { heading: 'C. Prostaglandins & analogues', drugs: ['Misoprostol (PGE1)', 'Latanoprost (PGF2α — ophthalmic)', 'Alprostadil', 'Dinoprostone', 'Epoprostenol/Iloprost'] },
           { heading: 'D. NSAIDs (prostaglandin-synthesis inhibitors)', groups: [
-            { heading: 'Non-selective COX inhibitors', drugs: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Indomethacin', 'Ketorolac', 'Piroxicam'] },
+            { heading: 'Non-selective COX inhibitors', drugs: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Indomethacin', 'Ketorolac', 'Piroxicam', 'Ketoprofen', 'Aceclofenac', 'Mefenamic acid'] },
             { heading: 'Preferential COX-2', drugs: ['Meloxicam', 'Nimesulide', 'Etodolac'] },
             { heading: 'Selective COX-2 inhibitors (coxibs)', drugs: ['Celecoxib', 'Etoricoxib', 'Parecoxib'] },
             { heading: 'Analgesic-antipyretic (poor anti-inflammatory)', drugs: ['Paracetamol (acetaminophen)', 'Metamizol'] },
@@ -41,8 +41,8 @@ const DISTRICT_AUTACOIDS = {
         groups: [
           { heading: 'A. Histamine & antihistaminics', groups: [
             { heading: 'H1 antagonists', groups: [
-              { heading: 'First-generation (sedating)', drugs: ['Chlorpheniramine', 'Diphenhydramine', 'Promethazine', 'Hydroxyzine', 'Cyclizine'] },
-              { heading: 'Second-generation (non-sedating)', drugs: ['Cetirizine', 'Loratadine', 'Fexofenadine', 'Desloratadine', 'Levocetirizine'] },
+              { heading: 'First-generation (sedating)', drugs: ['Chlorpheniramine', 'Diphenhydramine', 'Promethazine', 'Hydroxyzine', 'Cyclizine', 'Pheniramine', 'Cinnarizine', 'Meclizine'] },
+              { heading: 'Second-generation (non-sedating)', drugs: ['Cetirizine', 'Loratadine', 'Fexofenadine', 'Desloratadine', 'Levocetirizine', 'Ebastine', 'Bilastine', 'Rupatadine'] },
             ]},
             { heading: 'H2 antagonists', drugs: ['Famotidine', 'Ranitidine', 'Cimetidine'] },
           ]},
@@ -53,7 +53,7 @@ const DISTRICT_AUTACOIDS = {
           ]},
           { heading: 'C. Prostaglandins & analogues', drugs: ['Misoprostol (PGE1)', 'Latanoprost (PGF2α — ophthalmic)', 'Alprostadil', 'Dinoprostone', 'Epoprostenol/Iloprost'] },
           { heading: 'D. NSAIDs (prostaglandin-synthesis inhibitors)', groups: [
-            { heading: 'Non-selective COX inhibitors', drugs: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Indomethacin', 'Ketorolac', 'Piroxicam'] },
+            { heading: 'Non-selective COX inhibitors', drugs: ['Aspirin', 'Ibuprofen', 'Naproxen', 'Diclofenac', 'Indomethacin', 'Ketorolac', 'Piroxicam', 'Ketoprofen', 'Aceclofenac', 'Mefenamic acid'] },
             { heading: 'Preferential COX-2', drugs: ['Meloxicam', 'Nimesulide', 'Etodolac'] },
             { heading: 'Selective COX-2 inhibitors (coxibs)', drugs: ['Celecoxib', 'Etoricoxib', 'Parecoxib'] },
             { heading: 'Analgesic-antipyretic (poor anti-inflammatory)', drugs: ['Paracetamol (acetaminophen)', 'Metamizol'] },

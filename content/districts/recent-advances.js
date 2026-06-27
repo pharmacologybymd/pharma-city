@@ -21,24 +21,37 @@ The pharmacogenomics tower stands at the centre of New Town and is the tallest s
         groups: [
           { heading: 'A. Cell & gene therapies', groups: [
             { heading: 'CAR-T cell therapy', drugs: ['Tisagenlecleucel', 'Axicabtagene ciloleucel'] },
+            { heading: 'In vivo gene therapy (AAV/viral vector)', drugs: ['Onasemnogene abeparvovec', 'Voretigene neparvovec', 'Etranacogene dezaparvovec'] },
+            { heading: 'Ex vivo CRISPR gene-edited therapy', drugs: ['Exagamglogene autotemcel'] },
           ]},
           { heading: 'B. Monoclonal antibodies', groups: [
             { heading: 'Anti-IL-6R', drugs: ['Tocilizumab'] },
             { heading: 'Anti-amyloid for Alzheimer\'s', drugs: ['Lecanemab', 'Aducanumab', 'Donanemab'] },
+            { heading: 'Immune checkpoint inhibitors', drugs: ['Pembrolizumab', 'Nivolumab'] },
+            { heading: 'Bispecific T-cell engagers', drugs: ['Blinatumomab', 'Teclistamab'] },
+            { heading: 'PCSK9 antibody', drugs: ['Evolocumab'] },
+            { heading: 'Interleukin-pathway inhibitors', drugs: ['Secukinumab', 'Ustekinumab', 'Dupilumab'] },
           ]},
-          { heading: 'C. Antibody–drug conjugates (ADCs)', drugs: ['Sacituzumab govitecan', 'Trastuzumab emtansine'] },
+          { heading: 'C. Antibody–drug conjugates (ADCs)', drugs: ['Sacituzumab govitecan', 'Trastuzumab emtansine', 'Trastuzumab deruxtecan'] },
           { heading: 'D. RNA-based therapeutics', groups: [
-            { heading: 'siRNA', drugs: ['Inclisiran', 'Patisiran'] },
+            { heading: 'siRNA', drugs: ['Inclisiran', 'Patisiran', 'Givosiran'] },
             { heading: 'Antisense oligonucleotides', drugs: ['Nusinersen'] },
             { heading: 'mRNA vaccines', drugs: ['mRNA vaccines'] },
           ]},
           { heading: 'E. Incretin-based & metabolic', groups: [
             { heading: 'Dual GIP/GLP-1 agonist', drugs: ['Tirzepatide'] },
+            { heading: 'SGLT2 inhibitors', drugs: ['Empagliflozin', 'Dapagliflozin'] },
           ]},
           { heading: 'F. Antiviral combinations', groups: [
             { heading: 'Oral SARS-CoV-2 protease inhibitor', drugs: ['Nirmatrelvir/ritonavir'] },
+            { heading: 'Long-acting antiretrovirals', drugs: ['Cabotegravir', 'Lenacapavir'] },
           ]},
-          { heading: 'G. Precision medicine & drug safety', groups: [
+          { heading: 'G. Targeted small molecules', groups: [
+            { heading: 'JAK inhibitors', drugs: ['Tofacitinib', 'Upadacitinib'] },
+            { heading: 'KRAS G12C inhibitor', drugs: ['Sotorasib'] },
+            { heading: 'Cardiac myosin & renal/cardiac advances', drugs: ['Mavacamten', 'Finerenone', 'Vericiguat'] },
+          ]},
+          { heading: 'H. Precision medicine & drug safety', groups: [
             { heading: 'Pharmacogenomics', drugs: ['CYP2C19', 'HLA-B*5701', 'TPMT'] },
             { heading: 'Pharmacovigilance', drugs: ['Black-box warnings', 'REMS', 'Post-marketing surveillance'] },
           ]},
@@ -50,24 +63,37 @@ The pharmacogenomics tower stands at the centre of New Town and is the tallest s
         groups: [
           { heading: 'A. Cell & gene therapies', groups: [
             { heading: 'CAR-T cell therapy', drugs: ['Tisagenlecleucel', 'Axicabtagene ciloleucel'] },
+            { heading: 'In vivo gene therapy (AAV/viral vector)', drugs: ['Onasemnogene abeparvovec', 'Voretigene neparvovec', 'Etranacogene dezaparvovec'] },
+            { heading: 'Ex vivo CRISPR gene-edited therapy', drugs: ['Exagamglogene autotemcel'] },
           ]},
           { heading: 'B. Monoclonal antibodies', groups: [
             { heading: 'Anti-IL-6R', drugs: ['Tocilizumab'] },
             { heading: 'Anti-amyloid for Alzheimer\'s', drugs: ['Lecanemab', 'Aducanumab', 'Donanemab'] },
+            { heading: 'Immune checkpoint inhibitors', drugs: ['Pembrolizumab', 'Nivolumab'] },
+            { heading: 'Bispecific T-cell engagers', drugs: ['Blinatumomab', 'Teclistamab'] },
+            { heading: 'PCSK9 antibody', drugs: ['Evolocumab'] },
+            { heading: 'Interleukin-pathway inhibitors', drugs: ['Secukinumab', 'Ustekinumab', 'Dupilumab'] },
           ]},
-          { heading: 'C. Antibody–drug conjugates (ADCs)', drugs: ['Sacituzumab govitecan', 'Trastuzumab emtansine'] },
+          { heading: 'C. Antibody–drug conjugates (ADCs)', drugs: ['Sacituzumab govitecan', 'Trastuzumab emtansine', 'Trastuzumab deruxtecan'] },
           { heading: 'D. RNA-based therapeutics', groups: [
-            { heading: 'siRNA', drugs: ['Inclisiran', 'Patisiran'] },
+            { heading: 'siRNA', drugs: ['Inclisiran', 'Patisiran', 'Givosiran'] },
             { heading: 'Antisense oligonucleotides', drugs: ['Nusinersen'] },
             { heading: 'mRNA vaccines', drugs: ['mRNA vaccines'] },
           ]},
           { heading: 'E. Incretin-based & metabolic', groups: [
             { heading: 'Dual GIP/GLP-1 agonist', drugs: ['Tirzepatide'] },
+            { heading: 'SGLT2 inhibitors', drugs: ['Empagliflozin', 'Dapagliflozin'] },
           ]},
           { heading: 'F. Antiviral combinations', groups: [
             { heading: 'Oral SARS-CoV-2 protease inhibitor', drugs: ['Nirmatrelvir/ritonavir'] },
+            { heading: 'Long-acting antiretrovirals', drugs: ['Cabotegravir', 'Lenacapavir'] },
           ]},
-          { heading: 'G. Precision medicine & drug safety', groups: [
+          { heading: 'G. Targeted small molecules', groups: [
+            { heading: 'JAK inhibitors', drugs: ['Tofacitinib', 'Upadacitinib'] },
+            { heading: 'KRAS G12C inhibitor', drugs: ['Sotorasib'] },
+            { heading: 'Cardiac myosin & renal/cardiac advances', drugs: ['Mavacamten', 'Finerenone', 'Vericiguat'] },
+          ]},
+          { heading: 'H. Precision medicine & drug safety', groups: [
             { heading: 'Pharmacogenomics', drugs: ['CYP2C19', 'HLA-B*5701', 'TPMT'] },
             { heading: 'Pharmacovigilance', drugs: ['Black-box warnings', 'REMS', 'Post-marketing surveillance'] },
           ]},
