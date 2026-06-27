@@ -4338,7 +4338,18 @@ The dose-response amphitheatre stands in the central plaza — where all the cur
               { heading: 'Enzyme inducers', drugs: ['Rifampicin', 'Phenytoin', 'Carbamazepine'] },
               { heading: 'Enzyme inhibitors', drugs: ['Ketoconazole', 'Erythromycin', 'Cimetidine'] },
             ]},
-            { heading: 'Excretion', drugs: ['Clearance (CL)', 'Half-life (t½)', 'Zero-order vs first-order kinetics'] },
+            { heading: 'Excretion', groups: [
+              { heading: 'Clearance (CL)', drugs: [
+                'CL = rate of elimination ÷ plasma concentration',
+                'Total (systemic) clearance = renal + hepatic + other',
+                'Renal clearance (filtration + secretion − reabsorption)',
+                'Hepatic clearance & extraction ratio (ER)',
+                'Flow-limited vs capacity-limited clearance',
+                'Maintenance dose rate = CL × target Css',
+                'Clearance, Vd & half-life (t½ = 0.693·Vd ÷ CL)',
+                'Creatinine clearance (Cockcroft–Gault; renal dose adjustment)',
+              ]},
+            ], drugs: ['Half-life (t½)', 'Zero-order vs first-order kinetics'] },
           ]},
           { heading: 'B. Pharmacodynamics', groups: [
             { heading: 'Dose–response relationships', drugs: ['Graded dose–response', 'Quantal dose–response', 'ED50 / TD50'] },
@@ -4365,7 +4376,18 @@ The dose-response amphitheatre stands in the central plaza — where all the cur
             { heading: 'Absorption', drugs: ['Bioavailability', 'First-pass (presystemic) metabolism'] },
             { heading: 'Distribution', drugs: ['Volume of distribution', 'Plasma protein binding'] },
             { heading: 'Metabolism (biotransformation)', drugs: ['Phase I (microsomal CYP450)', 'Phase II (conjugation)', 'Inducers: Rifampin, Phenytoin, Carbamazepine', 'Inhibitors: Ketoconazole, Erythromycin, Cimetidine'] },
-            { heading: 'Excretion', drugs: ['Clearance', 'Plasma half-life', 'Zero-order & first-order kinetics'] },
+            { heading: 'Excretion', groups: [
+              { heading: 'Clearance (CL)', drugs: [
+                'CL = rate of elimination ÷ plasma concentration',
+                'Total (systemic) clearance = renal + hepatic + other',
+                'Renal clearance (filtration + secretion − reabsorption)',
+                'Hepatic clearance & extraction ratio (ER)',
+                'Flow-limited vs capacity-limited clearance',
+                'Maintenance dose rate = CL × target Css',
+                'Clearance, Vd & half-life (t½ = 0.693·Vd ÷ CL)',
+                'Creatinine clearance (Cockcroft–Gault; renal dose adjustment)',
+              ]},
+            ], drugs: ['Plasma half-life', 'Zero-order & first-order kinetics'] },
           ]},
           { heading: 'B. Pharmacodynamics', groups: [
             { heading: 'Dose–response & efficacy/potency', drugs: ['Graded & quantal curves', 'ED50 / TD50'] },
