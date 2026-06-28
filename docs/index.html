@@ -135,6 +135,8 @@ canvas { display: block; touch-action: none; }
 .fc-close { color: var(--text-on-card); }
 .fc-iframe-wrap { flex: 1; min-height: 0; }
 .fc-iframe { width: 100%; height: 100%; border: 0; display: block; background: var(--bg); }
+.fc-link { display: inline-block; margin-top: 10px; padding: 7px 12px; background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.fc-link:hover { background: rgba(46, 123, 224, 0.2); }
 .minimap-svg svg { display: block; cursor: pointer; border-radius: 8px; }
 .mm-dot { cursor: pointer; transition: r 0.15s ease; }
 .mm-dot:hover { stroke-width: 2; }
@@ -7314,6 +7316,17 @@ if (typeof window !== 'undefined') {
     src.textContent = `Verify · ${d.source}`;
     container.appendChild(src);
 
+    // Link to this drug's spot in the classification flowchart (opens the
+    // in-app overlay and drives its search box to filter to this drug).
+    if (P.flowchart) {
+      const link = document.createElement('button');
+      link.className = 'fc-link';
+      link.type = 'button';
+      link.innerHTML = '📊 See in classification flowchart ↗';
+      link.onclick = () => P.flowchart.open({ districtId: d.district, drugId: d.id });
+      container.appendChild(link);
+    }
+
     const ctrl = document.createElement('div');
     ctrl.style.marginTop = '10px';
     ctrl.innerHTML = `<button class="btn" id="revealAll">Reveal all</button> <button class="btn" id="hideAll">Hide all</button>`;
@@ -8042,14 +8055,44 @@ if (typeof window !== 'undefined') {
     });
   }
 
-  function open() {
+  function focusInIframe({ districtId, drugId }) {
+    // Drive the classification page's own UI so it lands on the right
+    // district and filters to this drug — uses the page's existing logic.
+    try {
+      const doc = iframe?.contentDocument;
+      if (!doc) return;
+      if (districtId) {
+        const items = doc.querySelectorAll('#cf-dlist > li, .cf-dlist > li');
+        items.forEach(li => {
+          const matchData = li.dataset && li.dataset.id === districtId;
+          const matchAttr = li.getAttribute && li.getAttribute('data-d') === districtId;
+          if (matchData || matchAttr) li.click();
+        });
+      }
+      if (drugId) {
+        const search = doc.getElementById('cf-search');
+        if (search) {
+          search.value = String(drugId).replace(/_/g, ' ');
+          search.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }
+    } catch (_) {}
+  }
+
+  function open(opts) {
     if (!overlay) return;
+    const districtId = opts && opts.districtId;
+    const drugId = opts && opts.drugId;
+    const hash = drugId || districtId
+      ? '#' + [districtId && 'd=' + encodeURIComponent(districtId), drugId && 'drug=' + encodeURIComponent(drugId)].filter(Boolean).join('&')
+      : '';
     if (!loaded) {
-      // Load lazily so the iframe only fetches when the user actually opens it.
-      iframe.src = 'classification.html';
+      iframe.src = 'classification.html' + hash;
       loaded = true;
+      iframe.addEventListener('load', () => focusInIframe({ districtId, drugId }), { once: true });
+    } else if (districtId || drugId) {
+      focusInIframe({ districtId, drugId });
     }
-    // Keep the iframe's theme in sync with the host on first open.
     syncTheme();
     overlay.style.display = 'flex';
     visible = true;

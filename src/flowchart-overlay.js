@@ -33,14 +33,44 @@
     });
   }
 
-  function open() {
+  function focusInIframe({ districtId, drugId }) {
+    // Drive the classification page's own UI so it lands on the right
+    // district and filters to this drug — uses the page's existing logic.
+    try {
+      const doc = iframe?.contentDocument;
+      if (!doc) return;
+      if (districtId) {
+        const items = doc.querySelectorAll('#cf-dlist > li, .cf-dlist > li');
+        items.forEach(li => {
+          const matchData = li.dataset && li.dataset.id === districtId;
+          const matchAttr = li.getAttribute && li.getAttribute('data-d') === districtId;
+          if (matchData || matchAttr) li.click();
+        });
+      }
+      if (drugId) {
+        const search = doc.getElementById('cf-search');
+        if (search) {
+          search.value = String(drugId).replace(/_/g, ' ');
+          search.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      }
+    } catch (_) {}
+  }
+
+  function open(opts) {
     if (!overlay) return;
+    const districtId = opts && opts.districtId;
+    const drugId = opts && opts.drugId;
+    const hash = drugId || districtId
+      ? '#' + [districtId && 'd=' + encodeURIComponent(districtId), drugId && 'drug=' + encodeURIComponent(drugId)].filter(Boolean).join('&')
+      : '';
     if (!loaded) {
-      // Load lazily so the iframe only fetches when the user actually opens it.
-      iframe.src = 'classification.html';
+      iframe.src = 'classification.html' + hash;
       loaded = true;
+      iframe.addEventListener('load', () => focusInIframe({ districtId, drugId }), { once: true });
+    } else if (districtId || drugId) {
+      focusInIframe({ districtId, drugId });
     }
-    // Keep the iframe's theme in sync with the host on first open.
     syncTheme();
     overlay.style.display = 'flex';
     visible = true;

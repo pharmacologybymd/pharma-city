@@ -60,6 +60,17 @@
     src.textContent = `Verify · ${d.source}`;
     container.appendChild(src);
 
+    // Link to this drug's spot in the classification flowchart (opens the
+    // in-app overlay and drives its search box to filter to this drug).
+    if (P.flowchart) {
+      const link = document.createElement('button');
+      link.className = 'fc-link';
+      link.type = 'button';
+      link.innerHTML = '📊 See in classification flowchart ↗';
+      link.onclick = () => P.flowchart.open({ districtId: d.district, drugId: d.id });
+      container.appendChild(link);
+    }
+
     const ctrl = document.createElement('div');
     ctrl.style.marginTop = '10px';
     ctrl.innerHTML = `<button class="btn" id="revealAll">Reveal all</button> <button class="btn" id="hideAll">Hide all</button>`;
