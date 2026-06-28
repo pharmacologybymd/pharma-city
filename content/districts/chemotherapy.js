@@ -95,6 +95,38 @@ The Anticancer War Room occupies the highest tower inside the fortress, its wall
             { heading: 'Glucocorticoids', drugs: ['Prednisolone'] },
             { heading: 'Biologics', drugs: ['Infliximab', 'Adalimumab', 'Basiliximab', 'Antithymocyte globulin'] },
           ]},
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'Antimicrobial action — basic principles', drugs: [
+              'Bactericidal vs bacteriostatic',
+              'Narrow- vs broad-spectrum agents',
+              'Concentration-dependent vs time-dependent killing',
+              'MIC, MBC & post-antibiotic effect (PAE)',
+              'Selective toxicity',
+            ]},
+            { heading: 'Mechanisms of antimicrobial resistance', drugs: [
+              'Enzymatic inactivation (β-lactamases)',
+              'Target-site alteration (MRSA, VRE)',
+              'Efflux pumps',
+              'Reduced uptake / decreased permeability',
+            ]},
+            { heading: 'Principles of antimicrobial therapy', drugs: [
+              'Empirical vs definitive (targeted) therapy',
+              'Combination therapy & synergy',
+              'Chemoprophylaxis',
+              'Superinfection',
+            ]},
+            { heading: 'Principles of anticancer chemotherapy', drugs: [
+              'Cell-cycle-specific vs cell-cycle-non-specific agents',
+              'Log-kill hypothesis',
+              'Growth fraction & tumour cell kinetics',
+              'Anticancer drug resistance (MDR / P-glycoprotein)',
+              'Rationale of combination chemotherapy',
+            ]},
+            { heading: 'Antiviral & antiparasitic principles', drugs: [
+              'Antiviral selective targets',
+              'Antimalarial drug resistance',
+            ]},
+          ]},
         ],
       },
       {
@@ -182,6 +214,38 @@ The Anticancer War Room occupies the highest tower inside the fortress, its wall
             { heading: 'mTOR inhibitors', drugs: ['Sirolimus', 'Everolimus'] },
             { heading: 'Glucocorticoids', drugs: ['Prednisolone'] },
             { heading: 'Biologics', drugs: ['Infliximab', 'Adalimumab', 'Basiliximab', 'Antithymocyte globulin'] },
+          ]},
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'Antimicrobial action — basic principles', drugs: [
+              'Bactericidal vs bacteriostatic',
+              'Narrow- vs broad-spectrum agents',
+              'Concentration-dependent vs time-dependent killing',
+              'MIC, MBC & post-antibiotic effect (PAE)',
+              'Selective toxicity',
+            ]},
+            { heading: 'Mechanisms of antimicrobial resistance', drugs: [
+              'Enzymatic inactivation (β-lactamases)',
+              'Target-site alteration (MRSA, VRE)',
+              'Efflux pumps',
+              'Reduced uptake / decreased permeability',
+            ]},
+            { heading: 'Principles of antimicrobial therapy', drugs: [
+              'Empirical vs definitive (targeted) therapy',
+              'Combination therapy & synergy',
+              'Chemoprophylaxis',
+              'Superinfection',
+            ]},
+            { heading: 'Principles of anticancer chemotherapy', drugs: [
+              'Cell-cycle-specific vs cell-cycle-non-specific agents',
+              'Log-kill hypothesis',
+              'Growth fraction & tumour cell kinetics',
+              'Anticancer drug resistance (MDR / P-glycoprotein)',
+              'Rationale of combination chemotherapy',
+            ]},
+            { heading: 'Antiviral & antiparasitic principles', drugs: [
+              'Antiviral selective targets',
+              'Antimalarial drug resistance',
+            ]},
           ]},
         ],
       },

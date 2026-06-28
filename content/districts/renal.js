@@ -24,6 +24,31 @@ At the end of the nephron, in the quiet back alleys of the collecting duct, the 
           { heading: 'D. Osmotic diuretics', drugs: ['Mannitol', 'Glycerol', 'Isosorbide', 'Urea'] },
           { heading: 'E. Carbonic anhydrase inhibitors', drugs: ['Acetazolamide', 'Dorzolamide', 'Brinzolamide'] },
           { heading: 'F. Vasopressin (ADH) V2 antagonists / aquaretics', drugs: ['Tolvaptan', 'Conivaptan', 'Demeclocycline'] },
+          { heading: 'G. Key concepts & principles', groups: [
+            { heading: 'Nephron segments & their transporters', drugs: [
+              'PCT — Na/H exchanger (NHE3) & carbonic anhydrase',
+              'Thick ascending limb — NKCC2 (Na-K-2Cl)',
+              'Distal convoluted tubule — NCC (Na-Cl)',
+              'Collecting duct — ENaC & aldosterone (principal cells)',
+              'Collecting duct — ADH, V2 receptor & aquaporin-2',
+            ]},
+            { heading: 'Diuretic action mapped to segments', drugs: [
+              'Sites of diuretic action along the nephron',
+              'High-ceiling vs low-ceiling diuretics',
+              'Sequential nephron blockade',
+              'Diuretic braking & resistance',
+            ]},
+            { heading: 'Electrolyte & acid-base effects', drugs: [
+              'Hypokalaemia & metabolic alkalosis (loop & thiazide)',
+              'Metabolic acidosis (CA inhibitors & K-sparing agents)',
+              'Uricosuric vs urate-retaining diuretic effects',
+            ]},
+            { heading: 'Renal physiology & ADH pharmacology', drugs: [
+              'Tubuloglomerular feedback',
+              'Vasopressin (ADH) — V1 vs V2 receptors',
+              'Vaptans (V2 antagonists) — aquaresis',
+            ]},
+          ]},
         ],
       },
       {
@@ -40,6 +65,31 @@ At the end of the nephron, in the quiet back alleys of the collecting duct, the 
           { heading: 'E. Carbonic anhydrase inhibitors', drugs: ['Acetazolamide', 'Dorzolamide', 'Brinzolamide'] },
           { heading: 'F. Vasopressin (ADH) V2 antagonists / aquaretics', drugs: ['Tolvaptan', 'Conivaptan', 'Demeclocycline'] },
           { heading: 'G. Antidiuretics', drugs: ['Antidiuretic hormone (vasopressin)', 'Desmopressin', 'Thiazides (in diabetes insipidus)'] },
+          { heading: 'H. Key concepts & principles', groups: [
+            { heading: 'Nephron segments & their transporters', drugs: [
+              'PCT — Na/H exchanger (NHE3) & carbonic anhydrase',
+              'Thick ascending limb — NKCC2 (Na-K-2Cl)',
+              'Distal convoluted tubule — NCC (Na-Cl)',
+              'Collecting duct — ENaC & aldosterone (principal cells)',
+              'Collecting duct — ADH, V2 receptor & aquaporin-2',
+            ]},
+            { heading: 'Diuretic action mapped to segments', drugs: [
+              'Sites of diuretic action along the nephron',
+              'High-ceiling vs low-ceiling diuretics',
+              'Sequential nephron blockade',
+              'Diuretic braking & resistance',
+            ]},
+            { heading: 'Electrolyte & acid-base effects', drugs: [
+              'Hypokalaemia & metabolic alkalosis (loop & thiazide)',
+              'Metabolic acidosis (CA inhibitors & K-sparing agents)',
+              'Uricosuric vs urate-retaining diuretic effects',
+            ]},
+            { heading: 'Renal physiology & ADH pharmacology', drugs: [
+              'Tubuloglomerular feedback',
+              'Vasopressin (ADH) — V1 vs V2 receptors',
+              'Vaptans (V2 antagonists) — aquaresis',
+            ]},
+          ]},
         ],
       },
     ],

@@ -83,6 +83,28 @@ Ventricular Boulevard runs east from the atrium. On the south side stands the Li
             { heading: 'Bile-acid sequestrants', drugs: ['Cholestyramine'] },
             { heading: 'Others', drugs: ['Niacin', 'Omega-3 fatty acids'] },
           ]},
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'Cardiac electrophysiology', drugs: [
+              'Cardiac action potential phases (0–4) & ion currents',
+              'Vaughan-Williams classification basis',
+              'Automaticity, refractory period & re-entry',
+              'CHA2DS2-VASc score concept',
+            ]},
+            { heading: 'Cardiac mechanics & failure', drugs: [
+              'Frank-Starling, preload, afterload & contractility',
+              'Heart-failure neurohormonal model',
+            ]},
+            { heading: 'Pathways & regulation', drugs: [
+              'RAAS pathway & sites of blockade',
+              'Myocardial O2 supply vs demand (antianginal rationale)',
+              'Coagulation cascade (intrinsic / extrinsic / common)',
+              'Antiplatelet vs anticoagulant vs fibrinolytic',
+              'Dyslipidaemia & lipoprotein types',
+            ]},
+            { heading: 'Therapeutic strategy', drugs: [
+              'Hypertension treatment principles & stepped care',
+            ]},
+          ]},
         ],
       },
       {
@@ -158,6 +180,28 @@ Ventricular Boulevard runs east from the atrium. On the south side stands the Li
             { heading: 'Fibric acid derivatives', drugs: ['Fenofibrate', 'Gemfibrozil'] },
             { heading: 'Bile-acid sequestrants', drugs: ['Cholestyramine'] },
             { heading: 'Others', drugs: ['Nicotinic acid (niacin)', 'Omega-3 fatty acids'] },
+          ]},
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'Cardiac electrophysiology', drugs: [
+              'Cardiac action potential phases (0–4) & ion currents',
+              'Vaughan-Williams classification basis',
+              'Automaticity, refractory period & re-entry',
+              'CHA2DS2-VASc score concept',
+            ]},
+            { heading: 'Cardiac mechanics & failure', drugs: [
+              'Frank-Starling, preload, afterload & contractility',
+              'Heart-failure neurohormonal model',
+            ]},
+            { heading: 'Pathways & regulation', drugs: [
+              'RAAS pathway & sites of blockade',
+              'Myocardial O2 supply vs demand (antianginal rationale)',
+              'Coagulation cascade (intrinsic / extrinsic / common)',
+              'Antiplatelet vs anticoagulant vs fibrinolytic',
+              'Dyslipidaemia & lipoprotein types',
+            ]},
+            { heading: 'Therapeutic strategy', drugs: [
+              'Hypertension treatment principles & stepped care',
+            ]},
           ]},
         ],
       },

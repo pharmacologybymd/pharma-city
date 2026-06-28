@@ -21,6 +21,25 @@ Walking the plaza you notice six landmark buildings. The Nicotine Exchange occup
             { heading: 'Reversal of non-depolarizing block', drugs: ['Neostigmine', 'Sugammadex'] },
             { heading: 'Directly acting', drugs: ['Dantrolene'] },
           ]},
+          { heading: 'Key concepts & principles', groups: [
+            { heading: 'Organisation of the ANS', drugs: [
+              'Sympathetic division (thoracolumbar) — "fight or flight"',
+              'Parasympathetic division (craniosacral) — "rest and digest"',
+              'Dual innervation & basal (resting) tone',
+              'Baroreceptor reflex (blood-pressure homeostasis)',
+            ] },
+            { heading: 'Chemical transmission', drugs: [
+              'Cholinergic vs adrenergic transmission (overview)',
+              'Neurotransmitters & their receptors (ACh and noradrenaline)',
+              'Cotransmission (ATP, NPY, VIP, NO)',
+              'Junctional vs extrajunctional receptors',
+            ] },
+            { heading: 'Ganglionic & neuromuscular transmission', drugs: [
+              'Ganglionic transmission & nicotinic NN receptors',
+              'Neuromuscular junction (NMJ) transmission & NM receptors',
+              'Skeletal muscle relaxants — depolarising vs non-depolarising (concept)',
+            ] },
+          ]},
         ],
       },
       {
@@ -35,6 +54,25 @@ Walking the plaza you notice six landmark buildings. The Nicotine Exchange occup
             { heading: 'Reversal of non-depolarizing block', drugs: ['Neostigmine', 'Sugammadex'] },
             { heading: 'Directly acting', drugs: ['Dantrolene'] },
             { heading: 'Centrally-acting muscle relaxants', drugs: ['Baclofen', 'Diazepam', 'Tizanidine', 'Methocarbamol', 'Chlorzoxazone'] },
+          ]},
+          { heading: 'Key concepts & principles', groups: [
+            { heading: 'Organisation of the ANS', drugs: [
+              'Sympathetic division (thoracolumbar) — "fight or flight"',
+              'Parasympathetic division (craniosacral) — "rest and digest"',
+              'Dual innervation & basal (resting) tone',
+              'Baroreceptor reflex (blood-pressure homeostasis)',
+            ] },
+            { heading: 'Chemical transmission', drugs: [
+              'Cholinergic vs adrenergic transmission (overview)',
+              'Neurotransmitters & their receptors (ACh and noradrenaline)',
+              'Cotransmission (ATP, NPY, VIP, NO)',
+              'Junctional vs extrajunctional receptors',
+            ] },
+            { heading: 'Ganglionic & neuromuscular transmission', drugs: [
+              'Ganglionic transmission & nicotinic NN receptors',
+              'Neuromuscular junction (NMJ) transmission & NM receptors',
+              'Skeletal muscle relaxants — depolarising vs non-depolarising (concept)',
+            ] },
           ]},
         ],
       },

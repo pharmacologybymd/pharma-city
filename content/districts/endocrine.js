@@ -71,6 +71,35 @@ Hormonal couriers move along covered colonnades — the endocrine signals are sl
             { heading: 'Growth hormone', drugs: ['Somatropin'] },
             { heading: 'Dopamine agonists', drugs: ['Bromocriptine', 'Cabergoline'] },
           ]},
+          { heading: 'G. Key concepts & principles', groups: [
+            { heading: 'Hormone feedback axes', drugs: [
+              'Hypothalamic–pituitary–adrenal (HPA) axis',
+              'Hypothalamic–pituitary–thyroid (HPT) axis',
+              'Hypothalamic–pituitary–gonadal (HPG) axis',
+            ]},
+            { heading: 'Pancreatic islet & glucose homeostasis', drugs: [
+              'Insulin secretion & signalling',
+              'Diabetes types (T1DM vs T2DM)',
+              'The incretin effect',
+              'Mechanism classes of antidiabetics (overview)',
+              'Insulin preparations — onset/peak/duration concept',
+            ]},
+            { heading: 'Adrenal cortex', drugs: [
+              'Glucocorticoid physiological & pharmacological effects',
+              'HPA-axis suppression & steroid tapering',
+              'Mineralocorticoid actions',
+            ]},
+            { heading: 'Thyroid', drugs: [
+              'Thyroid hormone synthesis & antithyroid drug sites',
+            ]},
+            { heading: 'Sex steroids & calcium', drugs: [
+              'Sex steroids & the SERM concept',
+              'Calcium homeostasis (PTH, vitamin D, calcitonin) & bone remodelling',
+            ]},
+            { heading: 'Receptor signalling', drugs: [
+              'Steroid (nuclear) receptor signalling',
+            ]},
+          ]},
         ],
       },
       {
@@ -134,6 +163,35 @@ Hormonal couriers move along covered colonnades — the endocrine signals are sl
             { heading: 'Somatostatin analogue', drugs: ['Octreotide', 'Lanreotide'] },
             { heading: 'Growth hormone', drugs: ['Somatropin'] },
             { heading: 'Dopamine agonists (prolactin inhibitors)', drugs: ['Bromocriptine', 'Cabergoline'] },
+          ]},
+          { heading: 'G. Key concepts & principles', groups: [
+            { heading: 'Hormone feedback axes', drugs: [
+              'Hypothalamic–pituitary–adrenal (HPA) axis',
+              'Hypothalamic–pituitary–thyroid (HPT) axis',
+              'Hypothalamic–pituitary–gonadal (HPG) axis',
+            ]},
+            { heading: 'Pancreatic islet & glucose homeostasis', drugs: [
+              'Insulin secretion & signalling',
+              'Diabetes types (T1DM vs T2DM)',
+              'The incretin effect',
+              'Mechanism classes of antidiabetics (overview)',
+              'Insulin preparations — onset/peak/duration concept',
+            ]},
+            { heading: 'Adrenal cortex', drugs: [
+              'Glucocorticoid physiological & pharmacological effects',
+              'HPA-axis suppression & steroid tapering',
+              'Mineralocorticoid actions',
+            ]},
+            { heading: 'Thyroid', drugs: [
+              'Thyroid hormone synthesis & antithyroid drug sites',
+            ]},
+            { heading: 'Sex steroids & calcium', drugs: [
+              'Sex steroids & the SERM concept',
+              'Calcium homeostasis (PTH, vitamin D, calcitonin) & bone remodelling',
+            ]},
+            { heading: 'Receptor signalling', drugs: [
+              'Steroid (nuclear) receptor signalling',
+            ]},
           ]},
         ],
       },

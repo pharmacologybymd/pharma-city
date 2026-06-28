@@ -20,18 +20,35 @@ The dose-response amphitheatre stands in the central plaza — where all the cur
         cite: 'ch. 1–7',
         groups: [
           { heading: 'A. Pharmacokinetics', groups: [
-            { heading: 'Absorption', drugs: [
+            { heading: 'Absorption', groups: [
+              { heading: 'Bioavailability (F) — types & determinants', drugs: [
+                'Absolute bioavailability (oral AUC ÷ IV AUC)',
+                'Relative bioavailability (test vs reference formulation)',
+                'Factors reducing F (incomplete absorption, gut-wall & hepatic first-pass, efflux)',
+                'High first-pass drugs (propranolol, morphine, GTN, lidocaine)',
+              ] },
+            ], drugs: [
               'Routes of administration (enteral, parenteral, topical, inhaled)',
               'Membrane transport (passive diffusion, facilitated, active, pinocytosis)',
               'pH-partition & ionization of weak acids/bases',
               'Factors affecting absorption (motility, food, blood flow, formulation)',
-              'Bioavailability (F)',
               'First-pass (presystemic) metabolism',
               'Bioequivalence',
             ] },
-            { heading: 'Distribution', drugs: [
-              'Volume of distribution (Vd)',
-              'Plasma protein binding (albumin, α1-acid glycoprotein)',
+            { heading: 'Distribution', groups: [
+              { heading: 'Volume of distribution (Vd) — meaning & range', drugs: [
+                'Apparent Vd (dose ÷ plasma concentration; not a real volume)',
+                'Low-Vd drugs (warfarin, aminoglycosides — confined to plasma/ECF)',
+                'High-Vd drugs (digoxin, chloroquine, TCAs — extensive tissue binding)',
+                'Vd & loading dose (loading dose = Vd × target Cp ÷ F)',
+              ] },
+              { heading: 'Plasma protein binding — types & interactions', drugs: [
+                'Albumin binding (acidic drugs — warfarin, phenytoin, NSAIDs)',
+                'α1-acid glycoprotein binding (basic drugs — lidocaine, propranolol, imipramine)',
+                'Displacement interactions (warfarin–sulfonamides, phenytoin–valproate)',
+                'Clinical significance of binding (free fraction, low-albumin states)',
+              ] },
+            ], drugs: [
               'Factors affecting distribution (lipid solubility, blood flow, binding)',
               'Blood–brain barrier',
               'Placental barrier',
@@ -74,8 +91,22 @@ The dose-response amphitheatre stands in the central plaza — where all the cur
             { heading: 'Dose–response relationships', drugs: ['Graded dose–response', 'Quantal dose–response', 'ED50 / TD50'] },
             { heading: 'Drug potency, efficacy & affinity', drugs: ['Potency (EC50)', 'Efficacy (Emax / intrinsic activity)', 'Affinity & Kd', 'Therapeutic index & therapeutic window'] },
             { heading: 'Therapeutic index & narrow-therapeutic-index drugs', drugs: ['Warfarin', 'Digoxin', 'Lithium', 'Phenytoin', 'Theophylline'] },
-            { heading: 'Receptors & signal transduction', drugs: ['G-protein-coupled receptors', 'Ion channels', 'Enzyme-linked receptors', 'Nuclear (intracellular) receptors', 'Spare receptors', 'Receptor regulation (up-/down-regulation, desensitization)'] },
-            { heading: 'Agonists & antagonists', drugs: ['Full agonist', 'Partial agonist', 'Inverse agonist', 'Competitive antagonist', 'Non-competitive antagonist', 'Types of antagonism (competitive, physiological, chemical, pharmacokinetic)'] },
+            { heading: 'Receptors & signal transduction', groups: [
+              { heading: 'Receptor superfamilies — transducers & examples', drugs: [
+                'GPCRs — second messengers (cAMP, IP3/DAG; β-agonists, muscarinic, opioids)',
+                'Ion-channel (ionotropic) receptors — fast (nicotinic ACh, GABA-A/benzodiazepines)',
+                'Enzyme-linked (tyrosine kinase) receptors — insulin, growth factors, trastuzumab',
+                'Nuclear (intracellular) receptors — slow genomic (steroids, thyroxine, vitamin D)',
+              ] },
+            ], drugs: ['Spare receptors', 'Receptor regulation (up-/down-regulation, desensitization)'] },
+            { heading: 'Agonists & antagonists', groups: [
+              { heading: 'Types of antagonism — by mechanism', drugs: [
+                'Competitive (pharmacological) antagonism (atropine vs ACh)',
+                'Physiological (functional) antagonism (adrenaline vs histamine in anaphylaxis)',
+                'Chemical antagonism (protamine–heparin; chelators–metals)',
+                'Pharmacokinetic antagonism (rifampicin lowering warfarin levels)',
+              ] },
+            ], drugs: ['Full agonist', 'Partial agonist', 'Inverse agonist', 'Competitive antagonist', 'Non-competitive antagonist'] },
             { heading: 'Variability in drug response', drugs: ['Tolerance & tachyphylaxis', 'Drug dependence & withdrawal', 'Idiosyncrasy & hypersensitivity', 'Pharmacogenetic variation'] },
           ]},
           { heading: 'C. Drug interactions', groups: [
@@ -94,18 +125,35 @@ The dose-response amphitheatre stands in the central plaza — where all the cur
         cite: 'ch. 1–5',
         groups: [
           { heading: 'A. Pharmacokinetics', groups: [
-            { heading: 'Absorption', drugs: [
+            { heading: 'Absorption', groups: [
+              { heading: 'Bioavailability (F) — types & determinants', drugs: [
+                'Absolute bioavailability (oral AUC ÷ IV AUC)',
+                'Relative bioavailability (test vs reference formulation)',
+                'Factors reducing F (incomplete absorption, gut-wall & hepatic first-pass, efflux)',
+                'High first-pass drugs (propranolol, morphine, GTN, lidocaine)',
+              ] },
+            ], drugs: [
               'Routes of administration (enteral, parenteral, topical, inhaled)',
               'Membrane transport (passive diffusion, facilitated, active, pinocytosis)',
               'pH-partition & ionization of weak acids/bases',
               'Factors affecting absorption (motility, food, blood flow, formulation)',
-              'Bioavailability (F)',
               'First-pass (presystemic) metabolism',
               'Bioequivalence',
             ] },
-            { heading: 'Distribution', drugs: [
-              'Volume of distribution (Vd)',
-              'Plasma protein binding (albumin, α1-acid glycoprotein)',
+            { heading: 'Distribution', groups: [
+              { heading: 'Volume of distribution (Vd) — meaning & range', drugs: [
+                'Apparent Vd (dose ÷ plasma concentration; not a real volume)',
+                'Low-Vd drugs (warfarin, aminoglycosides — confined to plasma/ECF)',
+                'High-Vd drugs (digoxin, chloroquine, TCAs — extensive tissue binding)',
+                'Vd & loading dose (loading dose = Vd × target Cp ÷ F)',
+              ] },
+              { heading: 'Plasma protein binding — types & interactions', drugs: [
+                'Albumin binding (acidic drugs — warfarin, phenytoin, NSAIDs)',
+                'α1-acid glycoprotein binding (basic drugs — lidocaine, propranolol, imipramine)',
+                'Displacement interactions (warfarin–sulfonamides, phenytoin–valproate)',
+                'Clinical significance of binding (free fraction, low-albumin states)',
+              ] },
+            ], drugs: [
               'Factors affecting distribution (lipid solubility, blood flow, binding)',
               'Blood–brain barrier',
               'Placental barrier',
@@ -139,8 +187,22 @@ The dose-response amphitheatre stands in the central plaza — where all the cur
             { heading: 'Dose–response & efficacy/potency', drugs: ['Graded & quantal curves', 'ED50 / TD50'] },
             { heading: 'Drug potency, efficacy & affinity', drugs: ['Potency (EC50)', 'Efficacy (Emax / intrinsic activity)', 'Affinity & Kd', 'Therapeutic index & therapeutic window'] },
             { heading: 'Therapeutic index & NTI drugs', drugs: ['Warfarin', 'Digoxin', 'Lithium', 'Phenytoin', 'Theophylline'] },
-            { heading: 'Receptors & transducers', drugs: ['GPCRs', 'Ion channels', 'Enzymatic receptors', 'Nuclear receptors', 'Spare receptors', 'Receptor regulation (up-/down-regulation, desensitization)'] },
-            { heading: 'Agonists & antagonists', drugs: ['Full/partial agonist', 'Inverse agonist', 'Competitive & non-competitive antagonist', 'Types of antagonism (competitive, physiological, chemical, pharmacokinetic)'] },
+            { heading: 'Receptors & transducers', groups: [
+              { heading: 'Receptor superfamilies — transducers & examples', drugs: [
+                'GPCRs — second messengers (cAMP, IP3/DAG; β-agonists, muscarinic, opioids)',
+                'Ion-channel (ionotropic) receptors — fast (nicotinic ACh, GABA-A/benzodiazepines)',
+                'Enzyme-linked (tyrosine kinase) receptors — insulin, growth factors, trastuzumab',
+                'Nuclear (intracellular) receptors — slow genomic (steroids, thyroxine, vitamin D)',
+              ] },
+            ], drugs: ['Spare receptors', 'Receptor regulation (up-/down-regulation, desensitization)'] },
+            { heading: 'Agonists & antagonists', groups: [
+              { heading: 'Types of antagonism — by mechanism', drugs: [
+                'Competitive (pharmacological) antagonism (atropine vs ACh)',
+                'Physiological (functional) antagonism (adrenaline vs histamine in anaphylaxis)',
+                'Chemical antagonism (protamine–heparin; chelators–metals)',
+                'Pharmacokinetic antagonism (rifampicin lowering warfarin levels)',
+              ] },
+            ], drugs: ['Full/partial agonist', 'Inverse agonist', 'Competitive & non-competitive antagonist'] },
             { heading: 'Variability in drug response', drugs: ['Tolerance & tachyphylaxis', 'Drug dependence & withdrawal', 'Idiosyncrasy & hypersensitivity', 'Pharmacogenetic variation'] },
           ]},
           { heading: 'C. Drug interactions', groups: [

@@ -63,6 +63,29 @@ Deeper into the hill, where the oil-lamps give way to guttering red torches, lie
             { heading: 'Partial agonist / mixed agonist-antagonist', drugs: ['Buprenorphine', 'Pentazocine', 'Nalbuphine'] },
             { heading: 'Antagonists', drugs: ['Naloxone', 'Naltrexone'] },
           ]},
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'CNS neurotransmitters & receptors', drugs: [
+              'GABA-A receptor (Cl⁻ channel; BZD vs barbiturate sites)',
+              'GABA-B receptor (Gi/o GPCR; baclofen)',
+              'Glutamate receptors (NMDA & AMPA)',
+              'Opioid receptors (μ, κ, δ)',
+            ]},
+            { heading: 'Dopamine pathways & antipsychotic effects', drugs: [
+              'Four dopamine pathways (mesolimbic, mesocortical, nigrostriatal, tuberoinfundibular)',
+              'Typical vs atypical antipsychotics',
+            ]},
+            { heading: 'Affective & seizure principles', drugs: [
+              'Monoamine hypothesis of depression',
+              'Seizure classification (focal vs generalised; absence, tonic-clonic, status)',
+              'Mechanisms of antiepileptic drug action',
+            ]},
+            { heading: 'Anaesthesia & analgesia principles', drugs: [
+              'Stages & depth of general anaesthesia (Guedel) & MAC',
+              'Local anaesthetic mechanism (use-dependent Na⁺ channel block)',
+              'Parkinson disease: dopamine–acetylcholine balance',
+              'Opioid tolerance, dependence & withdrawal',
+            ]},
+          ]},
         ],
       },
       {
@@ -118,6 +141,29 @@ Deeper into the hill, where the oil-lamps give way to guttering red torches, lie
             { heading: 'Mild-to-moderate agonists', drugs: ['Codeine', 'Tramadol'] },
             { heading: 'Partial / mixed agonist-antagonist', drugs: ['Buprenorphine', 'Pentazocine', 'Nalbuphine'] },
             { heading: 'Antagonists', drugs: ['Naloxone', 'Naltrexone'] },
+          ]},
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'CNS neurotransmitters & receptors', drugs: [
+              'GABA-A receptor (Cl⁻ channel; BZD vs barbiturate sites)',
+              'GABA-B receptor (Gi/o GPCR; baclofen)',
+              'Glutamate receptors (NMDA & AMPA)',
+              'Opioid receptors (μ, κ, δ)',
+            ]},
+            { heading: 'Dopamine pathways & antipsychotic effects', drugs: [
+              'Four dopamine pathways (mesolimbic, mesocortical, nigrostriatal, tuberoinfundibular)',
+              'Typical vs atypical antipsychotics',
+            ]},
+            { heading: 'Affective & seizure principles', drugs: [
+              'Monoamine hypothesis of depression',
+              'Seizure classification (focal vs generalised; absence, tonic-clonic, status)',
+              'Mechanisms of antiepileptic drug action',
+            ]},
+            { heading: 'Anaesthesia & analgesia principles', drugs: [
+              'Stages & depth of general anaesthesia (Guedel) & MAC',
+              'Local anaesthetic mechanism (use-dependent Na⁺ channel block)',
+              'Parkinson disease: dopamine–acetylcholine balance',
+              'Opioid tolerance, dependence & withdrawal',
+            ]},
           ]},
         ],
       },

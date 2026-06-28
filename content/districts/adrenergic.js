@@ -39,6 +39,31 @@ Across the service road stand the antagonists — the circuit breakers and dampe
               { heading: 'Combined α+β', drugs: ['Labetalol', 'Carvedilol'] },
             ]},
           ]},
+          { heading: 'C. Key concepts & principles', groups: [
+            { heading: 'Adrenoceptor subtypes (location · effect · 2nd messenger)', drugs: [
+              'α1 — Gq/PLC → IP3/DAG → ↑Ca²⁺ (vasoconstriction, mydriasis, GI/bladder sphincter contraction, glycogenolysis)',
+              'α2 — Gi → ↓cAMP (presynaptic auto-inhibition of NA release; central sympatho-inhibition; platelet aggregation; ↓insulin)',
+              'β1 — Gs → ↑cAMP (heart: ↑rate, contractility, AV conduction; ↑renin from JG cells)',
+              'β2 — Gs → ↑cAMP (bronchodilation, vasodilation, uterine/visceral smooth-muscle relaxation, glycogenolysis, K⁺ uptake)',
+              'β3 — Gs → ↑cAMP (lipolysis in adipose tissue; detrusor relaxation in bladder)',
+              'D1 — Gs → ↑cAMP (renal, mesenteric, coronary and cerebral vasodilation)',
+            ]},
+            { heading: 'Catecholamine synthesis & metabolism', drugs: [
+              'Synthesis pathway: Tyrosine → DOPA → Dopamine → Noradrenaline → Adrenaline',
+              'Tyrosine hydroxylase — rate-limiting step (Tyr → DOPA)',
+              'Metabolising enzymes: MAO (mitochondrial, intraneuronal) & COMT (extraneuronal)',
+              'VMA (vanillylmandelic acid) — final urinary metabolite (raised in phaeochromocytoma)',
+            ]},
+            { heading: 'Neuronal uptake mechanisms', drugs: [
+              'Uptake-1 (neuronal NET) — blocked by cocaine, TCAs (potentiates NA)',
+              'Uptake-2 (extraneuronal) — lower-affinity, higher-capacity glial/smooth-muscle uptake',
+            ]},
+            { heading: 'Classic pharmacological phenomena', drugs: [
+              'Adrenaline (dale\'s vasomotor) reversal — α-blocker converts adrenaline\'s pressor effect to a depressor effect',
+              'Effect of dose on adrenaline BP response — low dose β2 depressor, high dose α1 pressor',
+              'Why catecholamines are not given orally — high first-pass MAO/COMT inactivation in gut & liver',
+            ]},
+          ]},
         ],
       },
       {
@@ -72,6 +97,31 @@ Across the service road stand the antagonists — the circuit breakers and dampe
               { heading: 'With additional α-blockade', drugs: ['Labetalol', 'Carvedilol'] },
             ]},
             { heading: 'Adrenergic neurone blockers', drugs: ['Reserpine', 'Guanethidine'] },
+          ]},
+          { heading: 'C. Key concepts & principles', groups: [
+            { heading: 'Adrenoceptor subtypes (location · effect · 2nd messenger)', drugs: [
+              'α1 — Gq/PLC → IP3/DAG → ↑Ca²⁺ (vasoconstriction, mydriasis, GI/bladder sphincter contraction, glycogenolysis)',
+              'α2 — Gi → ↓cAMP (presynaptic auto-inhibition of NA release; central sympatho-inhibition; platelet aggregation; ↓insulin)',
+              'β1 — Gs → ↑cAMP (heart: ↑rate, contractility, AV conduction; ↑renin from JG cells)',
+              'β2 — Gs → ↑cAMP (bronchodilation, vasodilation, uterine/visceral smooth-muscle relaxation, glycogenolysis, K⁺ uptake)',
+              'β3 — Gs → ↑cAMP (lipolysis in adipose tissue; detrusor relaxation in bladder)',
+              'D1 — Gs → ↑cAMP (renal, mesenteric, coronary and cerebral vasodilation)',
+            ]},
+            { heading: 'Catecholamine synthesis & metabolism', drugs: [
+              'Synthesis pathway: Tyrosine → DOPA → Dopamine → Noradrenaline → Adrenaline',
+              'Tyrosine hydroxylase — rate-limiting step (Tyr → DOPA)',
+              'Metabolising enzymes: MAO (mitochondrial, intraneuronal) & COMT (extraneuronal)',
+              'VMA (vanillylmandelic acid) — final urinary metabolite (raised in phaeochromocytoma)',
+            ]},
+            { heading: 'Neuronal uptake mechanisms', drugs: [
+              'Uptake-1 (neuronal NET) — blocked by cocaine, TCAs (potentiates NA)',
+              'Uptake-2 (extraneuronal) — lower-affinity, higher-capacity glial/smooth-muscle uptake',
+            ]},
+            { heading: 'Classic pharmacological phenomena', drugs: [
+              'Adrenaline (dale\'s vasomotor) reversal — α-blocker converts adrenaline\'s pressor effect to a depressor effect',
+              'Effect of dose on adrenaline BP response — low dose β2 depressor, high dose α1 pressor',
+              'Why catecholamines are not given orally — high first-pass MAO/COMT inactivation in gut & liver',
+            ]},
           ]},
         ],
       },

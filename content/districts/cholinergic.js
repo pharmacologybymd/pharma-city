@@ -29,6 +29,38 @@ Across the black canal sits Anticholinergic Alley: a bone-dry desert quarter whe
             { heading: 'Semisynthetic / synthetic', drugs: ['Homatropine', 'Eucatropine', 'Tropicamide', 'Cyclopentolate', 'Ipratropium', 'Tiotropium', 'Glycopyrrolate', 'Oxyphenonium', 'Flavoxate', 'Oxybutynin', 'Tolterodine', 'Fesoterodine', 'Trospium', 'Solifenacin', 'Trihexyphenidyl', 'Benztropine'] },
           ]},
           { heading: 'C. Inhibitor of ACh release', drugs: ['Botulinum toxin'] },
+          { heading: 'D. Key concepts & principles', groups: [
+            { heading: 'Cholinergic receptor subtypes', groups: [
+              { heading: 'Muscarinic receptors', drugs: [
+                'M1 (neural — CNS, gastric parietal/ganglia)',
+                'M2 (cardiac — SA/AV node, atria)',
+                'M3 (smooth muscle, exocrine glands, eye)',
+                'M4 & M5 (CNS)',
+              ]},
+              { heading: 'Nicotinic receptors', drugs: [
+                'NM (skeletal muscle end-plate / NMJ)',
+                'NN (autonomic ganglia, adrenal medulla, CNS)',
+              ]},
+              { heading: 'Receptor second messengers', drugs: [
+                'Gq coupling (M1, M3, M5 → ↑IP3/DAG)',
+                'Gi coupling (M2, M4 → ↓cAMP, ↑K⁺ current)',
+              ]},
+            ]},
+            { heading: 'Cholinergic transmission', drugs: [
+              'ACh synthesis, storage, release & degradation',
+              'Cotransmitters & cholinergic nerve types',
+            ]},
+            { heading: 'Toxidromes & poisoning', drugs: [
+              'Muscarinic excess — SLUDGE / DUMBBELSS',
+              'Antimuscarinic (atropine) toxidrome — "dry, blind, red, hot, mad"',
+              'Organophosphate poisoning — mechanism, ageing & treatment',
+              'Cholinergic crisis vs myasthenic crisis',
+            ]},
+            { heading: 'Neuromuscular blockade — types', drugs: [
+              'Depolarising NM block (phase I & II)',
+              'Non-depolarising (competitive) NM block',
+            ]},
+          ]},
         ],
       },
       {
@@ -53,6 +85,38 @@ Across the black canal sits Anticholinergic Alley: a bone-dry desert quarter whe
             { heading: 'Synthetic — antisecretory / antispasmodic', drugs: ['Propantheline', 'Oxyphenonium', 'Glycopyrrolate', 'Clidinium', 'Pirenzepine', 'Dicyclomine', 'Flavoxate'] },
             { heading: 'Synthetic — vesicoselective (urinary)', drugs: ['Oxybutynin', 'Tolterodine', 'Fesoterodine', 'Trospium', 'Solifenacin', 'Darifenacin'] },
             { heading: 'Synthetic — antiparkinsonian', drugs: ['Trihexyphenidyl (benzhexol)', 'Procyclidine', 'Biperiden', 'Benztropine'] },
+          ]},
+          { heading: 'D. Key concepts & principles', groups: [
+            { heading: 'Cholinergic receptor subtypes', groups: [
+              { heading: 'Muscarinic receptors', drugs: [
+                'M1 (neural — CNS, gastric parietal/ganglia)',
+                'M2 (cardiac — SA/AV node, atria)',
+                'M3 (smooth muscle, exocrine glands, eye)',
+                'M4 & M5 (CNS)',
+              ]},
+              { heading: 'Nicotinic receptors', drugs: [
+                'NM (skeletal muscle end-plate / NMJ)',
+                'NN (autonomic ganglia, adrenal medulla, CNS)',
+              ]},
+              { heading: 'Receptor second messengers', drugs: [
+                'Gq coupling (M1, M3, M5 → ↑IP3/DAG)',
+                'Gi coupling (M2, M4 → ↓cAMP, ↑K⁺ current)',
+              ]},
+            ]},
+            { heading: 'Cholinergic transmission', drugs: [
+              'ACh synthesis, storage, release & degradation',
+              'Cotransmitters & cholinergic nerve types',
+            ]},
+            { heading: 'Toxidromes & poisoning', drugs: [
+              'Muscarinic excess — SLUDGE / DUMBBELSS',
+              'Antimuscarinic (atropine) toxidrome — "dry, blind, red, hot, mad"',
+              'Organophosphate poisoning — mechanism, ageing & treatment',
+              'Cholinergic crisis vs myasthenic crisis',
+            ]},
+            { heading: 'Neuromuscular blockade — types', drugs: [
+              'Depolarising NM block (phase I & II)',
+              'Non-depolarising (competitive) NM block',
+            ]},
           ]},
         ],
       },

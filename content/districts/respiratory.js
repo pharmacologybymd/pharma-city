@@ -52,6 +52,28 @@ The ICS warehouses — budesonide, fluticasone, and beclometasone — are giant 
           ]},
           { heading: 'E. Antifibrotics (idiopathic pulmonary fibrosis)', drugs: ['Nintedanib', 'Pirfenidone'] },
           { heading: 'F. Pulmonary surfactant', drugs: ['Beractant'] },
+          { heading: 'G. Key concepts & principles', groups: [
+            { heading: 'Asthma pathophysiology', drugs: [
+              'Bronchoconstriction vs airway inflammation (the two targets)',
+              'Early-phase vs late-phase allergic response',
+              'Airway hyperresponsiveness & remodelling',
+            ]},
+            { heading: 'Pharmacological strategy', drugs: [
+              'Bronchodilator vs controller / anti-inflammatory concept',
+              'Stepwise management of asthma (reliever vs preventer)',
+              'COPD vs asthma — pharmacological differences',
+            ]},
+            { heading: 'Receptor & reflex targets', drugs: [
+              'β2 receptor & airway smooth-muscle tone',
+              'Muscarinic M3 receptor in airways',
+              'Leukotrienes in asthma',
+              'Cough reflex — antitussive vs expectorant rationale',
+            ]},
+            { heading: 'Steroids & delivery', drugs: [
+              'ICS — local vs systemic effects',
+              'Inhaler delivery devices (MDI / DPI / nebuliser)',
+            ]},
+          ]},
         ],
       },
       {
@@ -83,6 +105,28 @@ The ICS warehouses — budesonide, fluticasone, and beclometasone — are giant 
           ]},
           { heading: 'C. Nasal decongestants', drugs: ['Pseudoephedrine', 'Xylometazoline'] },
           { heading: 'D. Other agents in acute severe asthma', drugs: ['Magnesium sulfate'] },
+          { heading: 'G. Key concepts & principles', groups: [
+            { heading: 'Asthma pathophysiology', drugs: [
+              'Bronchoconstriction vs airway inflammation (the two targets)',
+              'Early-phase vs late-phase allergic response',
+              'Airway hyperresponsiveness & remodelling',
+            ]},
+            { heading: 'Pharmacological strategy', drugs: [
+              'Bronchodilator vs controller / anti-inflammatory concept',
+              'Stepwise management of asthma (reliever vs preventer)',
+              'COPD vs asthma — pharmacological differences',
+            ]},
+            { heading: 'Receptor & reflex targets', drugs: [
+              'β2 receptor & airway smooth-muscle tone',
+              'Muscarinic M3 receptor in airways',
+              'Leukotrienes in asthma',
+              'Cough reflex — antitussive vs expectorant rationale',
+            ]},
+            { heading: 'Steroids & delivery', drugs: [
+              'ICS — local vs systemic effects',
+              'Inhaler delivery devices (MDI / DPI / nebuliser)',
+            ]},
+          ]},
         ],
       },
     ],

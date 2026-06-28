@@ -55,6 +55,37 @@ The pharmacogenomics tower stands at the centre of New Town and is the tallest s
             { heading: 'Pharmacogenomics', drugs: ['CYP2C19', 'HLA-B*5701', 'TPMT'] },
             { heading: 'Pharmacovigilance', drugs: ['Black-box warnings', 'REMS', 'Post-marketing surveillance'] },
           ]},
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'Monoclonal antibody nomenclature', drugs: [
+              'Stem "-mab" = monoclonal antibody (all share this suffix)',
+              '"-o-mab" = fully murine (mouse) origin (e.g. ibritumomab)',
+              '"-xi-mab" = chimeric, mouse + human (e.g. rituximab, infliximab)',
+              '"-zu-mab" = humanised, mostly human (e.g. trastuzumab, tocilizumab)',
+              '"-u-mab" = fully human (e.g. adalimumab, evolocumab)',
+            ]},
+            { heading: 'Antibody-based modalities', groups: [
+              { heading: 'Antibody-drug conjugate (ADC) concept', drugs: ['ADC = antibody + linker + cytotoxic payload'] },
+              { heading: 'Bispecific antibodies / BiTEs concept', drugs: ['Bispecific antibody / BiTE concept'] },
+              { heading: 'Biosimilars concept', drugs: ['Biosimilar concept'] },
+            ]},
+            { heading: 'Cell & gene therapy concepts', groups: [
+              { heading: 'CAR-T cell therapy', drugs: ['CAR-T mechanism (CAR-engineered T cells)', 'Cytokine release syndrome (CRS) toxicity'] },
+              { heading: 'Gene therapy', drugs: ['Gene therapy & AAV viral vectors', 'In-vivo vs ex-vivo gene therapy'] },
+              { heading: 'Gene editing', drugs: ['CRISPR/Cas9 gene editing'] },
+            ]},
+            { heading: 'RNA therapeutics concepts', drugs: [
+              'siRNA (small interfering RNA) concept',
+              'Antisense oligonucleotide (ASO) concept',
+              'mRNA vaccine concept',
+            ]},
+            { heading: 'Precision medicine concepts', drugs: [
+              'Targeted therapy concept',
+              'Precision / personalised medicine concept',
+              'Pharmacogenomics in prescribing',
+              'Immune checkpoint inhibition concept',
+              'PROTAC & novel modalities concept',
+            ]},
+          ]},
         ],
       },
       {
@@ -96,6 +127,37 @@ The pharmacogenomics tower stands at the centre of New Town and is the tallest s
           { heading: 'H. Precision medicine & drug safety', groups: [
             { heading: 'Pharmacogenomics', drugs: ['CYP2C19', 'HLA-B*5701', 'TPMT'] },
             { heading: 'Pharmacovigilance', drugs: ['Black-box warnings', 'REMS', 'Post-marketing surveillance'] },
+          ]},
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'Monoclonal antibody nomenclature', drugs: [
+              'Stem "-mab" = monoclonal antibody (all share this suffix)',
+              '"-o-mab" = fully murine (mouse) origin (e.g. ibritumomab)',
+              '"-xi-mab" = chimeric, mouse + human (e.g. rituximab, infliximab)',
+              '"-zu-mab" = humanised, mostly human (e.g. trastuzumab, tocilizumab)',
+              '"-u-mab" = fully human (e.g. adalimumab, evolocumab)',
+            ]},
+            { heading: 'Antibody-based modalities', groups: [
+              { heading: 'Antibody-drug conjugate (ADC) concept', drugs: ['ADC = antibody + linker + cytotoxic payload'] },
+              { heading: 'Bispecific antibodies / BiTEs concept', drugs: ['Bispecific antibody / BiTE concept'] },
+              { heading: 'Biosimilars concept', drugs: ['Biosimilar concept'] },
+            ]},
+            { heading: 'Cell & gene therapy concepts', groups: [
+              { heading: 'CAR-T cell therapy', drugs: ['CAR-T mechanism (CAR-engineered T cells)', 'Cytokine release syndrome (CRS) toxicity'] },
+              { heading: 'Gene therapy', drugs: ['Gene therapy & AAV viral vectors', 'In-vivo vs ex-vivo gene therapy'] },
+              { heading: 'Gene editing', drugs: ['CRISPR/Cas9 gene editing'] },
+            ]},
+            { heading: 'RNA therapeutics concepts', drugs: [
+              'siRNA (small interfering RNA) concept',
+              'Antisense oligonucleotide (ASO) concept',
+              'mRNA vaccine concept',
+            ]},
+            { heading: 'Precision medicine concepts', drugs: [
+              'Targeted therapy concept',
+              'Precision / personalised medicine concept',
+              'Pharmacogenomics in prescribing',
+              'Immune checkpoint inhibition concept',
+              'PROTAC & novel modalities concept',
+            ]},
           ]},
         ],
       },

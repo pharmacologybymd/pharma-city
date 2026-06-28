@@ -50,6 +50,15 @@ The chelation wing occupies the southern end of the district — heavy metal rem
           { heading: 'C. General principles of poisoning management', groups: [
             { heading: 'Decontamination', drugs: ['Whole-bowel irrigation', 'Syrup of ipecac (historical)'] },
           ]},
+          { heading: 'D. Key concepts & principles', groups: [
+            { heading: 'General approach to the poisoned patient', drugs: ['Principles of poisoning management (ABCDE)', 'Supportive & symptomatic care'] },
+            { heading: 'GI decontamination — concept', drugs: ['Gastric lavage — concept', 'Activated charcoal — concept', 'Whole-bowel irrigation — concept'] },
+            { heading: 'Enhancement of elimination — concept', drugs: ['Urinary alkalinisation / ion trapping', 'Multiple-dose activated charcoal', 'Haemodialysis in poisoning'] },
+            { heading: 'Toxidromes', drugs: ['Cholinergic toxidrome', 'Anticholinergic toxidrome', 'Sympathomimetic toxidrome', 'Opioid toxidrome', 'Sedative-hypnotic toxidrome', 'Serotonin syndrome'] },
+            { heading: 'Antidotes & chelation — concept', drugs: ['Types of antidotes', 'Chelation therapy — concept'] },
+            { heading: 'Dose-toxicity concepts', drugs: ['Therapeutic vs toxic dose & LD50'] },
+            { heading: 'Heavy-metal poisoning — overview', drugs: ['Heavy-metal poisoning overview'] },
+          ]},
         ],
       },
       {
@@ -88,6 +97,15 @@ The chelation wing occupies the southern end of the district — heavy metal rem
             { heading: 'Decontamination', drugs: ['Gastric lavage', 'Activated charcoal', 'Whole-bowel irrigation', 'Syrup of ipecac (historical)'] },
             { heading: 'Enhanced elimination', drugs: ['Urinary alkalinization', 'Haemodialysis'] },
             { heading: 'Supportive care', drugs: ['Airway / breathing / circulation support', 'Maintenance of vitals'] },
+          ]},
+          { heading: 'D. Key concepts & principles', groups: [
+            { heading: 'General approach to the poisoned patient', drugs: ['Principles of poisoning management (ABCDE)', 'Supportive & symptomatic care'] },
+            { heading: 'GI decontamination — concept', drugs: ['Gastric lavage — concept', 'Activated charcoal — concept', 'Whole-bowel irrigation — concept'] },
+            { heading: 'Enhancement of elimination — concept', drugs: ['Urinary alkalinisation / ion trapping', 'Multiple-dose activated charcoal', 'Haemodialysis in poisoning'] },
+            { heading: 'Toxidromes', drugs: ['Cholinergic toxidrome', 'Anticholinergic toxidrome', 'Sympathomimetic toxidrome', 'Opioid toxidrome', 'Sedative-hypnotic toxidrome', 'Serotonin syndrome'] },
+            { heading: 'Antidotes & chelation — concept', drugs: ['Types of antidotes', 'Chelation therapy — concept'] },
+            { heading: 'Dose-toxicity concepts', drugs: ['Therapeutic vs toxic dose & LD50'] },
+            { heading: 'Heavy-metal poisoning — overview', drugs: ['Heavy-metal poisoning overview'] },
           ]},
         ],
       },

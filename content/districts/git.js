@@ -52,6 +52,28 @@ At the far end of the row, the IBD biologics occupy a new, gleaming precinct. Me
             { heading: 'Biologics', drugs: ['Infliximab (anti-TNF)', 'Adalimumab (anti-TNF)', 'Vedolizumab (anti-integrin)', 'Ustekinumab'] },
           ]},
           { heading: 'G. Antispasmodics', drugs: ['Dicyclomine', 'Mebeverine', 'Hyoscine'] },
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'Physiology & rationale of acid suppression', drugs: [
+              'Gastric acid secretion — parietal cell receptors (H2, gastrin/CCK2, M3 → H+/K+ ATPase)',
+              'Rationale of acid suppression — PPI vs H2RA',
+              'H. pylori eradication — triple & quadruple therapy rationale',
+            ] },
+            { heading: 'Vomiting reflex & antiemetic targets', drugs: [
+              'Vomiting reflex & emetic receptors (CTZ D2/5-HT3/NK1; vestibular H1/M; gut 5-HT3)',
+              'Antiemetic drug targets — receptor-to-class mapping',
+              'Prokinetic mechanism (D2 block + 5-HT4 agonism → ACh release)',
+            ] },
+            { heading: 'Mucosal & motility pathophysiology', drugs: [
+              'Pathophysiology of peptic ulcer — aggressive vs defensive factors',
+              'Diarrhoea pathophysiology (secretory, osmotic, motility, inflammatory)',
+              'Constipation pathophysiology (slow-transit & defecatory dysfunction)',
+              'Laxative classes — mechanisms (bulk, osmotic, stimulant, softener)',
+            ] },
+            { heading: 'Inflammatory bowel disease', drugs: [
+              'Pathophysiology of IBD — dysregulated mucosal immunity (UC vs Crohn)',
+              'IBD treatment ladder (5-ASA → steroids → immunosuppressants → biologics)',
+            ] },
+          ]},
           { heading: 'H. Miscellaneous GI drugs', groups: [
             { heading: 'Bile acid (cholelitholytic)', drugs: ['Ursodeoxycholic acid'] },
             { heading: 'Non-absorbable antibiotic', drugs: ['Rifaximin'] },
@@ -99,6 +121,28 @@ At the far end of the row, the IBD biologics occupy a new, gleaming precinct. Me
             { heading: 'Biologics', drugs: ['Infliximab (anti-TNF)', 'Adalimumab (anti-TNF)', 'Vedolizumab (anti-integrin)', 'Ustekinumab'] },
           ]},
           { heading: 'F. Antispasmodics', drugs: ['Dicyclomine', 'Mebeverine', 'Hyoscine'] },
+          { heading: 'I. Key concepts & principles', groups: [
+            { heading: 'Physiology & rationale of acid suppression', drugs: [
+              'Gastric acid secretion — parietal cell receptors (H2, gastrin/CCK2, M3 → H+/K+ ATPase)',
+              'Rationale of acid suppression — PPI vs H2RA',
+              'H. pylori eradication — triple & quadruple therapy rationale',
+            ] },
+            { heading: 'Vomiting reflex & antiemetic targets', drugs: [
+              'Vomiting reflex & emetic receptors (CTZ D2/5-HT3/NK1; vestibular H1/M; gut 5-HT3)',
+              'Antiemetic drug targets — receptor-to-class mapping',
+              'Prokinetic mechanism (D2 block + 5-HT4 agonism → ACh release)',
+            ] },
+            { heading: 'Mucosal & motility pathophysiology', drugs: [
+              'Pathophysiology of peptic ulcer — aggressive vs defensive factors',
+              'Diarrhoea pathophysiology (secretory, osmotic, motility, inflammatory)',
+              'Constipation pathophysiology (slow-transit & defecatory dysfunction)',
+              'Laxative classes — mechanisms (bulk, osmotic, stimulant, softener)',
+            ] },
+            { heading: 'Inflammatory bowel disease', drugs: [
+              'Pathophysiology of IBD — dysregulated mucosal immunity (UC vs Crohn)',
+              'IBD treatment ladder (5-ASA → steroids → immunosuppressants → biologics)',
+            ] },
+          ]},
           { heading: 'G. Miscellaneous GI drugs', groups: [
             { heading: 'Bile acid (cholelitholytic)', drugs: ['Ursodeoxycholic acid'] },
             { heading: 'Non-absorbable antibiotic', drugs: ['Rifaximin'] },
