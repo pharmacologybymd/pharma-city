@@ -110,6 +110,10 @@
       scene.add(road);
     });
 
+    // Roving car that tours the road network — adds a touch of life to the
+    // city. Placed after roads so it spawns on top of them.
+    P.car?.mount?.(scene);
+
     const districts = (typeof CITY !== 'undefined') ? CITY.districts : [];
     const pickables = [];
     const labels = [];

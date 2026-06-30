@@ -41,6 +41,7 @@ const appFiles = [
   'compare.js',
   'minimap.js',
   'flowchart-overlay.js',
+  'car.js',
   'district-scene.js',
   'city-scene.js',
   'app.js',
