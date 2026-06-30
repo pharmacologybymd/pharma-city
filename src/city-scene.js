@@ -352,17 +352,39 @@
           P.app.goTo('district', { districtId: id });
         }
       }
-      // When drive mode is on, lerp the camera target toward the car so it
-      // stays roughly centered as the user drives.
+      // When drive mode is on, replace the orbit camera with a low chase cam
+      // sitting behind + above the car. The low height + short distance makes
+      // the city's buildings tower around the driver instead of looking flat.
+      let driveCam = false;
       if (P.drive?.isActive?.()) {
         const carMesh = P.car?.getMesh?.();
         if (carMesh) {
-          const k = 1 - Math.exp(-dt * 3);
-          target.x += (carMesh.position.x - target.x) * k;
-          target.z += (carMesh.position.z - target.z) * k;
+          const cp = carMesh.position;
+          const h = carMesh.rotation.y;
+          // forward = (cos h, 0, -sin h) — see car.js notes. behind = -forward.
+          const CHASE_DIST = 14, CHASE_H = 5.5, LOOK_AHEAD = 6;
+          // Snap on first frame (so the transition from orbit doesn't sweep
+          // through buildings), then ease for the rest of drive mode.
+          const desired = new THREE.Vector3(
+            cp.x - Math.cos(h) * CHASE_DIST,
+            cp.y + CHASE_H,
+            cp.z + Math.sin(h) * CHASE_DIST,
+          );
+          if (!flying && camera.position.distanceTo(desired) > 30) {
+            camera.position.copy(desired);
+          } else {
+            const k = 1 - Math.exp(-dt * 10);
+            camera.position.lerp(desired, k);
+          }
+          camera.lookAt(
+            cp.x + Math.cos(h) * LOOK_AHEAD,
+            cp.y + 1.5,
+            cp.z - Math.sin(h) * LOOK_AHEAD,
+          );
+          driveCam = true;
         }
       }
-      updateCamera();
+      if (!driveCam) updateCamera();
       updateHoverAnimations(dt);
       // Drift clouds slowly across the sky.
       for (const c of clouds) {

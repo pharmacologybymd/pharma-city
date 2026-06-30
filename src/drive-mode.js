@@ -21,7 +21,7 @@
   const REVERSE_MAX = 8;
   const TURN_RATE = 2.2;
   const WHEEL_RADIUS = 0.42;
-  const ENTRY_RANGE = 14; // distance from district center to allow Enter
+  const ENTRY_RANGE = 16; // distance from district center to allow Enter
   const CITY_HALF = 110;  // soft bound — keeps the car inside the city plane
 
   const keys = { up: false, down: false, left: false, right: false };
@@ -47,9 +47,16 @@
   }
 
   function tryEnter() {
-    if (!nearestId) return;
+    // Recompute proximity on every press — don't rely on the cached
+    // `nearestId` from the last tick. (At 60 fps that's irrelevant, but
+    // if the tab is throttled, the cache can lag by a full second and
+    // the user would press E "near a building" and nothing would happen.)
+    const car = P.car?.getMesh?.();
+    if (!car) return;
+    const near = nearestDistrict(car.position);
+    if (!near.id || near.dist >= ENTRY_RANGE) return;
     deactivate();
-    P.app?.goTo?.('district', { districtId: nearestId });
+    P.app?.goTo?.('district', { districtId: near.id });
   }
 
   function nearestDistrict(carPos) {
