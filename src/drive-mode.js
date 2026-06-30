@@ -21,8 +21,34 @@
   const REVERSE_MAX = 8;
   const TURN_RATE = 2.2;
   const WHEEL_RADIUS = 0.42;
-  const ENTRY_RANGE = 16; // distance from district center to allow Enter
-  const CITY_HALF = 110;  // soft bound — keeps the car inside the city plane
+
+  // Per-level driving context. Drug towers in a district have a smaller
+  // 3.5-unit plinth; districts in the city have ~6u plinths.
+  function context() {
+    const level = P.app?.state?.level;
+    if (level === 'district') {
+      return {
+        car: P.districtCar?.getMesh?.(),
+        targets: P.districtCar?.getTargets?.() || [],
+        entryRange: 9,
+        plinthRadius: 4.0,
+        bound: 60,
+        navigate: id => P.app?.goTo?.('flashcard', { districtId: P.app.state.districtId, drugId: id }),
+      };
+    }
+    // Default = city.
+    return {
+      car: P.car?.getMesh?.(),
+      targets: (window.CITY?.districts || []).map(id => {
+        const d = window['DISTRICT_' + id.toUpperCase()];
+        return d ? { id, name: d.name, pos: d.position } : null;
+      }).filter(Boolean),
+      entryRange: 16,
+      plinthRadius: 6.5,
+      bound: 110,
+      navigate: id => P.app?.goTo?.('district', { districtId: id }),
+    };
+  }
 
   const keys = { up: false, down: false, left: false, right: false };
   let velocity = 0;
@@ -48,34 +74,32 @@
 
   function tryEnter() {
     // Recompute proximity on every press — don't rely on the cached
-    // `nearestId` from the last tick. (At 60 fps that's irrelevant, but
-    // if the tab is throttled, the cache can lag by a full second and
-    // the user would press E "near a building" and nothing would happen.)
-    const car = P.car?.getMesh?.();
-    if (!car) return;
-    const near = nearestDistrict(car.position);
-    if (!near.id || near.dist >= ENTRY_RANGE) return;
+    // `nearest` from the last tick. At 60 fps that's irrelevant, but if
+    // the tab is throttled the cache can lag a full second and the user
+    // would press E "near a building" and nothing would happen.
+    const ctx = context();
+    if (!ctx.car) return;
+    const near = nearestTarget(ctx, ctx.car.position);
+    if (!near.id || near.dist >= ctx.entryRange) return;
     deactivate();
-    P.app?.goTo?.('district', { districtId: near.id });
+    ctx.navigate(near.id);
   }
 
-  function nearestDistrict(carPos) {
-    const ids = window.CITY?.districts || [];
-    let id = null, best = Infinity, name = null;
-    for (const x of ids) {
-      const d = window['DISTRICT_' + x.toUpperCase()];
-      if (!d) continue;
-      const dx = d.position.x - carPos.x;
-      const dz = d.position.z - carPos.z;
+  function nearestTarget(ctx, carPos) {
+    let id = null, name = null, best = Infinity;
+    for (const t of ctx.targets) {
+      const dx = t.pos.x - carPos.x;
+      const dz = t.pos.z - carPos.z;
       const dist = Math.hypot(dx, dz);
-      if (dist < best) { best = dist; id = x; name = d.name; }
+      if (dist < best) { best = dist; id = t.id; name = t.name; }
     }
     return { id, name, dist: best };
   }
 
   function tick(dt) {
     if (!active) return;
-    const car = P.car?.getMesh?.();
+    const ctx = context();
+    const car = ctx.car;
     if (!car) return;
 
     // Throttle / brake.
@@ -105,24 +129,21 @@
     car.position.x += fx * velocity * dt;
     car.position.z += fz * velocity * dt;
 
-    // Soft bounds so the car can't drive out of the city plane.
-    if (car.position.x > CITY_HALF) car.position.x = CITY_HALF;
-    if (car.position.x < -CITY_HALF) car.position.x = -CITY_HALF;
-    if (car.position.z > CITY_HALF) car.position.z = CITY_HALF;
-    if (car.position.z < -CITY_HALF) car.position.z = -CITY_HALF;
+    // Soft bounds so the car can't drive out of the playing field.
+    if (car.position.x > ctx.bound) car.position.x = ctx.bound;
+    if (car.position.x < -ctx.bound) car.position.x = -ctx.bound;
+    if (car.position.z > ctx.bound) car.position.z = ctx.bound;
+    if (car.position.z < -ctx.bound) car.position.z = -ctx.bound;
 
     // Building collision — push the car back outside any plinth it crosses.
-    const PLINTH = 6.5; // 6u plinth + ~0.5u car body half-width
-    for (const id of (window.CITY?.districts || [])) {
-      const d = window['DISTRICT_' + id.toUpperCase()];
-      if (!d) continue;
-      const dx = car.position.x - d.position.x;
-      const dz = car.position.z - d.position.z;
+    for (const t of ctx.targets) {
+      const dx = car.position.x - t.pos.x;
+      const dz = car.position.z - t.pos.z;
       const dist = Math.hypot(dx, dz);
-      if (dist < PLINTH && dist > 0.001) {
-        const k = PLINTH / dist;
-        car.position.x = d.position.x + dx * k;
-        car.position.z = d.position.z + dz * k;
+      if (dist < ctx.plinthRadius && dist > 0.001) {
+        const k = ctx.plinthRadius / dist;
+        car.position.x = t.pos.x + dx * k;
+        car.position.z = t.pos.z + dz * k;
         velocity *= 0.6; // bonk
       }
     }
@@ -132,8 +153,8 @@
     if (car.userData.wheels) for (const w of car.userData.wheels) w.rotation.y += dTheta;
 
     // Proximity prompt.
-    const near = nearestDistrict(car.position);
-    nearestId = (near.id && near.dist < ENTRY_RANGE) ? near.id : null;
+    const near = nearestTarget(ctx, car.position);
+    nearestId = (near.id && near.dist < ctx.entryRange) ? near.id : null;
     if (prompt) {
       if (nearestId) {
         prompt.textContent = `Press E to enter ${near.name}`;
@@ -184,8 +205,11 @@
 
     document.addEventListener('keydown', onKeyDown);
     document.addEventListener('keyup', onKeyUp);
-    // Auto-disable when navigating away from the city level.
-    P.app?.on?.('navigate', s => { if (s.level !== 'city' && active) deactivate(); });
+    // Auto-disable when leaving the drivable scenes (city or district).
+    // Flashcards / etc. don't have a car to drive.
+    P.app?.on?.('navigate', s => {
+      if (active && s.level !== 'city' && s.level !== 'district') deactivate();
+    });
     P.loop?.add?.(tick);
     syncToggleBtn();
   }

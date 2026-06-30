@@ -305,5 +305,5 @@
     return car;
   }
 
-  P.car = { mount, getMesh: () => car };
+  P.car = { mount, getMesh: () => car, build: buildCar };
 })();

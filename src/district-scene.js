@@ -44,6 +44,9 @@
 
     const groupRoot = new THREE.Group();
     scene.add(groupRoot);
+    // Drivable car for this district — sits hidden until a district loads
+    // (setTowers fills targets + reveals it).
+    P.districtCar?.mount?.(scene);
     let pickables = [];
     let labelEntries = [];
 
@@ -172,6 +175,8 @@
         groupRoot.add(road);
       }
 
+      // Build the drug towers, then hand them to the district car so it has
+      // fresh target positions + a clean spawn point on the south edge.
       drugs.forEach((drug, i) => {
         const row = Math.floor(i / COLS), col = i % COLS;
         const mastery = (P.quiz?.getMasteryLevel?.(drug.id)) ?? 0;
@@ -193,6 +198,9 @@
       });
       P.animations?.attach?.(id, scene, groupRoot);
       applyLabelMode();
+      // Hand the freshly built drug towers to the district car so it has
+      // fresh target positions + a clean spawn point on the south edge.
+      P.districtCar?.setTowers?.(pickables);
     }
 
     function applyLabelMode() {
@@ -329,7 +337,34 @@
     let visible = false;
     function tick(dt, t) {
       if (!visible) return;
-      updateCamera();
+      // Chase cam when drive mode is on — same convention as city-scene.
+      let driveCam = false;
+      if (P.drive?.isActive?.()) {
+        const carMesh = P.districtCar?.getMesh?.();
+        if (carMesh && carMesh.visible) {
+          const cp = carMesh.position;
+          const h = carMesh.rotation.y;
+          const CHASE_DIST = 12, CHASE_H = 4.5, LOOK_AHEAD = 5;
+          const desired = new THREE.Vector3(
+            cp.x - Math.cos(h) * CHASE_DIST,
+            cp.y + CHASE_H,
+            cp.z + Math.sin(h) * CHASE_DIST,
+          );
+          if (camera.position.distanceTo(desired) > 25) {
+            camera.position.copy(desired);
+          } else {
+            const k = 1 - Math.exp(-dt * 10);
+            camera.position.lerp(desired, k);
+          }
+          camera.lookAt(
+            cp.x + Math.cos(h) * LOOK_AHEAD,
+            cp.y + 1.5,
+            cp.z - Math.sin(h) * LOOK_AHEAD,
+          );
+          driveCam = true;
+        }
+      }
+      if (!driveCam) updateCamera();
       updateHoverAnimations(dt);
       for (const c of clouds) {
         c.position.x += c.userData.driftSpeed * dt;

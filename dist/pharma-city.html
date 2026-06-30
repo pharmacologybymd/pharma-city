@@ -8437,7 +8437,56 @@ if (typeof window !== 'undefined') {
     return car;
   }
 
-  P.car = { mount, getMesh: () => car };
+  P.car = { mount, getMesh: () => car, build: buildCar };
+})();
+
+
+// === src/district-car.js ===
+// User-drivable car inside a district scene. Like the city car, but with no
+// autonomous tour — it just sits parked until the user toggles drive mode.
+// Spawned position resets each time a new district loads (south edge of the
+// drug-tower grid, facing the buildings).
+//
+// PHARMA.districtCar.mount(scene) — adds the car once per district scene.
+// PHARMA.districtCar.setTowers(pickables) — call on every loadDistrict so the
+//   car has fresh target info and gets re-parked at the new district's edge.
+(function(){
+  const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
+  let car = null;
+  let targets = [];
+
+  function mount(scene) {
+    if (car) return car;
+    // Reuse the same 3D car model as the city. P.car must have loaded by now;
+    // build.js orders car.js before district-car.js.
+    car = (P.car?.build?.()) || new THREE.Group();
+    car.visible = false; // hidden until a district is loaded
+    scene.add(car);
+    return car;
+  }
+
+  function setTowers(towers) {
+    if (!car) return;
+    targets = towers.map(t => ({
+      id: t.userData?.drugId,
+      name: (t.userData?.drugId || '').replace(/_/g, ' '),
+      pos: { x: t.position.x, z: t.position.z },
+    })).filter(t => t.id);
+    if (!targets.length) { car.visible = false; return; }
+    // Park at the south edge of the grid, centered on X, facing into the grid
+    // (+Z direction). The autonomous car heading convention: rotation.y = -π/2
+    // maps local +X → world +Z, so the nose faces +Z.
+    let minZ = Infinity, sumX = 0;
+    for (const t of targets) { if (t.pos.z < minZ) minZ = t.pos.z; sumX += t.pos.x; }
+    car.position.set(sumX / targets.length, 0.12, minZ - 12);
+    car.rotation.y = -Math.PI / 2;
+    car.visible = true;
+  }
+
+  function getMesh() { return car; }
+  function getTargets() { return targets; }
+
+  P.districtCar = { mount, setTowers, getMesh, getTargets };
 })();
 
 
@@ -8465,8 +8514,34 @@ if (typeof window !== 'undefined') {
   const REVERSE_MAX = 8;
   const TURN_RATE = 2.2;
   const WHEEL_RADIUS = 0.42;
-  const ENTRY_RANGE = 16; // distance from district center to allow Enter
-  const CITY_HALF = 110;  // soft bound — keeps the car inside the city plane
+
+  // Per-level driving context. Drug towers in a district have a smaller
+  // 3.5-unit plinth; districts in the city have ~6u plinths.
+  function context() {
+    const level = P.app?.state?.level;
+    if (level === 'district') {
+      return {
+        car: P.districtCar?.getMesh?.(),
+        targets: P.districtCar?.getTargets?.() || [],
+        entryRange: 9,
+        plinthRadius: 4.0,
+        bound: 60,
+        navigate: id => P.app?.goTo?.('flashcard', { districtId: P.app.state.districtId, drugId: id }),
+      };
+    }
+    // Default = city.
+    return {
+      car: P.car?.getMesh?.(),
+      targets: (window.CITY?.districts || []).map(id => {
+        const d = window['DISTRICT_' + id.toUpperCase()];
+        return d ? { id, name: d.name, pos: d.position } : null;
+      }).filter(Boolean),
+      entryRange: 16,
+      plinthRadius: 6.5,
+      bound: 110,
+      navigate: id => P.app?.goTo?.('district', { districtId: id }),
+    };
+  }
 
   const keys = { up: false, down: false, left: false, right: false };
   let velocity = 0;
@@ -8492,34 +8567,32 @@ if (typeof window !== 'undefined') {
 
   function tryEnter() {
     // Recompute proximity on every press — don't rely on the cached
-    // `nearestId` from the last tick. (At 60 fps that's irrelevant, but
-    // if the tab is throttled, the cache can lag by a full second and
-    // the user would press E "near a building" and nothing would happen.)
-    const car = P.car?.getMesh?.();
-    if (!car) return;
-    const near = nearestDistrict(car.position);
-    if (!near.id || near.dist >= ENTRY_RANGE) return;
+    // `nearest` from the last tick. At 60 fps that's irrelevant, but if
+    // the tab is throttled the cache can lag a full second and the user
+    // would press E "near a building" and nothing would happen.
+    const ctx = context();
+    if (!ctx.car) return;
+    const near = nearestTarget(ctx, ctx.car.position);
+    if (!near.id || near.dist >= ctx.entryRange) return;
     deactivate();
-    P.app?.goTo?.('district', { districtId: near.id });
+    ctx.navigate(near.id);
   }
 
-  function nearestDistrict(carPos) {
-    const ids = window.CITY?.districts || [];
-    let id = null, best = Infinity, name = null;
-    for (const x of ids) {
-      const d = window['DISTRICT_' + x.toUpperCase()];
-      if (!d) continue;
-      const dx = d.position.x - carPos.x;
-      const dz = d.position.z - carPos.z;
+  function nearestTarget(ctx, carPos) {
+    let id = null, name = null, best = Infinity;
+    for (const t of ctx.targets) {
+      const dx = t.pos.x - carPos.x;
+      const dz = t.pos.z - carPos.z;
       const dist = Math.hypot(dx, dz);
-      if (dist < best) { best = dist; id = x; name = d.name; }
+      if (dist < best) { best = dist; id = t.id; name = t.name; }
     }
     return { id, name, dist: best };
   }
 
   function tick(dt) {
     if (!active) return;
-    const car = P.car?.getMesh?.();
+    const ctx = context();
+    const car = ctx.car;
     if (!car) return;
 
     // Throttle / brake.
@@ -8549,24 +8622,21 @@ if (typeof window !== 'undefined') {
     car.position.x += fx * velocity * dt;
     car.position.z += fz * velocity * dt;
 
-    // Soft bounds so the car can't drive out of the city plane.
-    if (car.position.x > CITY_HALF) car.position.x = CITY_HALF;
-    if (car.position.x < -CITY_HALF) car.position.x = -CITY_HALF;
-    if (car.position.z > CITY_HALF) car.position.z = CITY_HALF;
-    if (car.position.z < -CITY_HALF) car.position.z = -CITY_HALF;
+    // Soft bounds so the car can't drive out of the playing field.
+    if (car.position.x > ctx.bound) car.position.x = ctx.bound;
+    if (car.position.x < -ctx.bound) car.position.x = -ctx.bound;
+    if (car.position.z > ctx.bound) car.position.z = ctx.bound;
+    if (car.position.z < -ctx.bound) car.position.z = -ctx.bound;
 
     // Building collision — push the car back outside any plinth it crosses.
-    const PLINTH = 6.5; // 6u plinth + ~0.5u car body half-width
-    for (const id of (window.CITY?.districts || [])) {
-      const d = window['DISTRICT_' + id.toUpperCase()];
-      if (!d) continue;
-      const dx = car.position.x - d.position.x;
-      const dz = car.position.z - d.position.z;
+    for (const t of ctx.targets) {
+      const dx = car.position.x - t.pos.x;
+      const dz = car.position.z - t.pos.z;
       const dist = Math.hypot(dx, dz);
-      if (dist < PLINTH && dist > 0.001) {
-        const k = PLINTH / dist;
-        car.position.x = d.position.x + dx * k;
-        car.position.z = d.position.z + dz * k;
+      if (dist < ctx.plinthRadius && dist > 0.001) {
+        const k = ctx.plinthRadius / dist;
+        car.position.x = t.pos.x + dx * k;
+        car.position.z = t.pos.z + dz * k;
         velocity *= 0.6; // bonk
       }
     }
@@ -8576,8 +8646,8 @@ if (typeof window !== 'undefined') {
     if (car.userData.wheels) for (const w of car.userData.wheels) w.rotation.y += dTheta;
 
     // Proximity prompt.
-    const near = nearestDistrict(car.position);
-    nearestId = (near.id && near.dist < ENTRY_RANGE) ? near.id : null;
+    const near = nearestTarget(ctx, car.position);
+    nearestId = (near.id && near.dist < ctx.entryRange) ? near.id : null;
     if (prompt) {
       if (nearestId) {
         prompt.textContent = `Press E to enter ${near.name}`;
@@ -8628,8 +8698,11 @@ if (typeof window !== 'undefined') {
 
     document.addEventListener('keydown', onKeyDown);
     document.addEventListener('keyup', onKeyUp);
-    // Auto-disable when navigating away from the city level.
-    P.app?.on?.('navigate', s => { if (s.level !== 'city' && active) deactivate(); });
+    // Auto-disable when leaving the drivable scenes (city or district).
+    // Flashcards / etc. don't have a car to drive.
+    P.app?.on?.('navigate', s => {
+      if (active && s.level !== 'city' && s.level !== 'district') deactivate();
+    });
     P.loop?.add?.(tick);
     syncToggleBtn();
   }
@@ -8685,6 +8758,9 @@ if (typeof window !== 'undefined') {
 
     const groupRoot = new THREE.Group();
     scene.add(groupRoot);
+    // Drivable car for this district — sits hidden until a district loads
+    // (setTowers fills targets + reveals it).
+    P.districtCar?.mount?.(scene);
     let pickables = [];
     let labelEntries = [];
 
@@ -8813,6 +8889,8 @@ if (typeof window !== 'undefined') {
         groupRoot.add(road);
       }
 
+      // Build the drug towers, then hand them to the district car so it has
+      // fresh target positions + a clean spawn point on the south edge.
       drugs.forEach((drug, i) => {
         const row = Math.floor(i / COLS), col = i % COLS;
         const mastery = (P.quiz?.getMasteryLevel?.(drug.id)) ?? 0;
@@ -8834,6 +8912,9 @@ if (typeof window !== 'undefined') {
       });
       P.animations?.attach?.(id, scene, groupRoot);
       applyLabelMode();
+      // Hand the freshly built drug towers to the district car so it has
+      // fresh target positions + a clean spawn point on the south edge.
+      P.districtCar?.setTowers?.(pickables);
     }
 
     function applyLabelMode() {
@@ -8970,7 +9051,34 @@ if (typeof window !== 'undefined') {
     let visible = false;
     function tick(dt, t) {
       if (!visible) return;
-      updateCamera();
+      // Chase cam when drive mode is on — same convention as city-scene.
+      let driveCam = false;
+      if (P.drive?.isActive?.()) {
+        const carMesh = P.districtCar?.getMesh?.();
+        if (carMesh && carMesh.visible) {
+          const cp = carMesh.position;
+          const h = carMesh.rotation.y;
+          const CHASE_DIST = 12, CHASE_H = 4.5, LOOK_AHEAD = 5;
+          const desired = new THREE.Vector3(
+            cp.x - Math.cos(h) * CHASE_DIST,
+            cp.y + CHASE_H,
+            cp.z + Math.sin(h) * CHASE_DIST,
+          );
+          if (camera.position.distanceTo(desired) > 25) {
+            camera.position.copy(desired);
+          } else {
+            const k = 1 - Math.exp(-dt * 10);
+            camera.position.lerp(desired, k);
+          }
+          camera.lookAt(
+            cp.x + Math.cos(h) * LOOK_AHEAD,
+            cp.y + 1.5,
+            cp.z - Math.sin(h) * LOOK_AHEAD,
+          );
+          driveCam = true;
+        }
+      }
+      if (!driveCam) updateCamera();
       updateHoverAnimations(dt);
       for (const c of clouds) {
         c.position.x += c.userData.driftSpeed * dt;
