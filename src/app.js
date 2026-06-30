@@ -30,6 +30,7 @@
         <button class="btn" id="classifyBtn" aria-label="drug classification" style="display:none">Classify</button>
         <button class="btn" id="flowBtn" aria-label="full classification flowchart">Flowchart</button>
         <button class="btn" id="mapBtn" aria-label="mini map" title="Press M">Map</button>
+        <button class="btn" id="driveBtn" aria-label="drive the car" title="Drive the car around the city">🚗 Drive</button>
         <button class="btn btn-theme" id="themeBtn" aria-label="toggle day/night">🌙</button>
       </div>
       <div class="search" id="search-mount"></div>
@@ -54,6 +55,7 @@
     document.getElementById('classifyBtn').addEventListener('click', () => P.classification?.open?.());
     document.getElementById('flowBtn').addEventListener('click', () => P.flowchart?.open?.());
     document.getElementById('mapBtn').addEventListener('click', () => P.minimap?.toggle?.());
+    document.getElementById('driveBtn').addEventListener('click', () => P.drive?.toggle?.());
     const themeBtn = document.getElementById('themeBtn');
     function syncThemeBtn() { if (themeBtn) themeBtn.textContent = (P.theme?.getTheme?.() === 'night') ? '☀️' : '🌙'; }
     themeBtn?.addEventListener('click', () => { P.theme?.toggle?.(); syncThemeBtn(); });
@@ -97,6 +99,7 @@
     P.compare?.mount?.(app);
     P.minimap?.mount?.(app);
     P.flowchart?.mount?.(app);
+    P.drive?.mount?.(app);
     P.selfTest?.mount?.(app);
     P.selfTest?.onChange?.(() => { P.flashcard?._onSelfTestChange?.(); });
     P.search?.mount?.(document.getElementById('search-mount'));

@@ -42,6 +42,7 @@ const appFiles = [
   'minimap.js',
   'flowchart-overlay.js',
   'car.js',
+  'drive-mode.js',
   'district-scene.js',
   'city-scene.js',
   'app.js',

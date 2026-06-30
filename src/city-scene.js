@@ -352,6 +352,16 @@
           P.app.goTo('district', { districtId: id });
         }
       }
+      // When drive mode is on, lerp the camera target toward the car so it
+      // stays roughly centered as the user drives.
+      if (P.drive?.isActive?.()) {
+        const carMesh = P.car?.getMesh?.();
+        if (carMesh) {
+          const k = 1 - Math.exp(-dt * 3);
+          target.x += (carMesh.position.x - target.x) * k;
+          target.z += (carMesh.position.z - target.z) * k;
+        }
+      }
       updateCamera();
       updateHoverAnimations(dt);
       // Drift clouds slowly across the sky.

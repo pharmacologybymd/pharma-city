@@ -256,6 +256,8 @@
 
   function tick(dt) {
     if (!car || !visible || waypoints.length < 2) return;
+    // Hand the car over to the user when drive mode is on.
+    if (P.drive?.isActive?.()) return;
     const from = waypoints[segIdx];
     const to = waypoints[(segIdx + 1) % waypoints.length];
     const segLen = from.distanceTo(to);
@@ -274,8 +276,10 @@
     car.position.y = CAR_Y;
 
     // Smoothly approach the desired heading; wrap the diff into [-π, π] so
-    // we always rotate the short way around a corner.
-    const desired = Math.atan2(b.z - a.z, b.x - a.x);
+    // we always rotate the short way around a corner. Three.js's rotation.y
+    // takes local +X to world (cos θ, 0, -sin θ), so we negate the standard
+    // atan2 so the car nose points along (dx, dz), not (dx, -dz).
+    const desired = -Math.atan2(b.z - a.z, b.x - a.x);
     let diff = desired - heading;
     while (diff > Math.PI) diff -= Math.PI * 2;
     while (diff < -Math.PI) diff += Math.PI * 2;
@@ -293,7 +297,7 @@
     waypoints = buildWaypoints();
     if (waypoints.length < 2) return null;
     car.position.copy(waypoints[0]);
-    heading = Math.atan2(waypoints[1].z - waypoints[0].z, waypoints[1].x - waypoints[0].x);
+    heading = -Math.atan2(waypoints[1].z - waypoints[0].z, waypoints[1].x - waypoints[0].x);
     car.rotation.y = heading;
     scene.add(car);
     P.loop.add(tick);
@@ -301,5 +305,5 @@
     return car;
   }
 
-  P.car = { mount };
+  P.car = { mount, getMesh: () => car };
 })();

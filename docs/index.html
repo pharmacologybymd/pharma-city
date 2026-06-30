@@ -172,6 +172,13 @@ body.theme-night .wlabel { background: rgba(20, 30, 56, 0.95); color: #ffffff; b
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }
 .btn-bad:hover { background: rgba(220, 38, 38, 0.20); }
 .quiz-stats { margin-top: 12px; font-size: 11px; color: var(--muted-on-card); font-variant-numeric: tabular-nums; }
+.btn-driving { background: #fff4d1; border-color: #f5c97a; color: #5a4500; font-weight: 600; }
+.btn-driving:hover { background: #fee8a8; }
+.drive-banner { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: rgba(15, 22, 42, 0.92); color: #fff; padding: 10px 16px; border-radius: 12px; font-size: 13px; box-shadow: 0 8px 28px rgba(0,0,0,0.3); z-index: 50; pointer-events: none; line-height: 1.4; }
+.drive-banner kbd { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 1px 6px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11px; margin: 0 1px; }
+.drive-prompt { position: fixed; left: 50%; top: 32%; transform: translateX(-50%); background: var(--accent); color: #fff; padding: 12px 22px; border-radius: 14px; font-size: 16px; font-weight: 600; box-shadow: 0 10px 30px rgba(46,123,224,0.45); z-index: 51; pointer-events: none; animation: drivePulse 1.4s ease-in-out infinite; }
+@keyframes drivePulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.04); } }
+body.theme-night .btn-driving { background: #2a2a14; border-color: #88661a; color: #fde68a; }
 </style>
 </head>
 <body>
@@ -8381,6 +8388,8 @@ if (typeof window !== 'undefined') {
 
   function tick(dt) {
     if (!car || !visible || waypoints.length < 2) return;
+    // Hand the car over to the user when drive mode is on.
+    if (P.drive?.isActive?.()) return;
     const from = waypoints[segIdx];
     const to = waypoints[(segIdx + 1) % waypoints.length];
     const segLen = from.distanceTo(to);
@@ -8399,8 +8408,10 @@ if (typeof window !== 'undefined') {
     car.position.y = CAR_Y;
 
     // Smoothly approach the desired heading; wrap the diff into [-π, π] so
-    // we always rotate the short way around a corner.
-    const desired = Math.atan2(b.z - a.z, b.x - a.x);
+    // we always rotate the short way around a corner. Three.js's rotation.y
+    // takes local +X to world (cos θ, 0, -sin θ), so we negate the standard
+    // atan2 so the car nose points along (dx, dz), not (dx, -dz).
+    const desired = -Math.atan2(b.z - a.z, b.x - a.x);
     let diff = desired - heading;
     while (diff > Math.PI) diff -= Math.PI * 2;
     while (diff < -Math.PI) diff += Math.PI * 2;
@@ -8418,7 +8429,7 @@ if (typeof window !== 'undefined') {
     waypoints = buildWaypoints();
     if (waypoints.length < 2) return null;
     car.position.copy(waypoints[0]);
-    heading = Math.atan2(waypoints[1].z - waypoints[0].z, waypoints[1].x - waypoints[0].x);
+    heading = -Math.atan2(waypoints[1].z - waypoints[0].z, waypoints[1].x - waypoints[0].x);
     car.rotation.y = heading;
     scene.add(car);
     P.loop.add(tick);
@@ -8426,7 +8437,197 @@ if (typeof window !== 'undefined') {
     return car;
   }
 
-  P.car = { mount };
+  P.car = { mount, getMesh: () => car };
+})();
+
+
+// === src/drive-mode.js ===
+// User-controlled driving for the city car. Toggling drive mode pauses the
+// autonomous tour, hands the car over to WASD/arrow-key control, and gently
+// pans the camera to follow it. When the car is close to a district plinth,
+// a "Press E to enter <name>" prompt appears; pressing E (or Enter) navigates
+// into that district. Escape exits drive mode.
+//
+// PHARMA.drive.activate() / deactivate() / toggle() / isActive()
+(function(){
+  const P = (typeof window !== 'undefined') ? (window.PHARMA = window.PHARMA || {}) : {};
+
+  let active = false;
+  let banner = null, prompt = null;
+  let nearestId = null;
+
+  // Physics tunables. ACCEL is forward acceleration; FRICTION damps speed
+  // when no throttle. MAX_SPEED is forward, REVERSE_MAX is backward.
+  // TURN_RATE scales with speed so the car only turns while moving.
+  const ACCEL = 14;
+  const FRICTION = 10;
+  const MAX_SPEED = 22;
+  const REVERSE_MAX = 8;
+  const TURN_RATE = 2.2;
+  const WHEEL_RADIUS = 0.42;
+  const ENTRY_RANGE = 14; // distance from district center to allow Enter
+  const CITY_HALF = 110;  // soft bound — keeps the car inside the city plane
+
+  const keys = { up: false, down: false, left: false, right: false };
+  let velocity = 0;
+
+  function onKeyDown(e) {
+    if (!active) return;
+    const k = e.key;
+    if (k === 'w' || k === 'W' || k === 'ArrowUp')    { keys.up    = true; e.preventDefault(); }
+    if (k === 's' || k === 'S' || k === 'ArrowDown')  { keys.down  = true; e.preventDefault(); }
+    if (k === 'a' || k === 'A' || k === 'ArrowLeft')  { keys.left  = true; e.preventDefault(); }
+    if (k === 'd' || k === 'D' || k === 'ArrowRight') { keys.right = true; e.preventDefault(); }
+    if (k === 'e' || k === 'E' || k === 'Enter')      { tryEnter(); e.preventDefault(); }
+    if (k === 'Escape')                                { deactivate(); }
+  }
+  function onKeyUp(e) {
+    if (!active) return;
+    const k = e.key;
+    if (k === 'w' || k === 'W' || k === 'ArrowUp')    keys.up    = false;
+    if (k === 's' || k === 'S' || k === 'ArrowDown')  keys.down  = false;
+    if (k === 'a' || k === 'A' || k === 'ArrowLeft')  keys.left  = false;
+    if (k === 'd' || k === 'D' || k === 'ArrowRight') keys.right = false;
+  }
+
+  function tryEnter() {
+    if (!nearestId) return;
+    deactivate();
+    P.app?.goTo?.('district', { districtId: nearestId });
+  }
+
+  function nearestDistrict(carPos) {
+    const ids = window.CITY?.districts || [];
+    let id = null, best = Infinity, name = null;
+    for (const x of ids) {
+      const d = window['DISTRICT_' + x.toUpperCase()];
+      if (!d) continue;
+      const dx = d.position.x - carPos.x;
+      const dz = d.position.z - carPos.z;
+      const dist = Math.hypot(dx, dz);
+      if (dist < best) { best = dist; id = x; name = d.name; }
+    }
+    return { id, name, dist: best };
+  }
+
+  function tick(dt) {
+    if (!active) return;
+    const car = P.car?.getMesh?.();
+    if (!car) return;
+
+    // Throttle / brake.
+    let targetSpeed = 0;
+    if (keys.up && !keys.down) targetSpeed = MAX_SPEED;
+    else if (keys.down && !keys.up) targetSpeed = -REVERSE_MAX;
+    const goingFaster = Math.sign(targetSpeed - velocity) === Math.sign(targetSpeed) && targetSpeed !== 0;
+    const accel = goingFaster ? ACCEL : -FRICTION * Math.sign(velocity || targetSpeed || 1);
+    velocity += (targetSpeed === 0 ? -Math.sign(velocity) * FRICTION : (targetSpeed > velocity ? ACCEL : -ACCEL)) * dt;
+    if (velocity > MAX_SPEED) velocity = MAX_SPEED;
+    if (velocity < -REVERSE_MAX) velocity = -REVERSE_MAX;
+    if (targetSpeed === 0 && Math.abs(velocity) < FRICTION * dt) velocity = 0;
+
+    // Steering — only when moving.
+    let steer = 0;
+    if (keys.left) steer += 1;
+    if (keys.right) steer -= 1;
+    const speedFraction = Math.min(1, Math.abs(velocity) / 5);
+    const yawDir = velocity >= 0 ? 1 : -1; // reverse steers the back wheels
+    car.rotation.y += steer * TURN_RATE * dt * speedFraction * yawDir;
+
+    // Apply velocity in the car's facing direction. Three.js's rotation.y
+    // takes local +X to world (cos θ, 0, -sin θ), so forward_z is -sin θ.
+    const heading = car.rotation.y;
+    const fx = Math.cos(heading);
+    const fz = -Math.sin(heading);
+    car.position.x += fx * velocity * dt;
+    car.position.z += fz * velocity * dt;
+
+    // Soft bounds so the car can't drive out of the city plane.
+    if (car.position.x > CITY_HALF) car.position.x = CITY_HALF;
+    if (car.position.x < -CITY_HALF) car.position.x = -CITY_HALF;
+    if (car.position.z > CITY_HALF) car.position.z = CITY_HALF;
+    if (car.position.z < -CITY_HALF) car.position.z = -CITY_HALF;
+
+    // Building collision — push the car back outside any plinth it crosses.
+    const PLINTH = 6.5; // 6u plinth + ~0.5u car body half-width
+    for (const id of (window.CITY?.districts || [])) {
+      const d = window['DISTRICT_' + id.toUpperCase()];
+      if (!d) continue;
+      const dx = car.position.x - d.position.x;
+      const dz = car.position.z - d.position.z;
+      const dist = Math.hypot(dx, dz);
+      if (dist < PLINTH && dist > 0.001) {
+        const k = PLINTH / dist;
+        car.position.x = d.position.x + dx * k;
+        car.position.z = d.position.z + dz * k;
+        velocity *= 0.6; // bonk
+      }
+    }
+
+    // Spin wheels.
+    const dTheta = (velocity * dt) / WHEEL_RADIUS;
+    if (car.userData.wheels) for (const w of car.userData.wheels) w.rotation.y += dTheta;
+
+    // Proximity prompt.
+    const near = nearestDistrict(car.position);
+    nearestId = (near.id && near.dist < ENTRY_RANGE) ? near.id : null;
+    if (prompt) {
+      if (nearestId) {
+        prompt.textContent = `Press E to enter ${near.name}`;
+        prompt.style.display = 'block';
+      } else {
+        prompt.style.display = 'none';
+      }
+    }
+  }
+
+  function activate() {
+    if (active) return;
+    active = true;
+    velocity = 0;
+    if (banner) banner.style.display = 'block';
+    syncToggleBtn();
+  }
+  function deactivate() {
+    if (!active) return;
+    active = false;
+    velocity = 0;
+    keys.up = keys.down = keys.left = keys.right = false;
+    if (banner) banner.style.display = 'none';
+    if (prompt) prompt.style.display = 'none';
+    nearestId = null;
+    syncToggleBtn();
+  }
+  function toggle() { active ? deactivate() : activate(); }
+  function isActive() { return active; }
+  function syncToggleBtn() {
+    const btn = document.getElementById('driveBtn');
+    if (!btn) return;
+    btn.textContent = active ? '🚗 Driving' : '🚗 Drive';
+    btn.classList.toggle('btn-driving', active);
+  }
+
+  function mount(rootEl) {
+    banner = document.createElement('div');
+    banner.className = 'drive-banner';
+    banner.innerHTML = '<b>🚗 Drive mode</b> &nbsp;·&nbsp; <kbd>W</kbd>/<kbd>↑</kbd> go &nbsp; <kbd>S</kbd>/<kbd>↓</kbd> brake &nbsp; <kbd>A</kbd><kbd>D</kbd> steer &nbsp; <kbd>E</kbd> enter &nbsp; <kbd>Esc</kbd> exit';
+    banner.style.display = 'none';
+    rootEl.appendChild(banner);
+
+    prompt = document.createElement('div');
+    prompt.className = 'drive-prompt';
+    prompt.style.display = 'none';
+    rootEl.appendChild(prompt);
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keyup', onKeyUp);
+    // Auto-disable when navigating away from the city level.
+    P.app?.on?.('navigate', s => { if (s.level !== 'city' && active) deactivate(); });
+    P.loop?.add?.(tick);
+    syncToggleBtn();
+  }
+
+  P.drive = { mount, activate, deactivate, toggle, isActive };
 })();
 
 
@@ -9142,6 +9343,16 @@ if (typeof window !== 'undefined') {
           P.app.goTo('district', { districtId: id });
         }
       }
+      // When drive mode is on, lerp the camera target toward the car so it
+      // stays roughly centered as the user drives.
+      if (P.drive?.isActive?.()) {
+        const carMesh = P.car?.getMesh?.();
+        if (carMesh) {
+          const k = 1 - Math.exp(-dt * 3);
+          target.x += (carMesh.position.x - target.x) * k;
+          target.z += (carMesh.position.z - target.z) * k;
+        }
+      }
       updateCamera();
       updateHoverAnimations(dt);
       // Drift clouds slowly across the sky.
@@ -9202,6 +9413,7 @@ if (typeof window !== 'undefined') {
         <button class="btn" id="classifyBtn" aria-label="drug classification" style="display:none">Classify</button>
         <button class="btn" id="flowBtn" aria-label="full classification flowchart">Flowchart</button>
         <button class="btn" id="mapBtn" aria-label="mini map" title="Press M">Map</button>
+        <button class="btn" id="driveBtn" aria-label="drive the car" title="Drive the car around the city">🚗 Drive</button>
         <button class="btn btn-theme" id="themeBtn" aria-label="toggle day/night">🌙</button>
       </div>
       <div class="search" id="search-mount"></div>
@@ -9226,6 +9438,7 @@ if (typeof window !== 'undefined') {
     document.getElementById('classifyBtn').addEventListener('click', () => P.classification?.open?.());
     document.getElementById('flowBtn').addEventListener('click', () => P.flowchart?.open?.());
     document.getElementById('mapBtn').addEventListener('click', () => P.minimap?.toggle?.());
+    document.getElementById('driveBtn').addEventListener('click', () => P.drive?.toggle?.());
     const themeBtn = document.getElementById('themeBtn');
     function syncThemeBtn() { if (themeBtn) themeBtn.textContent = (P.theme?.getTheme?.() === 'night') ? '☀️' : '🌙'; }
     themeBtn?.addEventListener('click', () => { P.theme?.toggle?.(); syncThemeBtn(); });
@@ -9269,6 +9482,7 @@ if (typeof window !== 'undefined') {
     P.compare?.mount?.(app);
     P.minimap?.mount?.(app);
     P.flowchart?.mount?.(app);
+    P.drive?.mount?.(app);
     P.selfTest?.mount?.(app);
     P.selfTest?.onChange?.(() => { P.flashcard?._onSelfTestChange?.(); });
     P.search?.mount?.(document.getElementById('search-mount'));

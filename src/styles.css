@@ -166,3 +166,10 @@ body.theme-night .wlabel { background: rgba(20, 30, 56, 0.95); color: #ffffff; b
 .btn-bad { background: rgba(220, 38, 38, 0.12); border-color: rgba(220, 38, 38, 0.55); color: #991b1b; }
 .btn-bad:hover { background: rgba(220, 38, 38, 0.20); }
 .quiz-stats { margin-top: 12px; font-size: 11px; color: var(--muted-on-card); font-variant-numeric: tabular-nums; }
+.btn-driving { background: #fff4d1; border-color: #f5c97a; color: #5a4500; font-weight: 600; }
+.btn-driving:hover { background: #fee8a8; }
+.drive-banner { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: rgba(15, 22, 42, 0.92); color: #fff; padding: 10px 16px; border-radius: 12px; font-size: 13px; box-shadow: 0 8px 28px rgba(0,0,0,0.3); z-index: 50; pointer-events: none; line-height: 1.4; }
+.drive-banner kbd { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; padding: 1px 6px; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11px; margin: 0 1px; }
+.drive-prompt { position: fixed; left: 50%; top: 32%; transform: translateX(-50%); background: var(--accent); color: #fff; padding: 12px 22px; border-radius: 14px; font-size: 16px; font-weight: 600; box-shadow: 0 10px 30px rgba(46,123,224,0.45); z-index: 51; pointer-events: none; animation: drivePulse 1.4s ease-in-out infinite; }
+@keyframes drivePulse { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.04); } }
+body.theme-night .btn-driving { background: #2a2a14; border-color: #88661a; color: #fde68a; }
