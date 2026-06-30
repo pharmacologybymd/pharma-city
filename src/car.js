@@ -9,13 +9,15 @@
 
   // Route — must walk only along edges that exist in the ROADS array in
   // city-scene.js, otherwise the car cuts across grass. Loops naturally.
+  // The cvs→autacoids→ans_hub return is intentional: cvs is not directly
+  // adjacent to ans_hub on the city road graph, autacoids sits on that line.
   const ROUTE = [
     'ans_hub', 'cholinergic',
     'ans_hub', 'adrenergic',
     'ans_hub', 'autacoids', 'cvs', 'respiratory',
     'cvs', 'git', 'recent_advances',
-    'git', 'cvs',
-    'ans_hub', 'renal',
+    'git', 'cvs', 'autacoids', 'ans_hub',
+    'renal',
     'ans_hub', 'cns', 'endocrine',
     'cns', 'chemotherapy', 'toxicology',
     'chemotherapy', 'cns',
@@ -108,11 +110,149 @@
 
   // Tunables. SPEED is world-units/sec; WHEEL_RADIUS feeds the spin rate so
   // wheels look correct at any speed. TURN_K is the heading-smoothing factor
-  // (higher = sharper, snappier corners).
+  // (higher = sharper, snappier corners). PLINTH_HALF / ARC_OFFSET shape the
+  // path around buildings (see buildWaypoints).
   const SPEED = 9;
   const WHEEL_RADIUS = 0.42;
   const TURN_K = 5;
-  const CAR_Y = 0.12; // sits just above the road slab (road top ≈ 0.085)
+  const CAR_Y = 0.12;
+  const PLINTH_HALF = 7;   // segment endpoints sit just past each 6-unit plinth
+  const ARC_OFFSET = 12;   // normal-corner / pass-through arc — small enough
+                           // that the chord to it doesn't graze a nearby plinth
+  const UTURN_OFFSET = 16; // U-turn arc — wider so asymmetric cases (cns→chemo→
+                           // tox, dot ≈ -0.99) clear the plinth on both legs
+
+  // Each ROUTE pair (A, B) becomes a segment driven edge-to-edge (so the car
+  // is visible BETWEEN buildings, never under them). At every junction we
+  // insert an arc midpoint outside the plinth so the chord into/out of the
+  // arc doesn't clip the building corner.
+  function buildWaypoints() {
+    const center = id => {
+      const d = window['DISTRICT_' + id.toUpperCase()];
+      return d ? new THREE.Vector3(d.position.x, CAR_Y, d.position.z) : null;
+    };
+    // All district centers — used to bias arc midpoints AWAY from neighbors
+    // (so e.g. the arc north of ans_hub doesn't land inside autacoids).
+    const others = [];
+    for (const id of (window.CITY?.districts || [])) {
+      const c = center(id);
+      if (c) others.push(c);
+    }
+    const clearance = (pt, exclude) => {
+      let min = Infinity;
+      for (const c of others) {
+        if (c.distanceTo(exclude) < 0.01) continue;
+        const d = pt.distanceTo(c);
+        if (d < min) min = d;
+      }
+      return min;
+    };
+    const segs = [];
+    for (let i = 0; i < ROUTE.length; i++) {
+      const A = center(ROUTE[i]);
+      const B = center(ROUTE[(i + 1) % ROUTE.length]);
+      if (!A || !B) continue;
+      const delta = B.clone().sub(A); delta.y = 0;
+      const dist = delta.length();
+      if (dist < 1) continue;
+      const dir = delta.divideScalar(dist);
+      // Close-by districts (e.g. ans_hub → autacoids, 15u apart) get a smaller
+      // offset so the segment doesn't reverse — keep at least a couple of
+      // visible units of road between the two plinths.
+      const offset = Math.min(PLINTH_HALF, dist / 2 - 1.5);
+      const aOut = A.clone().add(dir.clone().multiplyScalar(offset));
+      const bIn = B.clone().sub(dir.clone().multiplyScalar(offset));
+      segs.push({ B, dir, aOut, bIn });
+    }
+    // Detour any other district whose plinth the segment chord clips.
+    // Some roads (e.g. ans_hub → general_pharmacology) are long diagonals that
+    // pass through a third building (renal at (-25, 25)) — the car needs to go
+    // around it, not through it.
+    const PERP_CLEAR = 8;
+    function segmentDetours(aOut, bIn) {
+      const delta = bIn.clone().sub(aOut); delta.y = 0;
+      const segLen = delta.length();
+      if (segLen < 1) return [];
+      const sdir = delta.divideScalar(segLen);
+      const detours = [];
+      for (const c of others) {
+        if (c.distanceTo(aOut) < PLINTH_HALF + 0.1) continue;
+        if (c.distanceTo(bIn) < PLINTH_HALF + 0.1) continue;
+        const ac = c.clone().sub(aOut);
+        const t = ac.dot(sdir);
+        if (t < PLINTH_HALF || t > segLen - PLINTH_HALF) continue;
+        const perpDist = ac.clone().sub(sdir.clone().multiplyScalar(t)).length();
+        if (perpDist > PERP_CLEAR) continue;
+        const ccw = new THREE.Vector3(-sdir.z, 0, sdir.x);
+        const cw = new THREE.Vector3(sdir.z, 0, -sdir.x);
+        const candCCW = c.clone().add(ccw.clone().multiplyScalar(ARC_OFFSET));
+        const candCW = c.clone().add(cw.clone().multiplyScalar(ARC_OFFSET));
+        const perp = clearance(candCCW, c) >= clearance(candCW, c) ? ccw : cw;
+        const pt = c.clone().add(perp.multiplyScalar(ARC_OFFSET));
+        pt.y = CAR_Y;
+        detours.push({ t, pt });
+      }
+      detours.sort((a, b) => a.t - b.t);
+      return detours.map(d => d.pt);
+    }
+    const points = [];
+    for (let i = 0; i < segs.length; i++) {
+      const seg = segs[i];
+      const next = segs[(i + 1) % segs.length];
+      points.push(seg.aOut);
+      for (const d of segmentDetours(seg.aOut, seg.bIn)) points.push(d);
+      points.push(seg.bIn);
+      // Corner arc(s) at seg.B between segments. Three cases:
+      //   • Normal corner — bisect = -inDir + outDir points OUTSIDE the bend;
+      //     one arc at radius ARC_OFFSET keeps the chord clear of the plinth.
+      //   • U-turn (-inDir == outDir) — bisect lies along the road; one arc
+      //     at the perpendicular pushes the car off-line.
+      //   • Going-straight (-inDir == -outDir → bisect ≈ 0) — same fallback,
+      //     but ONE arc on the perpendicular still chord-clips because bIn
+      //     and aOut sit on opposite sides of the plinth. Insert TWO arcs
+      //     (at ±45° from the perpendicular, biased back toward bIn / aOut)
+      //     so each chord clears the plinth.
+      // For perpendicular fallbacks (U-turn + straight), pick CCW vs CW by
+      // whichever side is furthest from other districts.
+      const inDir = seg.dir;
+      const outDir = next.dir;
+      const dotIO = inDir.dot(outDir);
+      const isUTurn = dotIO < -0.95;
+      const isStraight = dotIO > 0.95;
+      if (isStraight) {
+        const ccw = new THREE.Vector3(-outDir.z, 0, outDir.x);
+        const cw = new THREE.Vector3(outDir.z, 0, -outDir.x);
+        const candCCW = seg.B.clone().add(ccw.clone().multiplyScalar(ARC_OFFSET));
+        const candCW = seg.B.clone().add(cw.clone().multiplyScalar(ARC_OFFSET));
+        const side = clearance(candCCW, seg.B) >= clearance(candCW, seg.B) ? ccw : cw;
+        const a1 = side.clone().add(inDir.clone().negate()).normalize();
+        const a2 = side.clone().add(outDir).normalize();
+        const arc1 = seg.B.clone().add(a1.multiplyScalar(ARC_OFFSET));
+        const arc2 = seg.B.clone().add(a2.multiplyScalar(ARC_OFFSET));
+        arc1.y = CAR_Y; arc2.y = CAR_Y;
+        points.push(arc1, arc2);
+      } else {
+        let bisect = inDir.clone().negate().add(outDir);
+        let radius = ARC_OFFSET;
+        if (isUTurn) {
+          // Perpendicular to inDir (not outDir) gives a chord geometry that
+          // matches both chord legs symmetrically. Wider radius keeps the
+          // asymmetric chemo U-turn (dot ≈ -0.99 not -1) clear of the plinth.
+          const ccw = new THREE.Vector3(-inDir.z, 0, inDir.x);
+          const cw = new THREE.Vector3(inDir.z, 0, -inDir.x);
+          const candCCW = seg.B.clone().add(ccw.clone().multiplyScalar(UTURN_OFFSET));
+          const candCW = seg.B.clone().add(cw.clone().multiplyScalar(UTURN_OFFSET));
+          bisect = clearance(candCCW, seg.B) >= clearance(candCW, seg.B) ? ccw : cw;
+          radius = UTURN_OFFSET;
+        }
+        bisect.normalize();
+        const arc = seg.B.clone().add(bisect.multiplyScalar(radius));
+        arc.y = CAR_Y;
+        points.push(arc);
+      }
+    }
+    return points;
+  }
 
   function tick(dt) {
     if (!car || !visible || waypoints.length < 2) return;
@@ -150,10 +290,7 @@
 
   function mount(scene) {
     car = buildCar();
-    waypoints = ROUTE.map(id => {
-      const d = window['DISTRICT_' + id.toUpperCase()];
-      return d ? new THREE.Vector3(d.position.x, CAR_Y, d.position.z) : null;
-    }).filter(Boolean);
+    waypoints = buildWaypoints();
     if (waypoints.length < 2) return null;
     car.position.copy(waypoints[0]);
     heading = Math.atan2(waypoints[1].z - waypoints[0].z, waypoints[1].x - waypoints[0].x);
